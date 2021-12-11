@@ -1,0 +1,15 @@
+push constant 10
+push constant 20
+push constant 30
+push constant 40
+push constant 50
+pop local 0
+pop argument 0
+pop this 0
+pop that 0
+pop temp 0
+push local 0
+push argument 0
+push this 0
+push that 0
+push temp 0

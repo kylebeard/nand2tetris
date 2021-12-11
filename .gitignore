@@ -1,0 +1,6 @@
+.mypy_cache/
+nand2tetris-helpers/
+projects/
+tools/
+__pycache__
+.DS_Store

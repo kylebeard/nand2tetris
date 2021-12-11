@@ -1,0 +1,235 @@
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 2
+   @2
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @CMP_TRUE0
+   D;JLT
+   D=0
+   @CMP_PUSH_D0
+   0;JMP
+(CMP_TRUE0)
+   D=-1
+(CMP_PUSH_D0)
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 2
+   @2
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @CMP_TRUE1
+   D;JLT
+   D=0
+   @CMP_PUSH_D1
+   0;JMP
+(CMP_TRUE1)
+   D=-1
+(CMP_PUSH_D1)
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 2
+   @2
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// gt
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @CMP_TRUE2
+   D;JGT
+   D=0
+   @CMP_PUSH_D2
+   0;JMP
+(CMP_TRUE2)
+   D=-1
+(CMP_PUSH_D2)
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 2
+   @2
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// gt
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @CMP_TRUE3
+   D;JGT
+   D=0
+   @CMP_PUSH_D3
+   0;JMP
+(CMP_TRUE3)
+   D=-1
+(CMP_PUSH_D3)
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 2
+   @2
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 12
+   @12
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @arg1
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @arg1
+   D=D-M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// neg
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @CMP_TRUE4
+   D;JLT
+   D=0
+   @CMP_PUSH_D4
+   0;JMP
+(CMP_TRUE4)
+   D=-1
+(CMP_PUSH_D4)
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+(END)
+   @END
+   0;JMP

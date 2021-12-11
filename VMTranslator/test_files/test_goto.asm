@@ -1,0 +1,82 @@
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   @test_goto$my_label
+   0;JMP
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 2
+   @2
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @arg1
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @arg1
+   D=D+M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+(test_goto$my_label)
+// push constant 3
+   @3
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @arg1
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @arg1
+   D=D+M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+(END)
+   @END
+   0;JMP
