@@ -1,0 +1,15 @@
+class Square {
+    field int size;
+    static char z;
+
+    method void enlarge(int px) {
+        let size = size + 2;
+        return;
+    }
+
+    method void shrink(int px) {
+        let size = size + 2;
+        return;
+    }
+
+}
