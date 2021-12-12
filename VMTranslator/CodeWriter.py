@@ -33,8 +33,7 @@ class CodeWriter:
 
         self._save_caller_state_label = 'SAVE_CALLER_STATE'
         self._return_label = 'RETURN'
-
-        # self._write_global_routines()
+        self._write_global_routines()
 
     def _write_global_routines(self):
         self._write_init()
@@ -42,19 +41,18 @@ class CodeWriter:
         self._write_save_caller_state_routine()
         self._write_return_routine()
 
-    def set_filename(self, filename: str):
-        """Sets the filename that we are currently reading from"""
-        self.file.write(f'// New File: {filename}\n')
-        self.input_filename = filename
-
-    def _write_init(self):
-        """writes the intial bootstrap code setting SP to 256 & calling sys.init"""
+    def _write_init(self):  # sourcery skip: class-extract-method
+        """
+        writes the intial bootstrap code setting SP to 256,
+        initializing memory segments & calling sys.init
+        """
+        # set stack pointer to 256
         self._writeln('@256')
         self._writeln('D=A')
         self._writeln('@SP')
         self._writeln('M=D')
-        self._writeln('@sys.init')
-        self._writeln('0;JMP')
+
+        self.write_call('sys.init')
 
     def _write_save_caller_state_routine(self):
         """
@@ -111,11 +109,11 @@ class CodeWriter:
             label = ''
             match cmp:
                 case 'LT':
-                    label = 'GLOBAL_LT'
+                    label = self._lt_label
                 case 'GT':
-                    label = 'GLOBAL_GT'
+                    label = self._gt_label
                 case 'EQ':
-                    label = 'GLOBAL_EQ'
+                    label = self._eq_label
 
             self._write_label(label)
             # save return address
@@ -144,7 +142,7 @@ class CodeWriter:
             self._writeln('0;JMP')
 
     def _write_return_routine(self):
-        """"""
+        """Global Return routine called everytime a VM `return` command is found"""
         self._write_label(self._return_label)
         endframe = '@endframe'
         ret_addr = '@retAddr'
@@ -190,6 +188,11 @@ class CodeWriter:
         self._writeln(ret_addr)
         self._writeln('A=M')
         self._writeln('0;JMP')
+
+    def set_filename(self, filename: str):
+        """Sets the filename that we are currently reading from"""
+        self.file.write(f'// New File: {filename}\n')
+        self.input_filename = filename
 
     ###################### Arithmetic Commands ###################################
 
@@ -414,7 +417,7 @@ class CodeWriter:
             self._writeln('D=0')
             self._push_D_onto_stack()
 
-    def write_call(self, name: str, numArgs: int):
+    def write_call(self, name: str, numArgs: int = 0):
         """translate vm call command to assembly"""
         self.file.write(f'// call {name} {numArgs}\n')
 

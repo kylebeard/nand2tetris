@@ -46,8 +46,6 @@ def main(in_file: TextIO, writer: CodeWriter):
         elif cmd_t == CommandType.RETURN:
             writer.write_return()
 
-    writer.write_end_loop()
-
 
 def validate_push_pop(parser: Parser):
     if parser.arg1() not in Segments.values:
@@ -98,11 +96,11 @@ def get_paths(in_path):
 
 if __name__ == "__main__":
     test_files = '/Users/kyle/Documents/Programming/nand2tetris/VMTranslator/test_files'
-    proj8_path = '/Users/kyle/Documents/Programming/nand2tetris/projects/08'
+    proj8_path = '/Users/kyle/Documents/Programming/nand2tetris/tools/OS'
 
-    simple = f'{proj8_path}/ProgramFlow/BasicLoop'
+    simple = f'{proj8_path}'
 
-    in_path = f'{simple}/BasicLoop.vm'
+    in_path = f'{simple}'
     (vm_file_paths, out_path) = get_paths(in_path)
 
     print(f'{vm_file_paths = }\n{out_path = }')
@@ -113,5 +111,7 @@ if __name__ == "__main__":
             input_filename = path.splitext(path.basename(file_path))[0]
             writer.set_filename(input_filename)
 
-            with open(in_path, 'r') as in_file:
+            with open(file_path, 'r') as in_file:
                 main(in_file, writer)
+
+        writer.write_end_loop()
