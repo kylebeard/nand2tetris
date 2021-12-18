@@ -1,0 +1,14 @@
+/* 
+A multi-line comment
+*/
+// a regurlar comment
+/* */
+class Main {
+    var /* difficult in-line multi-line*/ int x; // in-line regular comment
+    /*
+    invalid comment
+    */ 
+    var int y;
+    var int z; /* end-line multi-line */
+    var int a; /* invalid linebreak*/
+}
