@@ -13,13 +13,13 @@ symbols = [
 
 class JackTokenizer:
 
-    def __init__(self, infile: TextIO, outfile: TextIO) -> None:
+    def __init__(self, infile: TextIO):  # , outfile: TextIO) -> None:
         """
         Everyting is done Line-by-Line.
         `tokens` is the unprocessed tokens left on this line
         """
         self.infile = infile
-        self.outfile = outfile
+        # self.outfile = outfile
         self.current_line: str = ''
 
         self.current_token: str = ''
@@ -71,14 +71,14 @@ class JackTokenizer:
 
         self.current_token = self.tokens.pop(0)
         self.current_token_type = self.token_types.pop(0)
-        tt = self.current_token_type.value
-        t = self.current_token\
+        # tt = self.current_token_type.value
+        self.current_token = self.current_token\
             .replace('&', '&amp;')\
             .replace('<', '&lt;')\
             .replace('>', '&gt;')\
             .replace('"', '&quot;')
 
-        self.outfile.write(f'<{tt}> {t} </{tt}>\n')
+        # self.outfile.write(f'<{tt}> {t} </{tt}>\n')
 
     def _parse_tokens(self):
         """parses the tokens in the current_line"""

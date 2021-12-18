@@ -1,4 +1,5 @@
 from typing import List, Tuple
+from Compiler.JackAnalyzer.CompilationEngine import CompliationEngine
 from JackTokenizer import JackTokenizer
 import sys
 from os import path, listdir
@@ -12,10 +13,10 @@ def get_paths(in_path) -> Tuple[List[str], List[str]]:
         file_paths = [path.join(in_path, f) for f in listdir(in_path)
                       if path.isfile(path.join(in_path, f)) and path.splitext(f)[1] == '.jack']
 
-        out_paths = [file_path.replace('.jack', 'T.xml') for file_path in file_paths]
+        out_paths = [file_path.replace('.jack', '.xml') for file_path in file_paths]
     else:
         file_paths = [in_path]
-        out_paths = [in_path.replace('.jack', 'T.xml')]
+        out_paths = [in_path.replace('.jack', '.xml')]
     return (file_paths, out_paths)
 
 
@@ -23,13 +24,10 @@ input = sys.argv[1]
 in_paths, out_paths = get_paths(input)
 
 for inpath, outpath in zip(in_paths, out_paths):
-    print(f'{inpath = }\n{outpath = }')
 
     with open(inpath) as infile:
         with open(outpath, 'w') as outfile:
-            outfile.write('<tokens>\n')
-            tokenizer = JackTokenizer(infile, outfile)
-            while tokenizer.has_more_tokens():
-                tokenizer.advance()
 
-            outfile.write('</tokens>')
+            tokenizer = JackTokenizer(infile)
+            engine = CompliationEngine(tokenizer, outfile)
+            engine.compile_class()
