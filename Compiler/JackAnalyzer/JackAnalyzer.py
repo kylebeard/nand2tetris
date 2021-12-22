@@ -1,5 +1,5 @@
 from typing import List, Tuple
-from Compiler.JackAnalyzer.CompilationEngine import CompliationEngine
+from CompilationEngine import CompliationEngine
 from JackTokenizer import JackTokenizer
 import sys
 from os import path, listdir
@@ -20,14 +20,12 @@ def get_paths(in_path) -> Tuple[List[str], List[str]]:
     return (file_paths, out_paths)
 
 
-input = sys.argv[1]
-in_paths, out_paths = get_paths(input)
-
+in_paths, out_paths = get_paths(sys.argv[1])
 for inpath, outpath in zip(in_paths, out_paths):
-
+    print(f'Compiling {inpath}...')
     with open(inpath) as infile:
         with open(outpath, 'w') as outfile:
-
             tokenizer = JackTokenizer(infile)
             engine = CompliationEngine(tokenizer, outfile)
             engine.compile_class()
+    print(f'done. Output is in {outpath}')

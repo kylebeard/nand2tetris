@@ -2,7 +2,7 @@
 Tokenizer for Jack language -- part of the Nand2Tetris course
 """
 from typing import List, TextIO, Tuple
-from Keywords import Keywords
+from Keywords import all_keywords
 from TokenType import TokenType
 import re
 symbols = [
@@ -50,7 +50,7 @@ class JackTokenizer:
 
                 if len(line.strip()) > end_multi_line + 2:
                     raise Exception(
-                        f'Code on the same line as the end of a multi-line comment is not supported.\n Cause: {line}')
+                        f'Code on the same line as the end of a multi-line comment is not supported.\n Cause: {self.current_line}')
 
             pos = self.infile.tell()
             line = self.infile.readline().strip(" \t")
@@ -68,15 +68,8 @@ class JackTokenizer:
         if not len(self.tokens):
             self.current_line = self.infile.readline().strip()
             self._parse_tokens()
-
         self.current_token = self.tokens.pop(0)
         self.current_token_type = self.token_types.pop(0)
-        # tt = self.current_token_type.value
-        self.current_token = self.current_token\
-            .replace('&', '&amp;')\
-            .replace('<', '&lt;')\
-            .replace('>', '&gt;')\
-            .replace('"', '&quot;')
 
         # self.outfile.write(f'<{tt}> {t} </{tt}>\n')
 
@@ -88,7 +81,7 @@ class JackTokenizer:
         tokens = []
         token_types = []
 
-        keyword_regex = r''.join(f'{kw}|' for kw in Keywords.allKeywords)
+        keyword_regex = r''.join(f'{kw}|' for kw in all_keywords)
         keyword_regex = keyword_regex[:-1]  # remove last | symbol
         keyword_regex = rf'\b({keyword_regex})\b'
 
@@ -106,7 +99,7 @@ class JackTokenizer:
                 line = line[2:]
                 end = line.find('*/')
                 if end == -1:
-                    raise Exception(f'Multi-line in-line comments are not supported. Cause: /*{line}')
+                    raise Exception(f'Multi-line in-line comments are not supported. Cause: /*{self.current_line}')
 
                 line = line[end+2:]
                 continue
@@ -150,7 +143,7 @@ class JackTokenizer:
                 line = line[match.end():]
                 continue
 
-            raise Exception(f'Unrecognized Token {line}')
+            raise Exception(f'Unrecognized Token "{line}"" in line "{self.current_line}"')
 
         self.tokens = tokens
         self.token_types = token_types
@@ -163,16 +156,26 @@ class JackTokenizer:
         """
         return self.current_token_type
 
-    def token_value(self) -> str | int:
+    def token_value(self) -> str:
         """
         Returns the value of current token. 
         int if token_type is INT_CONST
         str otherwise
         """
-        if self.current_token_type == TokenType.INT_CONST:
-            return int(self.current_token)
-
         return self.current_token
+
+    def get_line(self) -> str:
+        return self.current_line
+
+    def to_xml(self):
+        tt = self.current_token_type.value
+        t = self.current_token\
+            .replace('&', '&amp;')\
+            .replace('<', '&lt;')\
+            .replace('>', '&gt;')\
+            .replace('"', '&quot;')
+
+        return f'<{tt}> {t} </{tt}>'
 
     def not_used(self):
         print('')

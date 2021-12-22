@@ -1,14 +1,12 @@
-/* 
-A multi-line comment
-*/
-// a regurlar comment
-/* */
-class Main {
-    var /* difficult in-line multi-line*/ int x; // in-line regular comment
-    /*
-    invalid comment
-    */ 
-    var int y;
-    var int z; /* end-line multi-line */
-    var int a; /* invalid linebreak*/
+if(1) {} else {}
+
+let x = 1;
+let z[1] = 2;
+function void myFunc(int a, int b) {
+    var int x;
+    var Square square;
+    var boolean a,b,c,d;
 }
+
+static int x, y;
+var char a, b, c, d, e, f;
