@@ -1,16 +1,39 @@
 class Main {
     function void main(){
-        var int i;
-        let i = 1;
-        while(i < 400){
-            do Screen.setColor(false);
-            do Screen.drawRectangle(i-1,0,100+(i-1), 100);
-            do Screen.setColor(true);
-            do Screen.drawRectangle(i,0,100+i,100);
-            let i = i + 1;
-            do Sys.wait(10);
-            do Screen.clearScreen();
+        var Square square;
+        var char keyPressed;
+
+        let square = Square.new(40);
+        
+        while (true) {
+            let keyPressed = Keyboard.keyPressed();
+            if (keyPressed = 90) {
+                do square.shrink(2);
+                do Sys.wait(200);
+            }
+
+            if (keyPressed = 88){
+                do square.enlarge(2);
+                do Sys.wait(200);
+            }
+
+            if (keyPressed = 130) {
+                do square.moveLeft();
+            }
+
+            if (keyPressed = 132) {
+                do square.moveRight();
+            }
+
+            if (keyPressed = 131) {
+                do square.moveUp();
+            }
+
+            if (keyPressed = 133) {
+                do square.moveDown();
+            }
         }
+
         return;
     }
 }

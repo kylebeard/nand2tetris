@@ -96,7 +96,7 @@ def get_paths(in_path):
 
 if __name__ == "__main__":
     test_files = '/Users/kyle/Documents/Programming/nand2tetris/VMTranslator/test_files'
-    proj8_path = '/Users/kyle/Documents/Programming/nand2tetris/tools/OS'
+    proj8_path = '/Users/kyle/Documents/Programming/nand2tetris/Project9JackApps/MyStats'
 
     simple = f'{proj8_path}'
 

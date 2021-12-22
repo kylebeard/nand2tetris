@@ -1,15 +1,143 @@
 class Square {
     field int size;
-    static char z;
+    field int x, y;
+    static int ANIMATION_INTERVAL;
+    static int SCREEN_WIDTH;
+    static int SCREEN_HEIGHT;
+
+    constructor Square new(int psize) {
+        let x = 0;
+        let y = 0;
+        if (psize < 10) {
+            let size = 10;
+        } else {
+            let size = psize;
+        }
+
+        let ANIMATION_INTERVAL = 2;
+        let SCREEN_HEIGHT = 256;
+        let SCREEN_WIDTH = 512;
+        do draw();
+        return this;
+    }
+
+    method void draw() {
+        do Screen.clearScreen();
+        do Screen.drawRectangle(x, y, x + size, y + size);
+        return;
+    }
+
 
     method void enlarge(int px) {
-        let size = size + 2;
+        if (~((x + size) > (SCREEN_HEIGHT - 50))) {
+            let size = size + px;
+        }
+        do draw();
         return;
     }
 
     method void shrink(int px) {
-        let size = size + 2;
+        if (size > 12) {
+            let size = size - px;
+        }
+        do draw();
         return;
     }
 
+    method void moveRight() {
+        var char keyPressed;
+        while ((x + size) < (SCREEN_WIDTH - 1)) {
+            let keyPressed = Keyboard.keyPressed();
+            if (keyPressed = 130){
+                do moveLeft();
+                return;
+            }
+            if (keyPressed = 131) {
+                do moveUp();
+                return;
+            }
+            if (keyPressed = 133) {
+                do moveDown();
+                return;
+            }
+            let x = x + 1;
+            do draw();
+            do Sys.wait(ANIMATION_INTERVAL);
+        }
+
+        return;
+    }
+
+    method void moveLeft() {
+        var char keyPressed;
+        while (x > 0) {
+            let keyPressed = Keyboard.keyPressed();
+            if (keyPressed = 132){
+                do moveRight();
+                return;
+            }
+            if (keyPressed = 131) {
+                do moveUp();
+                return;
+            }
+            if (keyPressed = 133) {
+                do moveDown();
+                return;
+            }
+            let x = x - 1;
+            do draw();
+            do Sys.wait(ANIMATION_INTERVAL);
+        }
+        return;
+    }
+
+    method void moveDown() { 
+        var char keyPressed;
+        while ((y + size) < (SCREEN_HEIGHT - 1)) {
+            let keyPressed = Keyboard.keyPressed();
+            if (keyPressed = 132){
+                do moveRight();
+                return;
+            }
+            if (keyPressed = 131) {
+                do moveUp();
+                return;
+            }
+            if (keyPressed = 130) {
+                do moveLeft();
+                return;
+            }
+            let y = y + 1;
+            do draw();
+            do Sys.wait(ANIMATION_INTERVAL);
+
+        }
+
+        return;
+    }
+
+    method void moveUp() { 
+        var char keyPressed;
+        while (y > 0) {
+            let keyPressed = Keyboard.keyPressed();
+            if (keyPressed = 132){
+                do moveRight();
+                return;
+            }
+            if (keyPressed = 133) {
+                do moveDown();
+                return;
+            }
+            if (keyPressed = 130) {
+                do moveLeft();
+                return;
+            }
+            let y = y - 1;
+            do draw();
+            do Sys.wait(ANIMATION_INTERVAL);
+
+        }
+
+        return;
+    }
 }

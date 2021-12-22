@@ -5,6 +5,8 @@ from GrammarType import *
 from Keywords import *
 from TokenType import TokenType
 
+# test
+
 
 def grammar_rule(rule):
     """Ensures the first and last thing that happens when a grammar rule is compiled is pushing and popping the rule from the stack. Call the decorator with the grammar rule as it's argument. """
