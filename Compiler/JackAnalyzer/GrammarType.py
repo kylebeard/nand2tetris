@@ -42,3 +42,5 @@ keyword_constants = [
 ]
 
 var_types: List[str | TokenType] = [INT, CHAR, BOOLEAN, TokenType.IDENTIFIER]
+unary_ops = ['-', '~']
+binary_ops = ['+', '-', '*', '/', '&', '|', '<', '>', '=']

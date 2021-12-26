@@ -1,9 +1,11 @@
-from typing import TextIO
+from typing import NoReturn, TextIO
 from exceptions import JackSyntaxError
 from JackTokenizer import JackTokenizer
 from GrammarType import *
 from Keywords import *
 from TokenType import TokenType
+
+# test
 
 
 def grammar_rule(rule):
@@ -211,6 +213,7 @@ class CompliationEngine:
         term (op term)*
         """
 
+    @grammar_rule(TERM)
     def compile_term(self) -> None:
         """
         integerConstant 
@@ -223,11 +226,44 @@ class CompliationEngine:
         | unary Op term
 
         """
+        if self.maybe_eat(TokenType.INT_CONST, TokenType.STR_CONST, *keyword_constants):
+            return
+        elif self.maybe_eat('('):
+            self.compile_expr()
+            self.eat(')')
+        elif self.maybe_eat(*unary_ops):
+            self.compile_term()
+        else:
+            prev_token = self.token
+            self.eat(TokenType.IDENTIFIER)
+            if self.maybe_eat('['):
+                self.compile_expr()
+                self.eat(']')
+            elif self.token in ('.', '('):
+                self.compile_subroutineCall(prev_token)
+
+            # otherwise it's just a plain varName
+
+    def compile_subroutineCall(self, prev_token) -> None:
+        """
+        subroutineName '(' expressionList ')' 
+        | (className| varName) '.' subroutineName '(' expressionList ')'        
+        """
+        if self.maybe_eat('.'):
+            self.eat(TokenType.IDENTIFIER)
+
+        self.eat('(')
+        self.compile_exprList()
+        self.eat(')')
 
     def compile_exprList(self) -> None:
         pass
 
     def eat(self, *args: str | TokenType) -> None:
+        """
+        VERY IMPORTANT FUNCTION
+        It checks that the token or token_type is in one of the arguments, 
+        throwing an error if it isn't, and advancing to the next token if it is. """
         found = any(
             self.token == arg or self.token_type == arg
             for arg in args
@@ -239,6 +275,18 @@ class CompliationEngine:
         self.write_token()
         self.advance()
 
+    def maybe_eat(self, *args: str | TokenType) -> bool:
+        found = any(
+            self.token == arg or self.token_type == arg
+            for arg in args
+        )
+
+        if found:
+            self.write_token()
+            self.advance()
+
+        return found
+
     def write_token(self):
         self.writeln(self.input.to_xml())
 
@@ -246,7 +294,7 @@ class CompliationEngine:
         for line in lines:
             self.outfile.write(line + '\n')
 
-    def error(self, expected: str) -> None:
+    def error(self, expected: str) -> NoReturn:
         raise JackSyntaxError(
             f'\nERROR: Invalid {self.rule} \nExpected {expected} \nCurrent Token: {self.token} \nCurrent line: {self.input.get_line()} ')
 
@@ -286,6 +334,8 @@ def printall(x, y):
 
 
 if __name__ == '__main__':
-    args = {'filename': 'myfile.txt', 'error': 'an error'}
-    message = "can't open '%(filename)s': %(error)s"
-    # print(message % args)
+    s = ''
+    if s:
+        print('empty string is truthy')
+    else:
+        print('empty string is falsy')
