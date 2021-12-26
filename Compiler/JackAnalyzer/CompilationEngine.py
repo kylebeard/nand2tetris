@@ -257,7 +257,7 @@ class CompliationEngine:
         self.eat(')')
 
     def compile_exprList(self) -> None:
-        pass
+        """(expression (',' expression)* )?"""
 
     def eat(self, *args: str | TokenType) -> None:
         """
