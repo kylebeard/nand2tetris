@@ -4,7 +4,7 @@ from typing import List
 
 
 # class Keywords():
-CLASS = 'class'
+CLASS_KEYWORD = 'class'
 CONSTRUCTOR = 'constructor'
 FUNCTION = 'function'
 METHOD = 'method'
@@ -27,7 +27,7 @@ WHILE = 'while'
 RETURN = 'return'
 
 all_keywords = [
-    CLASS,
+    CLASS_KEYWORD,
     CONSTRUCTOR,
     FUNCTION,
     METHOD,

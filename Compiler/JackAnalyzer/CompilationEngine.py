@@ -20,6 +20,14 @@ def grammar_rule(rule):
 
 
 class CompliationEngine:
+    """
+    Building a compiler for Jack language in the nand2tetris course.
+    Note to self - All the helper methods are needed to avoid duplicate xml tags 
+                   on a recursive call. This could be fixed by adding the xml tag
+                   outside of the fuction itself. Add <expression> right before
+                   a call to compile_expr(), rather than at the beginning of compile_expr().
+    """
+
     def __init__(self, input: JackTokenizer, outfile: TextIO) -> None:
         self.input = input
         self.outfile = outfile
@@ -30,20 +38,21 @@ class CompliationEngine:
 
         self.advance()
 
+    @grammar_rule(CLASS_GRAMMAR)
     def compile_class(self) -> None:
-        self.writeln('<test>')
-        self.compile_if()
-
-        self.compile_let()
-        self.compile_let()
-
-        # subroutineDec test
-        self.compile_subroutineDec()
-
-        # var dec test
-        self.compile_classVarDec()
-        self.compile_varDec()
-        self.writeln('</test>')
+        """
+        'class' className '{' classVarDec* subroutineDec* '}'
+        """
+        self.eat(CLASS_KEYWORD)
+        print(f'Compiling `{self.token}` class...')
+        self.eat(TokenType.IDENTIFIER)
+        self.eat('{')
+        while self.token in (STATIC, FIELD):
+            self.compile_classVarDec()
+        while self.token != '}':
+            self.compile_subroutineDec()
+        self.eat('}')
+        print('class compilation finished.')
 
     @grammar_rule(CLASS_VAR_DEC)
     def compile_classVarDec(self) -> None:  # sourcery skip: class-extract-method
@@ -52,6 +61,7 @@ class CompliationEngine:
         Grammar:
          - ('static'|'field' ) type varName (',' varName)* ';'
         """
+
         self.eat(STATIC, FIELD)
         self.eat(*var_types)
         self.compile_varDecList()
@@ -65,11 +75,13 @@ class CompliationEngine:
         """
         self.eat(CONSTRUCTOR, FUNCTION, METHOD)
         self.eat(VOID, *var_types)
+        print(f'Compiling `{self.token}` subroutine... ')
         self.eat(TokenType.IDENTIFIER)
         self.eat('(')
         self.compile_paramList()
         self.eat(')')
         self.compile_subroutineBody()
+        print('subroutine compilation finished.')
 
     @grammar_rule(PARAMETER_LIST)
     def compile_paramList(self) -> None:
@@ -121,29 +133,21 @@ class CompliationEngine:
     def compile_varDecList(self) -> None:
         self.eat(TokenType.IDENTIFIER)
 
-        if self.token == ',':
-            self.write_token()
-            self.advance()
+        if self.maybe_eat(','):
             self.compile_varDecList()
 
     @grammar_rule(STATEMENTS)
     def compile_statements(self) -> None:
-        self.statements_helper()
-
-    def statements_helper(self) -> None:
-        if self.token in [LET, IF, DO, WHILE, RETURN]:
-            func = f'self.compile_{self.token}()'
-            print(f'evaluating {func = }')
-            eval(func)
-            self.statements_helper()
+        while self.token in [LET, IF, DO, WHILE, RETURN]:
+            method = getattr(self, f'compile_{self.token}')
+            method()
 
     @grammar_rule(LET_STATEMENT)
     def compile_let(self) -> None:
         self.eat(LET)
         self.eat(TokenType.IDENTIFIER)
 
-        if self.token == '[':
-            self.eat('[')
+        if self.maybe_eat('['):
             self.compile_expr()
             self.eat(']')
 
@@ -195,8 +199,8 @@ class CompliationEngine:
         'do' subroutineCall';'
         """
         self.eat(DO)
-        print('WARNING: compile_do needs to be finished')
-        self.compile_expr()
+        self.eat(TokenType.IDENTIFIER)
+        self.compile_subroutineCall()
         self.eat(';')
 
     @grammar_rule(RETURN_STATEMENT)
@@ -212,6 +216,12 @@ class CompliationEngine:
         """
         term (op term)*
         """
+        self.expr_helper()
+
+    def expr_helper(self) -> None:
+        self.compile_term()
+        if self.maybe_eat(*binary_ops):
+            self.expr_helper()
 
     @grammar_rule(TERM)
     def compile_term(self) -> None:
@@ -234,17 +244,16 @@ class CompliationEngine:
         elif self.maybe_eat(*unary_ops):
             self.compile_term()
         else:
-            prev_token = self.token
             self.eat(TokenType.IDENTIFIER)
             if self.maybe_eat('['):
                 self.compile_expr()
                 self.eat(']')
             elif self.token in ('.', '('):
-                self.compile_subroutineCall(prev_token)
+                self.compile_subroutineCall()
 
             # otherwise it's just a plain varName
 
-    def compile_subroutineCall(self, prev_token) -> None:
+    def compile_subroutineCall(self) -> None:
         """
         subroutineName '(' expressionList ')' 
         | (className| varName) '.' subroutineName '(' expressionList ')'        
@@ -256,14 +265,25 @@ class CompliationEngine:
         self.compile_exprList()
         self.eat(')')
 
+    @grammar_rule(EXPRESSIONLIST)
     def compile_exprList(self) -> None:
         """(expression (',' expression)* )?"""
+        self.exprList_helper()
+
+    def exprList_helper(self) -> None:
+        if self.token == ')':
+            return
+
+        self.compile_expr()
+        if self.maybe_eat(','):
+            self.exprList_helper()
 
     def eat(self, *args: str | TokenType) -> None:
         """
         VERY IMPORTANT FUNCTION
         It checks that the token or token_type is in one of the arguments, 
-        throwing an error if it isn't, and advancing to the next token if it is. """
+        throwing an error if it isn't, and advancing to the next token if it is. 
+        """
         found = any(
             self.token == arg or self.token_type == arg
             for arg in args
@@ -276,6 +296,12 @@ class CompliationEngine:
         self.advance()
 
     def maybe_eat(self, *args: str | TokenType) -> bool:
+        """
+        Same as `eat()` but it doesn't throw an error if none 
+        of the arguments match self.token or self.token_type
+
+        returns true if one of the arguments was found, false otherwise.
+        """
         found = any(
             self.token == arg or self.token_type == arg
             for arg in args
@@ -303,18 +329,18 @@ class CompliationEngine:
             self.input.advance()
             self.token = self.input.token_value()
             self.token_type = self.input.token_type()
+        else:
+            print('>>>WARNING: self.advance() was called when the analyzer had no more tokens.')
 
     def push_rule(self, rule: str) -> None:
         """pushes `rule` onto the rule_stack"""
         self.rule_stack.append(rule)
-        print(f'pushing {rule} - {self.rule_stack = }')
         self.rule = rule
         self.tag()
 
     def pop_rule(self) -> None:
         self.end_tag()
         rule = self.rule_stack.pop()
-        print(f'popping {rule} - {self.rule_stack = }')
         self.rule = self.rule_stack[-1] if self.rule_stack else ''
 
     def tag(self) -> None:
@@ -324,18 +350,15 @@ class CompliationEngine:
         self.writeln(f'</{self.rule}>')
 
 
-def test(fun):
-    print(fun)
-    fun(1, 2)
+class Dummy:
+    def __init__(self) -> None:
+        self.x = '1'
 
-
-def printall(x, y):
-    print(x, y)
+    def amethod(self) -> None:
+        print('amethod')
 
 
 if __name__ == '__main__':
-    s = ''
-    if s:
-        print('empty string is truthy')
-    else:
-        print('empty string is falsy')
+    dummy = Dummy()
+    getattr(dummy, 'amethod')()
+    # attr()

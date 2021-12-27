@@ -24,6 +24,16 @@
          "dependsOrder": "sequence",
          "dependsOn": ["git add", "git commit", "git push"],
          "group": "build"
+      },
+      {
+         "label": "Run test.sh",
+         "type": "process",
+         "command": "./test.sh",
+         "echoCommand": true,
+         "options": {
+            "cwd": "Compiler/JackAnalyzer"
+         },
+         "group": "build"
       }
    ],
    "inputs": [

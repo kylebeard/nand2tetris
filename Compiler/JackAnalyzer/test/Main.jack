@@ -1,12 +1,48 @@
-if(1) {} else {}
+class Main {
+    static int x, y;
+    field char a, b;
 
-let x = 1;
-let z[1] = 2;
-function void myFunc(int a, int b) {
-    var int x;
-    var Square square;
-    var boolean a,b,c,d;
+    constructor SquareGame new(){
+        let x[1] = -2 * (3 - (x | (y/(3-2))));
+        return this;
+    }
+
+    function void myFunc(int a, int b) {
+        var int x;
+        var Square square;
+        var boolean a,b,c,d;
+    
+        let x = (x * y) + -z + 3;
+        if (false) {
+            let b = "a string";
+
+        }
+
+        return;
+    }
+
+    method void myMethod(int a, char b) {
+        var char a, b, c, d, e, f;
+        while (x < 100) {
+            let x = 123;
+            let z = x * 123;
+            do sub();
+            do sub((x*3) + 1, z);
+            do varname.sub();
+            do varname.sub(z,(x) + (-7 * variable));
+            return;
+            return this;
+            return 3 * 2;
+        }
+
+        if(~(varname = null)) {
+            let c = -3;
+        } else {
+            let d = 3/2;
+        }
+
+        let x = 1;
+        let z[2 * variable] = 2;
+        return;
+    }
 }
-
-static int x, y;
-var char a, b, c, d, e, f;

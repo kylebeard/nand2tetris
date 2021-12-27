@@ -6,7 +6,7 @@ from TokenType import TokenType
 
 # class GrammarType(Enum):
 # Program Structure
-CLASS = 'class'
+CLASS_GRAMMAR = 'class'
 CLASS_VAR_DEC = 'classVarDec'
 # TYPE = 'type'
 SUBROUTINE_DEC = 'subroutineDec'
