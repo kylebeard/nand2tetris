@@ -4,7 +4,7 @@ from JackTokenizer import JackTokenizer
 import sys
 from os import path, listdir
 if len(sys.argv) != 2:
-    raise Exception('Usage: JackAnalyzer.py (file.jack|directory with .jack files)')
+    raise Exception('Usage: JackCompiler.py (file.jack|directory with .jack files)')
 
 
 def get_paths(in_path) -> Tuple[List[str], List[str]]:

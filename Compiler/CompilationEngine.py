@@ -5,8 +5,6 @@ from GrammarType import *
 from Keywords import *
 from TokenType import TokenType
 
-# test
-
 
 def grammar_rule(rule):
     """Ensures the first and last thing that happens when a grammar rule is compiled is pushing and popping the rule from the stack. Call the decorator with the grammar rule as it's argument. """
@@ -45,6 +43,7 @@ class CompliationEngine:
         """
         self.eat(CLASS_KEYWORD)
         print(f'Compiling `{self.token}` class...')
+        class_name = self.token
         self.eat(TokenType.IDENTIFIER)
         self.eat('{')
         while self.token in (STATIC, FIELD):
@@ -61,7 +60,7 @@ class CompliationEngine:
         Grammar:
          - ('static'|'field' ) type varName (',' varName)* ';'
         """
-
+        
         self.eat(STATIC, FIELD)
         self.eat(*var_types)
         self.compile_varDecList()
@@ -278,7 +277,7 @@ class CompliationEngine:
         if self.maybe_eat(','):
             self.exprList_helper()
 
-    def eat(self, *args: str | TokenType) -> None:
+    def eat(self, *args: str | TokenType, tag: str = '') -> None:
         """
         VERY IMPORTANT FUNCTION
         It checks that the token or token_type is in one of the arguments, 
@@ -292,10 +291,10 @@ class CompliationEngine:
         if not found:
             self.error(f'{args}')
 
-        self.write_token()
+        self.write_token(tag)
         self.advance()
 
-    def maybe_eat(self, *args: str | TokenType) -> bool:
+    def maybe_eat(self, *args: str | TokenType, tag: str = '') -> bool:
         """
         Same as `eat()` but it doesn't throw an error if none 
         of the arguments match self.token or self.token_type
@@ -308,13 +307,16 @@ class CompliationEngine:
         )
 
         if found:
-            self.write_token()
+            self.write_token(tag)
             self.advance()
 
         return found
 
-    def write_token(self):
-        self.writeln(self.input.to_xml())
+    def write_token(self, tag: str = ''):
+        if not tag:
+            self.writeln(self.input.to_xml())
+        else:
+            self.writeln(f'<{tag}> {self.token} </{tag}>')
 
     def writeln(self, *lines: str):
         for line in lines:
