@@ -1,9 +1,11 @@
-from typing import NoReturn, TextIO
+from typing import Literal, NoReturn, TextIO
+from JSymbolTable import IdentifierKind
 from exceptions import JackSyntaxError
 from JackTokenizer import JackTokenizer
 from GrammarType import *
 from Keywords import *
 from TokenType import TokenType
+from JSymbolTable import JSymbolTable
 
 
 def grammar_rule(rule):
@@ -33,7 +35,7 @@ class CompliationEngine:
         self.rule_stack: List[str] = []
         self.token: str = ''
         self.token_type: TokenType = TokenType.NONE
-
+        self.sym_table = JSymbolTable()
         self.advance()
 
     @grammar_rule(CLASS_GRAMMAR)
@@ -43,8 +45,10 @@ class CompliationEngine:
         """
         self.eat(CLASS_KEYWORD)
         print(f'Compiling `{self.token}` class...')
-        class_name = self.token
-        self.eat(TokenType.IDENTIFIER)
+
+        self.sym_table.define(self.token, 'class', IdentifierKind.CLASS)
+
+        self.eat(TokenType.IDENTIFIER, 'className')
         self.eat('{')
         while self.token in (STATIC, FIELD):
             self.compile_classVarDec()
@@ -60,10 +64,14 @@ class CompliationEngine:
         Grammar:
          - ('static'|'field' ) type varName (',' varName)* ';'
         """
-        
+        kind_ = self.token
         self.eat(STATIC, FIELD)
+        kind = IdentifierKind.STATIC if kind_ == 'static' else IdentifierKind.FIELD
+
+        typee = self.token
         self.eat(*var_types)
-        self.compile_varDecList()
+
+        self.compile_varDecList(typee, kind)
         self.eat(';')
 
     @grammar_rule(SUBROUTINE_DEC)
@@ -91,16 +99,20 @@ class CompliationEngine:
         if self.token == ')':
             return
 
+        typee = self.token
         self.eat(*var_types)
-        self.eat(TokenType.IDENTIFIER)
+        tag = self.def_symbol(self.token, typee, IdentifierKind.ARGUMENT)
+        self.eat(TokenType.IDENTIFIER, tag=tag)
 
         if self.token == ',':
             self.paramList_helper()
 
     def paramList_helper(self) -> None:
         self.eat(',')
+        typee = self.token
         self.eat(*var_types)
-        self.eat(TokenType.IDENTIFIER)
+        tag = self.def_symbol(self.token, typee, IdentifierKind.ARGUMENT)
+        self.eat(TokenType.IDENTIFIER, tag=tag)
         if self.token == ',':
             self.paramList_helper()
 
@@ -125,15 +137,21 @@ class CompliationEngine:
          - 'var' type varName (',' varName)* ';'
         """
         self.eat(VAR)
-        self.eat(*var_types, TokenType.IDENTIFIER)
-        self.compile_varDecList()
+        typee = self.token
+        self.eat(*var_types)
+        self.compile_varDecList(typee, IdentifierKind.VAR)
         self.eat(';')
 
-    def compile_varDecList(self) -> None:
-        self.eat(TokenType.IDENTIFIER)
+    def compile_varDecList(self, typee: str, kind: IdentifierKind) -> None:
+        """
+        typee: int,char,boolean,class name
+        kind: arg,static,field
+        """
+        tag = self.def_symbol(self.token, typee, kind)
+        self.eat(TokenType.IDENTIFIER, tag=tag)
 
         if self.maybe_eat(','):
-            self.compile_varDecList()
+            self.compile_varDecList(typee, kind)
 
     @grammar_rule(STATEMENTS)
     def compile_statements(self) -> None:
@@ -277,7 +295,7 @@ class CompliationEngine:
         if self.maybe_eat(','):
             self.exprList_helper()
 
-    def eat(self, *args: str | TokenType, tag: str = '') -> None:
+    def eat(self, *args: str | TokenType, tag='') -> None:
         """
         VERY IMPORTANT FUNCTION
         It checks that the token or token_type is in one of the arguments, 
@@ -312,7 +330,7 @@ class CompliationEngine:
 
         return found
 
-    def write_token(self, tag: str = ''):
+    def write_token(self, tag=''):
         if not tag:
             self.writeln(self.input.to_xml())
         else:
@@ -351,6 +369,16 @@ class CompliationEngine:
     def end_tag(self) -> None:
         self.writeln(f'</{self.rule}>')
 
+    def def_symbol(self, name, typee, kind):
+        self.sym_table.define(name, typee, kind)
+        index = self.sym_table.index_of(name)
+        return self.fmt_tag(kind, index, 'def')
+
+    def fmt_tag(self, kind: IdentifierKind, index: int | None, context: str) -> str:
+        if index is None:
+            self.error('int')
+        return f'{kind.value}::{index}::{context}'
+
 
 class Dummy:
     def __init__(self) -> None:
@@ -361,6 +389,8 @@ class Dummy:
 
 
 if __name__ == '__main__':
-    dummy = Dummy()
-    getattr(dummy, 'amethod')()
-    # attr()
+    i = 0
+    for _ in range(200):
+        for _ in range(200):
+            i += 1
+    print(i)

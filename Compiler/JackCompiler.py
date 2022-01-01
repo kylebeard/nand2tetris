@@ -20,6 +20,7 @@ def get_paths(in_path) -> Tuple[List[str], List[str]]:
     return (file_paths, out_paths)
 
 
+print(sys.argv)
 in_paths, out_paths = get_paths(sys.argv[1])
 for inpath, outpath in zip(in_paths, out_paths):
     print(f'Compiling {inpath}...')

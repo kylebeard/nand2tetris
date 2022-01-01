@@ -5,15 +5,15 @@
     <classVarDec>
         <keyword> field </keyword>
         <keyword> int </keyword>
-        <identifier> x </identifier>
+        <field::0::definition> x </field::0::definition>
         <symbol> , </symbol>
-        <identifier> y </identifier>
+        <field::1::definition> y </field::1::definition>
         <symbol> ; </symbol>
     </classVarDec>
     <classVarDec>
         <keyword> field </keyword>
         <keyword> int </keyword>
-        <identifier> size </identifier>
+        <field::2::definition> size </field::2::definition>
         <symbol> ; </symbol>
     </classVarDec>
     <subroutineDec>
