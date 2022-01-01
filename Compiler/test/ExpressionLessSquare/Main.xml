@@ -1,17 +1,17 @@
 <class>
 <keyword> class </keyword>
-<identifier> Main </identifier>
+<classDef> Main </classDef>
 <symbol> { </symbol>
 <classVarDec>
 <keyword> static </keyword>
 <keyword> boolean </keyword>
-<static::0::definition> test </static::0::definition>
+<static::0::def> test </static::0::def>
 <symbol> ; </symbol>
 </classVarDec>
 <subroutineDec>
 <keyword> function </keyword>
 <keyword> void </keyword>
-<identifier> main </identifier>
+<function> main </function>
 <symbol> ( </symbol>
 <parameterList>
 </parameterList>
@@ -21,17 +21,17 @@
 <varDec>
 <keyword> var </keyword>
 <identifier> SquareGame </identifier>
-<var::0::definition> game </var::0::definition>
+<var::0::def> game </var::0::def>
 <symbol> ; </symbol>
 </varDec>
 <statements>
 <letStatement>
 <keyword> let </keyword>
-<identifier> game </identifier>
+<var::0::set> game </var::0::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> game </identifier>
+<var::0::accessed> game </var::0::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
@@ -40,7 +40,7 @@
 <keyword> do </keyword>
 <identifier> game </identifier>
 <symbol> . </symbol>
-<identifier> run </identifier>
+<subroutineCall> run </subroutineCall>
 <symbol> ( </symbol>
 <expressionList>
 </expressionList>
@@ -51,7 +51,7 @@
 <keyword> do </keyword>
 <identifier> game </identifier>
 <symbol> . </symbol>
-<identifier> dispose </identifier>
+<subroutineCall> dispose </subroutineCall>
 <symbol> ( </symbol>
 <expressionList>
 </expressionList>
@@ -69,7 +69,7 @@
 <subroutineDec>
 <keyword> function </keyword>
 <keyword> void </keyword>
-<identifier> test </identifier>
+<function> test </function>
 <symbol> ( </symbol>
 <parameterList>
 </parameterList>
@@ -79,21 +79,21 @@
 <varDec>
 <keyword> var </keyword>
 <keyword> int </keyword>
-<var::1::definition> i </var::1::definition>
+<var::0::def> i </var::0::def>
 <symbol> , </symbol>
-<var::2::definition> j </var::2::definition>
+<var::1::def> j </var::1::def>
 <symbol> ; </symbol>
 </varDec>
 <varDec>
 <keyword> var </keyword>
 <identifier> String </identifier>
-<var::3::definition> s </var::3::definition>
+<var::2::def> s </var::2::def>
 <symbol> ; </symbol>
 </varDec>
 <varDec>
 <keyword> var </keyword>
 <identifier> Array </identifier>
-<var::4::definition> a </var::4::definition>
+<var::3::def> a </var::3::def>
 <symbol> ; </symbol>
 </varDec>
 <statements>
@@ -102,7 +102,7 @@
 <symbol> ( </symbol>
 <expression>
 <term>
-<identifier> i </identifier>
+<var::0::accessed> i </var::0::accessed>
 </term>
 </expression>
 <symbol> ) </symbol>
@@ -110,40 +110,40 @@
 <statements>
 <letStatement>
 <keyword> let </keyword>
-<identifier> s </identifier>
+<var::2::set> s </var::2::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> i </identifier>
+<var::0::accessed> i </var::0::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
 </letStatement>
 <letStatement>
 <keyword> let </keyword>
-<identifier> s </identifier>
+<var::2::set> s </var::2::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> j </identifier>
+<var::1::accessed> j </var::1::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
 </letStatement>
 <letStatement>
 <keyword> let </keyword>
-<identifier> a </identifier>
+<var::3::set> a </var::3::set>
 <symbol> [ </symbol>
 <expression>
 <term>
-<identifier> i </identifier>
+<var::0::accessed> i </var::0::accessed>
 </term>
 </expression>
 <symbol> ] </symbol>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> j </identifier>
+<var::1::accessed> j </var::1::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
@@ -155,37 +155,37 @@
 <statements>
 <letStatement>
 <keyword> let </keyword>
-<identifier> i </identifier>
+<var::0::set> i </var::0::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> i </identifier>
+<var::0::accessed> i </var::0::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
 </letStatement>
 <letStatement>
 <keyword> let </keyword>
-<identifier> j </identifier>
+<var::1::set> j </var::1::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> j </identifier>
+<var::1::accessed> j </var::1::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
 </letStatement>
 <letStatement>
 <keyword> let </keyword>
-<identifier> i </identifier>
+<var::0::set> i </var::0::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> i </identifier>
+<var::0::accessed> i </var::0::accessed>
 </term>
 <symbol> | </symbol>
 <term>
-<identifier> j </identifier>
+<var::1::accessed> j </var::1::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>

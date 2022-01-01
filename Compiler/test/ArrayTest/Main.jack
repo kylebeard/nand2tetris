@@ -7,11 +7,21 @@
 
 /** Computes the average of a sequence of integers. */
 class Main {
+    method void testFunction(int p1, char p2) {
+        var int x;
+        var char y;
+        let x = p1;
+        let y = p2;
+        return;
+    }
     function void main() {
         var Array a;
         var int length;
         var int i, sum;
-	
+        
+        do testFunction(i, sum);
+        let i = testFunction(a, length);
+
         let length = Keyboard.readInt("HOW MANY NUMBERS? ");
         let a = Array.new(length);
         let i = 0;

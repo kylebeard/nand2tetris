@@ -22,11 +22,11 @@ class IdentifierKind(Enum):
     FUNCTION = 'function'
     METHOD = 'method'
     CONSTRUCTOR = 'constructor'
-    all_kinds = [VAR, ARGUMENT, STATIC, FIELD, CLASS,FUNCTION,METHOD,CONSTRUCTOR]
+    all_kinds = [VAR, ARGUMENT, STATIC, FIELD, CLASS, FUNCTION, METHOD, CONSTRUCTOR]
 
 
 class JSymbol:
-    def __init__(self, name: str, type_: str, kind: IdentifierKind, index) -> None:
+    def __init__(self, name: str, type_: str, kind: VarKind, index) -> None:
         self.name = name
         self.kind = kind
         self.type = type_
@@ -60,7 +60,7 @@ class JSymbolTable:
                 return sym
         return None
 
-    def define(self, name: str, type_: str, kind: IdentifierKind) -> None:
+    def define(self, name: str, type_: str, kind: VarKind) -> None:
         """
         Defines a new identifier of the
         given name, type, and kind,
@@ -73,12 +73,12 @@ class JSymbolTable:
         index = self.var_count(kind)
         new_symbol = JSymbol(name, type_, kind, index)
 
-        if kind in (IdentifierKind.VAR, IdentifierKind.ARGUMENT):
+        if kind in (VarKind.VAR, VarKind.ARGUMENT):
             self.locals.append(new_symbol)
         else:
             self.globals.append(new_symbol)
 
-    def var_count(self, kind: IdentifierKind) -> int:
+    def var_count(self, kind: VarKind) -> int:
         """
         Returns the number of
         variables of the given kind
@@ -89,7 +89,7 @@ class JSymbolTable:
         var_list = list(filter(lambda x: x.kind == kind, self.symbols()))
         return len(var_list)
 
-    def kind_of(self, name: str) -> IdentifierKind | None:
+    def kind_of(self, name: str) -> VarKind | None:
         """
         Returns the kind of the named
         identifier in the current scope.
@@ -117,10 +117,10 @@ class JSymbolTable:
 
 
 if __name__ == '__main__':
-    s1 = JSymbol('var1', 'int', IdentifierKind.VAR, 0)
-    s2 = JSymbol('var2', 'int', IdentifierKind.VAR, 1)
-    s3 = JSymbol('var3', 'int', IdentifierKind.VAR, 2)
-    s4 = JSymbol('var1', 'int', IdentifierKind.FIELD, 0)
+    s1 = JSymbol('var1', 'int', VarKind.VAR, 0)
+    s2 = JSymbol('var2', 'int', VarKind.VAR, 1)
+    s3 = JSymbol('var3', 'int', VarKind.VAR, 2)
+    s4 = JSymbol('var1', 'int', VarKind.FIELD, 0)
     l1 = [s1, s2]
     l2 = [s3, s4]
     for sym in l1 + l2:

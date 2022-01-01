@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "args": [
-                "/Users/kyle/Documents/Programming/nand2tetris/Compiler/test/Square"
+                "/Users/kyle/Documents/Programming/nand2tetris/Compiler/test/ArrayTest"
             ],
 
             "console": "integratedTerminal"

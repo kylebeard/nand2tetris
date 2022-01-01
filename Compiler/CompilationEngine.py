@@ -1,5 +1,5 @@
-from typing import Literal, NoReturn, TextIO
-from JSymbolTable import IdentifierKind
+from typing import NoReturn, TextIO
+from JSymbolTable import VarKind, JSymbol
 from exceptions import JackSyntaxError
 from JackTokenizer import JackTokenizer
 from GrammarType import *
@@ -22,7 +22,7 @@ def grammar_rule(rule):
 class CompliationEngine:
     """
     Building a compiler for Jack language in the nand2tetris course.
-    Note to self - All the helper methods are needed to avoid duplicate xml tags 
+    Note to self - All the helper methods are needed to avoid duplicate xml tags
                    on a recursive call. This could be fixed by adding the xml tag
                    outside of the fuction itself. Add <expression> right before
                    a call to compile_expr(), rather than at the beginning of compile_expr().
@@ -46,9 +46,7 @@ class CompliationEngine:
         self.eat(CLASS_KEYWORD)
         print(f'Compiling `{self.token}` class...')
 
-        self.sym_table.define(self.token, 'class', IdentifierKind.CLASS)
-
-        self.eat(TokenType.IDENTIFIER, 'className')
+        self.eat(TokenType.IDENTIFIER, tag='classDef')
         self.eat('{')
         while self.token in (STATIC, FIELD):
             self.compile_classVarDec()
@@ -66,7 +64,7 @@ class CompliationEngine:
         """
         kind_ = self.token
         self.eat(STATIC, FIELD)
-        kind = IdentifierKind.STATIC if kind_ == 'static' else IdentifierKind.FIELD
+        kind = VarKind.STATIC if kind_ == 'static' else VarKind.FIELD
 
         typee = self.token
         self.eat(*var_types)
@@ -80,10 +78,14 @@ class CompliationEngine:
         grammar: ('constructor'|'function'|'method') (void' | type) subroutineName
                  '(' parameterList ')' subroutineBody
         """
+        self.sym_table.start_subroutine()
+
+        func_kind = self.token
         self.eat(CONSTRUCTOR, FUNCTION, METHOD)
         self.eat(VOID, *var_types)
+
         print(f'Compiling `{self.token}` subroutine... ')
-        self.eat(TokenType.IDENTIFIER)
+        self.eat(TokenType.IDENTIFIER, tag=func_kind)
         self.eat('(')
         self.compile_paramList()
         self.eat(')')
@@ -101,7 +103,7 @@ class CompliationEngine:
 
         typee = self.token
         self.eat(*var_types)
-        tag = self.def_symbol(self.token, typee, IdentifierKind.ARGUMENT)
+        tag = self.def_symbol(self.token, typee, VarKind.ARGUMENT)
         self.eat(TokenType.IDENTIFIER, tag=tag)
 
         if self.token == ',':
@@ -111,7 +113,7 @@ class CompliationEngine:
         self.eat(',')
         typee = self.token
         self.eat(*var_types)
-        tag = self.def_symbol(self.token, typee, IdentifierKind.ARGUMENT)
+        tag = self.def_symbol(self.token, typee, VarKind.ARGUMENT)
         self.eat(TokenType.IDENTIFIER, tag=tag)
         if self.token == ',':
             self.paramList_helper()
@@ -139,10 +141,10 @@ class CompliationEngine:
         self.eat(VAR)
         typee = self.token
         self.eat(*var_types)
-        self.compile_varDecList(typee, IdentifierKind.VAR)
+        self.compile_varDecList(typee, VarKind.VAR)
         self.eat(';')
 
-    def compile_varDecList(self, typee: str, kind: IdentifierKind) -> None:
+    def compile_varDecList(self, typee: str, kind: VarKind) -> None:
         """
         typee: int,char,boolean,class name
         kind: arg,static,field
@@ -162,7 +164,8 @@ class CompliationEngine:
     @grammar_rule(LET_STATEMENT)
     def compile_let(self) -> None:
         self.eat(LET)
-        self.eat(TokenType.IDENTIFIER)
+        tag = self.set_symbol_stmnt(self.token)
+        self.eat(TokenType.IDENTIFIER, tag=tag)
 
         if self.maybe_eat('['):
             self.compile_expr()
@@ -217,6 +220,7 @@ class CompliationEngine:
         """
         self.eat(DO)
         self.eat(TokenType.IDENTIFIER)
+
         self.compile_subroutineCall()
         self.eat(';')
 
@@ -261,14 +265,37 @@ class CompliationEngine:
         elif self.maybe_eat(*unary_ops):
             self.compile_term()
         else:
-            self.eat(TokenType.IDENTIFIER)
-            if self.maybe_eat('['):
+            # we have to "look ahead" to know what type of expression this is
+            # array access, subroutine call, regular variable access
+            name = self.token
+            if self.token_type != TokenType.IDENTIFIER:
+                self.error(TokenType.IDENTIFIER.value)
+
+            self.advance()
+            sym: JSymbol
+            if self.token == '[':
+                maybe_sym = self.sym_table.get(name)
+                if maybe_sym is None:
+                    self.error(f'An existing variable. `{name}` is not defined')
+                sym = maybe_sym
+                tag = self.fmt_tag(sym.kind, sym.index, 'accessed')
+                self.writeln(f'<{tag}> {name} </{tag}>')
+
+                self.eat('[')
                 self.compile_expr()
                 self.eat(']')
             elif self.token in ('.', '('):
+                tag = TokenType.IDENTIFIER.value if self.token == '.' else 'subroutineCall'
+                self.writeln(f'<{tag}> {name} </{tag}>')
                 self.compile_subroutineCall()
+            else:  # otherwise it's just a plain varName
+                maybe_sym = self.sym_table.get(name)
+                if maybe_sym is None:
+                    self.error(f'An existing variable. `{name}` is not defined')
 
-            # otherwise it's just a plain varName
+                sym = maybe_sym
+                tag = self.fmt_tag(sym.kind, sym.index, 'accessed')
+                self.writeln(f'<{tag}> {name} </{tag}>')
 
     def compile_subroutineCall(self) -> None:
         """
@@ -276,7 +303,7 @@ class CompliationEngine:
         | (className| varName) '.' subroutineName '(' expressionList ')'        
         """
         if self.maybe_eat('.'):
-            self.eat(TokenType.IDENTIFIER)
+            self.eat(TokenType.IDENTIFIER, tag='subroutineCall')
 
         self.eat('(')
         self.compile_exprList()
@@ -369,12 +396,20 @@ class CompliationEngine:
     def end_tag(self) -> None:
         self.writeln(f'</{self.rule}>')
 
-    def def_symbol(self, name, typee, kind):
+    def def_symbol(self, name, typee, kind) -> str:
         self.sym_table.define(name, typee, kind)
         index = self.sym_table.index_of(name)
         return self.fmt_tag(kind, index, 'def')
 
-    def fmt_tag(self, kind: IdentifierKind, index: int | None, context: str) -> str:
+    def set_symbol_stmnt(self, name: str) -> str:
+        sym = self.sym_table.get(name)
+        if sym is None:
+            self.error(f'An existing varialbe. variable "{name}" does not exist.')
+        else:
+            sym_: JSymbol = sym
+        return self.fmt_tag(sym_.kind, sym_.index, 'set')
+
+    def fmt_tag(self, kind: VarKind, index: int | None, context: str) -> str:
         if index is None:
             self.error('int')
         return f'{kind.value}::{index}::{context}'

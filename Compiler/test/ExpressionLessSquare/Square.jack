@@ -18,7 +18,7 @@ class Square {
       return x;
    }
 
-   method void dispose() {
+   method void dispose(boolean shouldBeArg0) {
       do Memory.deAlloc(this);
       return;
    }

@@ -1,23 +1,23 @@
 <class>
 <keyword> class </keyword>
-<identifier> SquareGame </identifier>
+<classDef> SquareGame </classDef>
 <symbol> { </symbol>
 <classVarDec>
 <keyword> field </keyword>
 <identifier> Square </identifier>
-<field::0::definition> square </field::0::definition>
+<field::0::def> square </field::0::def>
 <symbol> ; </symbol>
 </classVarDec>
 <classVarDec>
 <keyword> field </keyword>
 <keyword> int </keyword>
-<field::1::definition> direction </field::1::definition>
+<field::1::def> direction </field::1::def>
 <symbol> ; </symbol>
 </classVarDec>
 <subroutineDec>
 <keyword> constructor </keyword>
 <identifier> SquareGame </identifier>
-<identifier> new </identifier>
+<constructor> new </constructor>
 <symbol> ( </symbol>
 <parameterList>
 </parameterList>
@@ -27,22 +27,22 @@
 <statements>
 <letStatement>
 <keyword> let </keyword>
-<identifier> square </identifier>
+<field::0::set> square </field::0::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> square </identifier>
+<field::0::accessed> square </field::0::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
 </letStatement>
 <letStatement>
 <keyword> let </keyword>
-<identifier> direction </identifier>
+<field::1::set> direction </field::1::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> direction </identifier>
+<field::1::accessed> direction </field::1::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
@@ -51,7 +51,7 @@
 <keyword> return </keyword>
 <expression>
 <term>
-<identifier> square </identifier>
+<field::0::accessed> square </field::0::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
@@ -63,7 +63,7 @@
 <subroutineDec>
 <keyword> method </keyword>
 <keyword> void </keyword>
-<identifier> dispose </identifier>
+<method> dispose </method>
 <symbol> ( </symbol>
 <parameterList>
 </parameterList>
@@ -75,7 +75,7 @@
 <keyword> do </keyword>
 <identifier> square </identifier>
 <symbol> . </symbol>
-<identifier> dispose </identifier>
+<subroutineCall> dispose </subroutineCall>
 <symbol> ( </symbol>
 <expressionList>
 </expressionList>
@@ -86,12 +86,12 @@
 <keyword> do </keyword>
 <identifier> Memory </identifier>
 <symbol> . </symbol>
-<identifier> deAlloc </identifier>
+<subroutineCall> deAlloc </subroutineCall>
 <symbol> ( </symbol>
 <expressionList>
 <expression>
 <term>
-<identifier> square </identifier>
+<field::0::accessed> square </field::0::accessed>
 </term>
 </expression>
 </expressionList>
@@ -109,7 +109,7 @@
 <subroutineDec>
 <keyword> method </keyword>
 <keyword> void </keyword>
-<identifier> moveSquare </identifier>
+<method> moveSquare </method>
 <symbol> ( </symbol>
 <parameterList>
 </parameterList>
@@ -122,7 +122,7 @@
 <symbol> ( </symbol>
 <expression>
 <term>
-<identifier> direction </identifier>
+<field::1::accessed> direction </field::1::accessed>
 </term>
 </expression>
 <symbol> ) </symbol>
@@ -132,7 +132,7 @@
 <keyword> do </keyword>
 <identifier> square </identifier>
 <symbol> . </symbol>
-<identifier> moveUp </identifier>
+<subroutineCall> moveUp </subroutineCall>
 <symbol> ( </symbol>
 <expressionList>
 </expressionList>
@@ -147,7 +147,7 @@
 <symbol> ( </symbol>
 <expression>
 <term>
-<identifier> direction </identifier>
+<field::1::accessed> direction </field::1::accessed>
 </term>
 </expression>
 <symbol> ) </symbol>
@@ -157,7 +157,7 @@
 <keyword> do </keyword>
 <identifier> square </identifier>
 <symbol> . </symbol>
-<identifier> moveDown </identifier>
+<subroutineCall> moveDown </subroutineCall>
 <symbol> ( </symbol>
 <expressionList>
 </expressionList>
@@ -172,7 +172,7 @@
 <symbol> ( </symbol>
 <expression>
 <term>
-<identifier> direction </identifier>
+<field::1::accessed> direction </field::1::accessed>
 </term>
 </expression>
 <symbol> ) </symbol>
@@ -182,7 +182,7 @@
 <keyword> do </keyword>
 <identifier> square </identifier>
 <symbol> . </symbol>
-<identifier> moveLeft </identifier>
+<subroutineCall> moveLeft </subroutineCall>
 <symbol> ( </symbol>
 <expressionList>
 </expressionList>
@@ -197,7 +197,7 @@
 <symbol> ( </symbol>
 <expression>
 <term>
-<identifier> direction </identifier>
+<field::1::accessed> direction </field::1::accessed>
 </term>
 </expression>
 <symbol> ) </symbol>
@@ -207,7 +207,7 @@
 <keyword> do </keyword>
 <identifier> square </identifier>
 <symbol> . </symbol>
-<identifier> moveRight </identifier>
+<subroutineCall> moveRight </subroutineCall>
 <symbol> ( </symbol>
 <expressionList>
 </expressionList>
@@ -221,12 +221,12 @@
 <keyword> do </keyword>
 <identifier> Sys </identifier>
 <symbol> . </symbol>
-<identifier> wait </identifier>
+<subroutineCall> wait </subroutineCall>
 <symbol> ( </symbol>
 <expressionList>
 <expression>
 <term>
-<identifier> direction </identifier>
+<field::1::accessed> direction </field::1::accessed>
 </term>
 </expression>
 </expressionList>
@@ -244,7 +244,7 @@
 <subroutineDec>
 <keyword> method </keyword>
 <keyword> void </keyword>
-<identifier> run </identifier>
+<method> run </method>
 <symbol> ( </symbol>
 <parameterList>
 </parameterList>
@@ -254,23 +254,23 @@
 <varDec>
 <keyword> var </keyword>
 <keyword> char </keyword>
-<var::0::definition> key </var::0::definition>
+<var::0::def> key </var::0::def>
 <symbol> ; </symbol>
 </varDec>
 <varDec>
 <keyword> var </keyword>
 <keyword> boolean </keyword>
-<var::1::definition> exit </var::1::definition>
+<var::1::def> exit </var::1::def>
 <symbol> ; </symbol>
 </varDec>
 <statements>
 <letStatement>
 <keyword> let </keyword>
-<identifier> exit </identifier>
+<var::1::set> exit </var::1::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> key </identifier>
+<var::0::accessed> key </var::0::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
@@ -280,7 +280,7 @@
 <symbol> ( </symbol>
 <expression>
 <term>
-<identifier> exit </identifier>
+<var::1::accessed> exit </var::1::accessed>
 </term>
 </expression>
 <symbol> ) </symbol>
@@ -291,7 +291,7 @@
 <symbol> ( </symbol>
 <expression>
 <term>
-<identifier> key </identifier>
+<var::0::accessed> key </var::0::accessed>
 </term>
 </expression>
 <symbol> ) </symbol>
@@ -299,11 +299,11 @@
 <statements>
 <letStatement>
 <keyword> let </keyword>
-<identifier> key </identifier>
+<var::0::set> key </var::0::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> key </identifier>
+<var::0::accessed> key </var::0::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
@@ -325,7 +325,7 @@
 <symbol> ( </symbol>
 <expression>
 <term>
-<identifier> key </identifier>
+<var::0::accessed> key </var::0::accessed>
 </term>
 </expression>
 <symbol> ) </symbol>
@@ -333,11 +333,11 @@
 <statements>
 <letStatement>
 <keyword> let </keyword>
-<identifier> exit </identifier>
+<var::1::set> exit </var::1::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> exit </identifier>
+<var::1::accessed> exit </var::1::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
@@ -350,7 +350,7 @@
 <symbol> ( </symbol>
 <expression>
 <term>
-<identifier> key </identifier>
+<var::0::accessed> key </var::0::accessed>
 </term>
 </expression>
 <symbol> ) </symbol>
@@ -360,7 +360,7 @@
 <keyword> do </keyword>
 <identifier> square </identifier>
 <symbol> . </symbol>
-<identifier> decSize </identifier>
+<subroutineCall> decSize </subroutineCall>
 <symbol> ( </symbol>
 <expressionList>
 </expressionList>
@@ -375,7 +375,7 @@
 <symbol> ( </symbol>
 <expression>
 <term>
-<identifier> key </identifier>
+<var::0::accessed> key </var::0::accessed>
 </term>
 </expression>
 <symbol> ) </symbol>
@@ -385,7 +385,7 @@
 <keyword> do </keyword>
 <identifier> square </identifier>
 <symbol> . </symbol>
-<identifier> incSize </identifier>
+<subroutineCall> incSize </subroutineCall>
 <symbol> ( </symbol>
 <expressionList>
 </expressionList>
@@ -400,7 +400,7 @@
 <symbol> ( </symbol>
 <expression>
 <term>
-<identifier> key </identifier>
+<var::0::accessed> key </var::0::accessed>
 </term>
 </expression>
 <symbol> ) </symbol>
@@ -408,11 +408,11 @@
 <statements>
 <letStatement>
 <keyword> let </keyword>
-<identifier> direction </identifier>
+<field::1::set> direction </field::1::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> exit </identifier>
+<var::1::accessed> exit </var::1::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
@@ -425,7 +425,7 @@
 <symbol> ( </symbol>
 <expression>
 <term>
-<identifier> key </identifier>
+<var::0::accessed> key </var::0::accessed>
 </term>
 </expression>
 <symbol> ) </symbol>
@@ -433,11 +433,11 @@
 <statements>
 <letStatement>
 <keyword> let </keyword>
-<identifier> direction </identifier>
+<field::1::set> direction </field::1::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> key </identifier>
+<var::0::accessed> key </var::0::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
@@ -450,7 +450,7 @@
 <symbol> ( </symbol>
 <expression>
 <term>
-<identifier> key </identifier>
+<var::0::accessed> key </var::0::accessed>
 </term>
 </expression>
 <symbol> ) </symbol>
@@ -458,11 +458,11 @@
 <statements>
 <letStatement>
 <keyword> let </keyword>
-<identifier> direction </identifier>
+<field::1::set> direction </field::1::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> square </identifier>
+<field::0::accessed> square </field::0::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
@@ -475,7 +475,7 @@
 <symbol> ( </symbol>
 <expression>
 <term>
-<identifier> key </identifier>
+<var::0::accessed> key </var::0::accessed>
 </term>
 </expression>
 <symbol> ) </symbol>
@@ -483,11 +483,11 @@
 <statements>
 <letStatement>
 <keyword> let </keyword>
-<identifier> direction </identifier>
+<field::1::set> direction </field::1::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> direction </identifier>
+<field::1::accessed> direction </field::1::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
@@ -500,7 +500,7 @@
 <symbol> ( </symbol>
 <expression>
 <term>
-<identifier> key </identifier>
+<var::0::accessed> key </var::0::accessed>
 </term>
 </expression>
 <symbol> ) </symbol>
@@ -508,11 +508,11 @@
 <statements>
 <letStatement>
 <keyword> let </keyword>
-<identifier> key </identifier>
+<var::0::set> key </var::0::set>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier> key </identifier>
+<var::0::accessed> key </var::0::accessed>
 </term>
 </expression>
 <symbol> ; </symbol>
