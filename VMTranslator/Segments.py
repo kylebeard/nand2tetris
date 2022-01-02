@@ -9,4 +9,5 @@ class Segments:
     pointer = 'pointer'  # done
     temp = 'temp'  # done
     static = 'static'  # done
-    values = [constant, local, argument, this, that, pointer, temp, static]
+    values = [constant, local, argument, this, that, pointer, temp,
+              static]

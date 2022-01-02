@@ -3,9 +3,11 @@
 import pytest
 import sys
 import os
-sys.path.append(os.path.abspath("/Users/kyle/Documents/Programming/nand2tetris/Compiler"))
+sys.path.append(os.path.abspath(
+    "/Users/kyle/Documents/Programming/nand2tetris/Compiler"))
 
-from JSymbolTable import JSymbolTable, VarKind
+from JSymbolTable import JSymbolTable, VarKind  # NOQA: E402
+
 
 @pytest.fixture
 def table() -> JSymbolTable:
