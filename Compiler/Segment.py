@@ -2,13 +2,13 @@ from enum import Enum
 
 
 class Segment(Enum):
-    constant = 'constant'
-    local = 'local'
-    argument = 'argument'
-    this = 'this'
-    that = 'that'
-    pointer = 'pointer'
-    temp = 'temp'
-    static = 'static'
+    Constant = 'constant'
+    Local = 'local'
+    Argument = 'argument'
+    This = 'this'
+    That = 'that'
+    Pointer = 'pointer'
+    Temp = 'temp'
+    Static = 'static'
     # values = [constant, local, argument, this, that, pointer, temp,
     #   static]

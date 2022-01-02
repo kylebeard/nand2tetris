@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "args": [
-                "/Users/kyle/Documents/Programming/nand2tetris/Compiler/test/ArrayTest"
+                "/Users/kyle/Documents/Programming/nand2tetris/Compiler/test/CodeGenTests/Seven"
             ],
 
             "console": "integratedTerminal"

@@ -1,5 +1,6 @@
-from typing import List
+from typing import List, NoReturn
 from enum import Enum
+from exceptions import JackVariableNotFoundError
 
 
 class VarKind(Enum):
@@ -22,7 +23,15 @@ class IdentifierKind(Enum):
     FUNCTION = 'function'
     METHOD = 'method'
     CONSTRUCTOR = 'constructor'
-    all_kinds = [VAR, ARGUMENT, STATIC, FIELD, CLASS, FUNCTION, METHOD, CONSTRUCTOR]
+    all_kinds = [
+        VAR,
+        ARGUMENT,
+        STATIC,
+        FIELD,
+        CLASS,
+        FUNCTION,
+        METHOD,
+        CONSTRUCTOR]
 
 
 class JSymbol:
@@ -52,13 +61,13 @@ class JSymbolTable:
         """
         self.locals.clear()
 
-    def get(self, name: str) -> JSymbol | None:
+    def get(self, name: str) -> JSymbol:
         """helper function to get a symbol by name
         start searching locals first, then globals"""
         for sym in self.locals + self.globals:
             if sym.name == name:
                 return sym
-        return None
+        self.error('variable {name} not found')
 
     def define(self, name: str, type_: str, kind: VarKind) -> None:
         """
@@ -89,7 +98,7 @@ class JSymbolTable:
         var_list = list(filter(lambda x: x.kind == kind, self.symbols()))
         return len(var_list)
 
-    def kind_of(self, name: str) -> VarKind | None:
+    def kind_of(self, name: str) -> VarKind:
         """
         Returns the kind of the named
         identifier in the current scope.
@@ -98,22 +107,25 @@ class JSymbolTable:
         NONE.
         """
         sym = self.get(name)
-        return sym.kind if sym else None
+        return sym.kind
 
-    def type_of(self, name: str) -> str | None:
+    def type_of(self, name: str) -> str:
         """
         Returns the type (int, char, boolean or name of class)
         of the named identifier in the current scope.
         """
         sym = self.get(name)
-        return sym.type if sym else None
+        return sym.type
 
-    def index_of(self, name: str) -> int | None:
+    def index_of(self, name: str) -> int:
         """
         Returns the index assigned to the named identifier.
         """
         sym = self.get(name)
-        return sym.index if sym else None
+        return sym.index
+
+    def error(self, msg: str) -> NoReturn:
+        raise JackVariableNotFoundError(msg)
 
 
 if __name__ == '__main__':

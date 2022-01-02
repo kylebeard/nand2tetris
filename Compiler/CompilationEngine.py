@@ -1,4 +1,6 @@
-from typing import NoReturn, TextIO
+from typing import NoReturn, TextIO, Tuple
+from ArithmeticCommand import ArithmeticCommand
+from Segment import Segment
 from JSymbolTable import VarKind, JSymbol
 from exceptions import JackSyntaxError
 from JackTokenizer import JackTokenizer
@@ -6,6 +8,7 @@ from GrammarType import *
 from Keywords import *
 from TokenType import TokenType
 from JSymbolTable import JSymbolTable
+from VMWriter import VMWriter
 
 
 def grammar_rule(rule):
@@ -13,8 +16,9 @@ def grammar_rule(rule):
     def decorator(fn):
         def wrapper(self):
             self.push_rule(rule)
-            fn(self)
+            rv = fn(self)
             self.pop_rule()
+            return rv
         return wrapper
     return decorator
 
@@ -28,9 +32,12 @@ class CompliationEngine:
                    a call to compile_expr(), rather than at the beginning of compile_expr().
     """
 
-    def __init__(self, input: JackTokenizer, outfile: TextIO) -> None:
+    def __init__(self, input: JackTokenizer, writer: VMWriter) -> None:
         self.input = input
-        self.outfile = outfile
+        self.writer = writer
+        self.classname = ''  # the class we are compiling
+        # the constructor, method or function we are compiling
+        self.curr_func: Tuple[str, str] | None = None
         self.rule: str = ''  # current grammar rule we are compiling
         self.rule_stack: List[str] = []
         self.token: str = ''
@@ -45,7 +52,7 @@ class CompliationEngine:
         """
         self.eat(CLASS_KEYWORD)
         print(f'Compiling `{self.token}` class...')
-
+        self.classname = self.token
         self.eat(TokenType.IDENTIFIER, tag='classDef')
         self.eat('{')
         while self.token in (STATIC, FIELD):
@@ -85,11 +92,13 @@ class CompliationEngine:
         self.eat(VOID, *var_types)
 
         print(f'Compiling `{self.token}` subroutine... ')
-        self.eat(TokenType.IDENTIFIER, tag=func_kind)
+        self.curr_func = (func_kind, self.token)
+        self.eat(TokenType.IDENTIFIER)
         self.eat('(')
         self.compile_paramList()
         self.eat(')')
         self.compile_subroutineBody()
+        self.curr_func = None
         print('subroutine compilation finished.')
 
     @grammar_rule(PARAMETER_LIST)
@@ -103,20 +112,14 @@ class CompliationEngine:
 
         typee = self.token
         self.eat(*var_types)
-        tag = self.def_symbol(self.token, typee, VarKind.ARGUMENT)
-        self.eat(TokenType.IDENTIFIER, tag=tag)
+        self.def_symbol(self.token, typee, VarKind.ARGUMENT)
+        self.eat(TokenType.IDENTIFIER)
 
-        if self.token == ',':
-            self.paramList_helper()
-
-    def paramList_helper(self) -> None:
-        self.eat(',')
-        typee = self.token
-        self.eat(*var_types)
-        tag = self.def_symbol(self.token, typee, VarKind.ARGUMENT)
-        self.eat(TokenType.IDENTIFIER, tag=tag)
-        if self.token == ',':
-            self.paramList_helper()
+        while self.maybe_eat(','):
+            typee = self.token
+            self.eat(*var_types)
+            self.def_symbol(self.token, typee, VarKind.ARGUMENT)
+            self.eat(TokenType.IDENTIFIER)
 
     @grammar_rule(SUBROUTINE_BODY)
     def compile_subroutineBody(self) -> None:
@@ -127,6 +130,12 @@ class CompliationEngine:
         while self.token == VAR:
             self.compile_varDec()
 
+        nlocals = self.sym_table.var_count(VarKind.VAR)
+        if self.curr_func is None:
+            self.error('curr_func is empty in compile_subroutineBody')
+
+        full_name = f'{self.classname}.{self.curr_func[1]}'
+        self.writer.write_function(full_name, nlocals)
         self.compile_statements()
 
         self.eat('}')
@@ -149,8 +158,8 @@ class CompliationEngine:
         typee: int,char,boolean,class name
         kind: arg,static,field
         """
-        tag = self.def_symbol(self.token, typee, kind)
-        self.eat(TokenType.IDENTIFIER, tag=tag)
+        self.def_symbol(self.token, typee, kind)
+        self.eat(TokenType.IDENTIFIER)
 
         if self.maybe_eat(','):
             self.compile_varDecList(typee, kind)
@@ -164,15 +173,18 @@ class CompliationEngine:
     @grammar_rule(LET_STATEMENT)
     def compile_let(self) -> None:
         self.eat(LET)
-        tag = self.set_symbol_stmnt(self.token)
-        self.eat(TokenType.IDENTIFIER, tag=tag)
+        var = self.token
+        self.eat(TokenType.IDENTIFIER)
 
-        if self.maybe_eat('['):
-            self.compile_expr()
-            self.eat(']')
+        # if self.maybe_eat('['):
+        #     self.compile_expr()
+        #     self.eat(']')
 
         self.eat('=')
         self.compile_expr()
+        sym = self.sym_table.get(var)
+        if sym.kind == VarKind.VAR:
+            self.writer.write_pop(Segment.Local, sym.index)
         self.eat(';')
 
     @grammar_rule(IF_STATEMENT)
@@ -219,30 +231,56 @@ class CompliationEngine:
         'do' subroutineCall';'
         """
         self.eat(DO)
+        name = self.token
         self.eat(TokenType.IDENTIFIER)
 
-        self.compile_subroutineCall()
+        name, nargs = self.compile_subroutineCall(name)
         self.eat(';')
+        self.writer.write_call(name, nargs)
+        # do statements don't use the return value, so dump it in Temp Segment
+        self.writer.write_pop(Segment.Temp, 0)
 
     @grammar_rule(RETURN_STATEMENT)
     def compile_return(self) -> None:
         """'return' expression? ';'"""
         self.eat(RETURN)
-        if self.token != ';':
+        if self.maybe_eat(';'):
+            self.writer.write_push(Segment.Constant, 0)
+        else:
             self.compile_expr()
-        self.eat(';')
+            self.eat(';')
+
+        self.writer.write_return()
 
     @grammar_rule(EXPRESSION)
     def compile_expr(self) -> None:
         """
         term (op term)*
         """
-        self.expr_helper()
-
-    def expr_helper(self) -> None:
         self.compile_term()
-        if self.maybe_eat(*binary_ops):
-            self.expr_helper()
+        if self.token in binary_ops:
+            op = self.token
+            self.advance()
+            self.compile_expr()
+            # '+', '-', '*', '/', '&', '|', '<', '>', '='
+            if op == '+':
+                self.writer.write_arithmetic(ArithmeticCommand.ADD)
+            elif op == '-':
+                self.writer.write_arithmetic(ArithmeticCommand.SUB)
+            elif op == '*':
+                self.writer.write_call('Math.multiply', 2)
+            elif op == '/':
+                self.writer.write_call('Math.divide', 2)
+            elif op == '&':
+                self.writer.write_arithmetic(ArithmeticCommand.AND)
+            elif op == '|':
+                self.writer.write_arithmetic(ArithmeticCommand.OR)
+            elif op == '<':
+                self.writer.write_arithmetic(ArithmeticCommand.LT)
+            elif op == '>':
+                self.writer.write_arithmetic(ArithmeticCommand.GT)
+            elif op == '=':
+                self.writer.write_arithmetic(ArithmeticCommand.EQ)
 
     @grammar_rule(TERM)
     def compile_term(self) -> None:
@@ -257,10 +295,10 @@ class CompliationEngine:
         | unary Op term
 
         """
-        if self.maybe_eat(
-                TokenType.INT_CONST,
-                TokenType.STR_CONST,
-                *keyword_constants):
+        if self.token_type == TokenType.INT_CONST:
+            self.writer.write_push(Segment.Constant, int(self.token))
+            self.advance()
+        elif self.token_type == TokenType.STR_CONST or self.token in keyword_constants:
             return
         elif self.maybe_eat('('):
             self.compile_expr()
@@ -275,52 +313,41 @@ class CompliationEngine:
                 self.error(TokenType.IDENTIFIER.value)
 
             self.advance()
-            sym: JSymbol
             if self.token == '[':
-                maybe_sym = self.sym_table.get(name)
-                if maybe_sym is None:
-                    self.error(f'An existing variable. `{name}` is not defined')
-                sym = maybe_sym
-                tag = self.fmt_tag(sym.kind, sym.index, 'accessed')
-
                 self.eat('[')
                 self.compile_expr()
                 self.eat(']')
             elif self.token in ('.', '('):
-                tag = TokenType.IDENTIFIER.value if self.token == '.' else 'subroutineCall'
-                self.compile_subroutineCall()
+                name, nargs = self.compile_subroutineCall(name)
             else:  # otherwise it's just a plain varName
-                maybe_sym = self.sym_table.get(name)
-                if maybe_sym is None:
-                    self.error(f'An existing variable. `{name}` is not defined')
+                sym = self.sym_table.get(name)
 
-                sym = maybe_sym
-                tag = self.fmt_tag(sym.kind, sym.index, 'accessed')
-
-    def compile_subroutineCall(self) -> None:
+    def compile_subroutineCall(self, name) -> Tuple[str, int]:
         """
         subroutineName '(' expressionList ')'
         | (className| varName) '.' subroutineName '(' expressionList ')'
         """
         if self.maybe_eat('.'):
-            self.eat(TokenType.IDENTIFIER, tag='subroutineCall')
+            name += f'.{self.token}'
+            self.eat(TokenType.IDENTIFIER)
 
         self.eat('(')
-        self.compile_exprList()
+        nargs = self.compile_exprList()
         self.eat(')')
+        return (name, nargs)
 
     @grammar_rule(EXPRESSIONLIST)
-    def compile_exprList(self) -> None:
+    def compile_exprList(self) -> int:
         """(expression (',' expression)* )?"""
-        self.exprList_helper()
-
-    def exprList_helper(self) -> None:
         if self.token == ')':
-            return
+            return 0
 
         self.compile_expr()
-        if self.maybe_eat(','):
-            self.exprList_helper()
+        nargs = 1
+        while self.maybe_eat(','):
+            nargs += 1
+            self.compile_expr()
+        return nargs
 
     def eat(self, *args: str | TokenType, tag='') -> None:
         """
@@ -355,10 +382,6 @@ class CompliationEngine:
 
         return found
 
-    def writeln(self, *lines: str):
-        for line in lines:
-            self.outfile.write(line + '\n')
-
     def error(self, expected: str) -> NoReturn:
         raise JackSyntaxError(
             f'\nERROR: Invalid {self.rule} \nExpected {expected} \nCurrent Token: {self.token} \nCurrent line: {self.input.get_line()} ')
@@ -381,24 +404,9 @@ class CompliationEngine:
         rule = self.rule_stack.pop()
         self.rule = self.rule_stack[-1] if self.rule_stack else ''
 
-    def def_symbol(self, name, typee, kind) -> str:
+    def def_symbol(self, name, typee, kind) -> int:
         self.sym_table.define(name, typee, kind)
-        index = self.sym_table.index_of(name)
-        return self.fmt_tag(kind, index, 'def')
-
-    def set_symbol_stmnt(self, name: str) -> str:
-        sym = self.sym_table.get(name)
-        if sym is None:
-            self.error(
-                f'An existing varialbe. variable "{name}" does not exist.')
-        else:
-            sym_: JSymbol = sym
-        return self.fmt_tag(sym_.kind, sym_.index, 'set')
-
-    def fmt_tag(self, kind: VarKind, index: int | None, context: str) -> str:
-        if index is None:
-            self.error('int')
-        return f'{kind.value}::{index}::{context}'
+        return self.sym_table.index_of(name)
 
 
 class Dummy:
@@ -410,8 +418,7 @@ class Dummy:
 
 
 if __name__ == '__main__':
-    i = 0
-    for _ in range(200):
-        for _ in range(200):
-            i += 1
-    print(i)
+    t = ('Output.printInt', 2)
+    name, nargs = t
+    print(name)
+    print(nargs)
