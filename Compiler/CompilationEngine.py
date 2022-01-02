@@ -247,17 +247,20 @@ class CompliationEngine:
     @grammar_rule(TERM)
     def compile_term(self) -> None:
         """
-        integerConstant 
-        | stringConstant 
-        | keywordConstant 
-        | varName 
-        | varName '[' expression ']' 
-        | subroutineCall 
-        | '(' expression ') ' 
+        integerConstant
+        | stringConstant
+        | keywordConstant
+        | varName
+        | varName '[' expression ']'
+        | subroutineCall
+        | '(' expression ') '
         | unary Op term
 
         """
-        if self.maybe_eat(TokenType.INT_CONST, TokenType.STR_CONST, *keyword_constants):
+        if self.maybe_eat(
+                TokenType.INT_CONST,
+                TokenType.STR_CONST,
+                *keyword_constants):
             return
         elif self.maybe_eat('('):
             self.compile_expr()
@@ -279,14 +282,12 @@ class CompliationEngine:
                     self.error(f'An existing variable. `{name}` is not defined')
                 sym = maybe_sym
                 tag = self.fmt_tag(sym.kind, sym.index, 'accessed')
-                self.writeln(f'<{tag}> {name} </{tag}>')
 
                 self.eat('[')
                 self.compile_expr()
                 self.eat(']')
             elif self.token in ('.', '('):
                 tag = TokenType.IDENTIFIER.value if self.token == '.' else 'subroutineCall'
-                self.writeln(f'<{tag}> {name} </{tag}>')
                 self.compile_subroutineCall()
             else:  # otherwise it's just a plain varName
                 maybe_sym = self.sym_table.get(name)
@@ -295,12 +296,11 @@ class CompliationEngine:
 
                 sym = maybe_sym
                 tag = self.fmt_tag(sym.kind, sym.index, 'accessed')
-                self.writeln(f'<{tag}> {name} </{tag}>')
 
     def compile_subroutineCall(self) -> None:
         """
-        subroutineName '(' expressionList ')' 
-        | (className| varName) '.' subroutineName '(' expressionList ')'        
+        subroutineName '(' expressionList ')'
+        | (className| varName) '.' subroutineName '(' expressionList ')'
         """
         if self.maybe_eat('.'):
             self.eat(TokenType.IDENTIFIER, tag='subroutineCall')
@@ -325,8 +325,8 @@ class CompliationEngine:
     def eat(self, *args: str | TokenType, tag='') -> None:
         """
         VERY IMPORTANT FUNCTION
-        It checks that the token or token_type is in one of the arguments, 
-        throwing an error if it isn't, and advancing to the next token if it is. 
+        It checks that the token or token_type is in one of the arguments,
+        throwing an error if it isn't, and advancing to the next token if it is.
         """
         found = any(
             self.token == arg or self.token_type == arg
@@ -336,12 +336,11 @@ class CompliationEngine:
         if not found:
             self.error(f'{args}')
 
-        self.write_token(tag)
         self.advance()
 
     def maybe_eat(self, *args: str | TokenType, tag: str = '') -> bool:
         """
-        Same as `eat()` but it doesn't throw an error if none 
+        Same as `eat()` but it doesn't throw an error if none
         of the arguments match self.token or self.token_type
 
         returns true if one of the arguments was found, false otherwise.
@@ -352,16 +351,9 @@ class CompliationEngine:
         )
 
         if found:
-            self.write_token(tag)
             self.advance()
 
         return found
-
-    def write_token(self, tag=''):
-        if not tag:
-            self.writeln(self.input.to_xml())
-        else:
-            self.writeln(f'<{tag}> {self.token} </{tag}>')
 
     def writeln(self, *lines: str):
         for line in lines:
@@ -377,24 +369,17 @@ class CompliationEngine:
             self.token = self.input.token_value()
             self.token_type = self.input.token_type()
         else:
-            print('>>>WARNING: self.advance() was called when the analyzer had no more tokens.')
+            print(
+                '>>>WARNING: self.advance() was called when the analyzer had no more tokens.')
 
     def push_rule(self, rule: str) -> None:
         """pushes `rule` onto the rule_stack"""
         self.rule_stack.append(rule)
         self.rule = rule
-        self.tag()
 
     def pop_rule(self) -> None:
-        self.end_tag()
         rule = self.rule_stack.pop()
         self.rule = self.rule_stack[-1] if self.rule_stack else ''
-
-    def tag(self) -> None:
-        self.writeln(f'<{self.rule}>')
-
-    def end_tag(self) -> None:
-        self.writeln(f'</{self.rule}>')
 
     def def_symbol(self, name, typee, kind) -> str:
         self.sym_table.define(name, typee, kind)
@@ -404,7 +389,8 @@ class CompliationEngine:
     def set_symbol_stmnt(self, name: str) -> str:
         sym = self.sym_table.get(name)
         if sym is None:
-            self.error(f'An existing varialbe. variable "{name}" does not exist.')
+            self.error(
+                f'An existing varialbe. variable "{name}" does not exist.')
         else:
             sym_: JSymbol = sym
         return self.fmt_tag(sym_.kind, sym_.index, 'set')
