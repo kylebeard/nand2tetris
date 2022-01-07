@@ -1,13 +1,12 @@
-from typing import NoReturn, TextIO, Tuple
+from typing import NamedTuple, NoReturn, TextIO, Tuple
 from ArithmeticCommand import ArithmeticCommand
 from Segment import Segment
-from JSymbolTable import VarKind, JSymbol
+from JSymbolTable import JSymbolTable, VarKind, JSymbol
 from exceptions import JackSyntaxError
 from JackTokenizer import JackTokenizer
 from GrammarType import *
 from Keywords import *
 from TokenType import TokenType
-from JSymbolTable import JSymbolTable
 from VMWriter import VMWriter
 
 
@@ -23,6 +22,9 @@ def grammar_rule(rule):
     return decorator
 
 
+CurrFunc = NamedTuple('CurrFunc', [('kind', str), ('name', str)])
+
+
 class CompliationEngine:
     """
     Building a compiler for Jack language in the nand2tetris course.
@@ -36,13 +38,15 @@ class CompliationEngine:
         self.input = input
         self.writer = writer
         self.classname = ''  # the class we are compiling
-        # the constructor, method or function we are compiling
-        self.curr_func: Tuple[str, str] | None = None
+        # the constructor, method or function we are compiling (returnVal, name)
+        self.curr_func = CurrFunc('', '')
         self.rule: str = ''  # current grammar rule we are compiling
         self.rule_stack: List[str] = []
         self.token: str = ''
         self.token_type: TokenType = TokenType.NONE
         self.sym_table = JSymbolTable()
+        self.while_counter = 0
+        self.if_counter = 0
         self.advance()
 
     @grammar_rule(CLASS_GRAMMAR)
@@ -53,7 +57,7 @@ class CompliationEngine:
         self.eat(CLASS_KEYWORD)
         print(f'Compiling `{self.token}` class...')
         self.classname = self.token
-        self.eat(TokenType.IDENTIFIER, tag='classDef')
+        self.eat(TokenType.IDENTIFIER)
         self.eat('{')
         while self.token in (STATIC, FIELD):
             self.compile_classVarDec()
@@ -86,19 +90,20 @@ class CompliationEngine:
                  '(' parameterList ')' subroutineBody
         """
         self.sym_table.start_subroutine()
-
+        self.if_counter = 0
+        self.while_counter = 0
         func_kind = self.token
         self.eat(CONSTRUCTOR, FUNCTION, METHOD)
         self.eat(VOID, *var_types)
 
         print(f'Compiling `{self.token}` subroutine... ')
-        self.curr_func = (func_kind, self.token)
+        self.curr_func = CurrFunc(func_kind, self.token)
         self.eat(TokenType.IDENTIFIER)
         self.eat('(')
         self.compile_paramList()
         self.eat(')')
         self.compile_subroutineBody()
-        self.curr_func = None
+        self.curr_func = CurrFunc('', '')
         print('subroutine compilation finished.')
 
     @grammar_rule(PARAMETER_LIST)
@@ -134,7 +139,7 @@ class CompliationEngine:
         if self.curr_func is None:
             self.error('curr_func is empty in compile_subroutineBody')
 
-        full_name = f'{self.classname}.{self.curr_func[1]}'
+        full_name = f'{self.classname}.{self.curr_func.name}'
         self.writer.write_function(full_name, nlocals)
         self.compile_statements()
 
@@ -176,15 +181,16 @@ class CompliationEngine:
         var = self.token
         self.eat(TokenType.IDENTIFIER)
 
-        # if self.maybe_eat('['):
-        #     self.compile_expr()
-        #     self.eat(']')
+        if self.maybe_eat('['):
+            raise NotImplementedError('arrays not implemented')
+            self.compile_expr()
+            self.eat(']')
 
         self.eat('=')
         self.compile_expr()
         sym = self.sym_table.get(var)
-        if sym.kind == VarKind.VAR:
-            self.writer.write_pop(Segment.Local, sym.index)
+        self.writer.write_pop(sym.kind.value, sym.index)
+
         self.eat(';')
 
     @grammar_rule(IF_STATEMENT)
@@ -193,37 +199,61 @@ class CompliationEngine:
         grammar:
         'if' '(' expression ')' '{' statements '}' ('else' '{' statements '}')?
         """
+
+        if_true = f'IF_TRUE{self.if_counter}'
+        if_false = f'IF_FALSE{self.if_counter}'
+        if_end = f'IF_END{self.if_counter}'
+        self.if_counter += 1
+
         self.eat(IF)
         self.eat('(')
         self.compile_expr()
         self.eat(')')
-
+        self.writer.write_if(if_true)
+        self.writer.write_goto(if_false)
+        self.writer.write_label(if_true)
         self.eat('{')
         self.compile_statements()
         self.eat('}')
-
-        if self.token != ELSE:
-            return
-
-        # else block
-        self.eat(ELSE)
-        self.eat('{')
-        self.compile_statements()
-        self.eat('}')
+        if self.token == ELSE:
+            self.writer.write_goto(if_end)
+        self.writer.write_label(if_false)
+        if self.maybe_eat(ELSE):
+            self.eat('{')
+            self.compile_statements()
+            self.eat('}')
+            self.writer.write_label(if_end)
 
     @grammar_rule(WHILE_STATEMENT)
     def compile_while(self) -> None:
         """
         'while' '(' expression ')''{' statements '}'
         """
+        start_label = f'WHILE_START{self.while_counter}'
+        true_label = f'WHILE_TRUE{self.while_counter}'
+        end_label = f'WHILE_END{self.while_counter}'
+        self.while_counter += 1
+
         self.eat(WHILE)
         self.eat('(')
+
+        # start of the loop in vm
+        self.writer.write_label(start_label)
         self.compile_expr()
+
         self.eat(')')
+
+        self.writer.write_if(true_label)
+        self.writer.write_goto(end_label)
+        self.writer.write_label(true_label)
 
         self.eat('{')
         self.compile_statements()
         self.eat('}')
+
+        self.writer.write_goto(start_label)
+
+        self.writer.write_label(end_label)
 
     @grammar_rule(DO_STATEMENT)
     def compile_do(self) -> None:
@@ -234,9 +264,8 @@ class CompliationEngine:
         name = self.token
         self.eat(TokenType.IDENTIFIER)
 
-        name, nargs = self.compile_subroutineCall(name)
+        self.compile_subroutineCall(name)
         self.eat(';')
-        self.writer.write_call(name, nargs)
         # do statements don't use the return value, so dump it in Temp Segment
         self.writer.write_pop(Segment.Temp, 0)
 
@@ -298,31 +327,50 @@ class CompliationEngine:
         if self.token_type == TokenType.INT_CONST:
             self.writer.write_push(Segment.Constant, int(self.token))
             self.advance()
-        elif self.token_type == TokenType.STR_CONST or self.token in keyword_constants:
-            return
+        elif self.token_type == TokenType.STR_CONST:
+            raise NotImplementedError('STR_CONST not implemented yet.')
+        elif self.token in keyword_constants:
+            if self.token == TRUE:
+                self.writer.write_push(Segment.Constant, 1)
+                self.writer.write_arithmetic(ArithmeticCommand.NEG)
+            elif self.token in (FALSE, NULL):
+                self.writer.write_push(Segment.Constant, 0)
+            elif self.token == THIS:
+                raise NotImplementedError('"this" keyword not implemented yet.')
+            self.advance()
         elif self.maybe_eat('('):
             self.compile_expr()
             self.eat(')')
-        elif self.maybe_eat(*unary_ops):
+        elif self.token in unary_ops:
+            op = self.token
+            self.advance()
             self.compile_term()
+            if op == '-':
+                self.writer.write_arithmetic(ArithmeticCommand.NEG)
+            elif op == '~':
+                self.writer.write_arithmetic(ArithmeticCommand.NOT)
+            else:
+                self.error(f'a unary op: {unary_ops}')
         else:
             # we have to "look ahead" to know what type of expression this is
-            # array access, subroutine call, regular variable access
+            # e.g., array access, subroutine call, or regular variable access
             name = self.token
             if self.token_type != TokenType.IDENTIFIER:
                 self.error(TokenType.IDENTIFIER.value)
 
             self.advance()
             if self.token == '[':
+                raise NotImplementedError('arrays not implemented')
                 self.eat('[')
                 self.compile_expr()
                 self.eat(']')
             elif self.token in ('.', '('):
-                name, nargs = self.compile_subroutineCall(name)
+                self.compile_subroutineCall(name)
             else:  # otherwise it's just a plain varName
                 sym = self.sym_table.get(name)
+                self.writer.write_push(sym.kind.value, sym.index)
 
-    def compile_subroutineCall(self, name) -> Tuple[str, int]:
+    def compile_subroutineCall(self, name) -> None:
         """
         subroutineName '(' expressionList ')'
         | (className| varName) '.' subroutineName '(' expressionList ')'
@@ -334,7 +382,7 @@ class CompliationEngine:
         self.eat('(')
         nargs = self.compile_exprList()
         self.eat(')')
-        return (name, nargs)
+        self.writer.write_call(name, nargs)
 
     @grammar_rule(EXPRESSIONLIST)
     def compile_exprList(self) -> int:
@@ -349,7 +397,7 @@ class CompliationEngine:
             self.compile_expr()
         return nargs
 
-    def eat(self, *args: str | TokenType, tag='') -> None:
+    def eat(self, *args: str | TokenType) -> None:
         """
         VERY IMPORTANT FUNCTION
         It checks that the token or token_type is in one of the arguments,
@@ -365,7 +413,7 @@ class CompliationEngine:
 
         self.advance()
 
-    def maybe_eat(self, *args: str | TokenType, tag: str = '') -> bool:
+    def maybe_eat(self, *args: str | TokenType) -> bool:
         """
         Same as `eat()` but it doesn't throw an error if none
         of the arguments match self.token or self.token_type
@@ -417,8 +465,10 @@ class Dummy:
         print('amethod')
 
 
+def mock(e: str):
+    print(f'Expected: {e}')
+
+
 if __name__ == '__main__':
-    t = ('Output.printInt', 2)
-    name, nargs = t
-    print(name)
-    print(nargs)
+
+    mock(f'{unary_ops}')

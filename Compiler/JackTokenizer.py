@@ -26,7 +26,8 @@ class JackTokenizer:
         self.current_token_type: TokenType = TokenType.NONE
 
         self.tokens: List[str] = []  # remaining tokens in the current line
-        self.token_types: List[TokenType] = []  # TokenTypes's of the remaining tokens
+        # TokenTypes's of the remaining tokens
+        self.token_types: List[TokenType] = []
 
     def has_more_tokens(self) -> bool:
         """Does the jack file have more tokens to process"""
@@ -85,7 +86,8 @@ class JackTokenizer:
         keyword_regex = keyword_regex[:-1]  # remove last | symbol
         keyword_regex = rf'\b({keyword_regex})\b'
 
-        # progressively search for tokens and remove them from `line` until it is empty
+        # progressively search for tokens and remove them from `line` until it
+        # is empty
         while len(line):
             # start of `line` may contain whitespace
             # after the last token was removed
@@ -99,9 +101,10 @@ class JackTokenizer:
                 line = line[2:]
                 end = line.find('*/')
                 if end == -1:
-                    raise Exception(f'Multi-line in-line comments are not supported. Cause: /*{self.current_line}')
+                    raise Exception(
+                        f'Multi-line in-line comments are not supported. Cause: /*{self.current_line}')
 
-                line = line[end+2:]
+                line = line[end + 2:]
                 continue
 
             # Keyword
@@ -143,7 +146,8 @@ class JackTokenizer:
                 line = line[match.end():]
                 continue
 
-            raise Exception(f'Unrecognized Token "{line}"" in line "{self.current_line}"')
+            raise Exception(
+                f'Unrecognized Token "{line}"" in line "{self.current_line}"')
 
         self.tokens = tokens
         self.token_types = token_types
@@ -151,14 +155,14 @@ class JackTokenizer:
     def token_type(self) -> TokenType:
         """
         Returns the type of the current token
-        Token types are actually determined in `_get_tokens` 
+        Token types are actually determined in `_get_tokens`
         when parsing the tokens in the current line
         """
         return self.current_token_type
 
     def token_value(self) -> str:
         """
-        Returns the value of current token. 
+        Returns the value of current token.
         int if token_type is INT_CONST
         str otherwise
         """
@@ -176,37 +180,6 @@ class JackTokenizer:
             .replace('"', '&quot;')
 
         return f'<{tt}> {t} </{tt}>'
-
-    def not_used(self):
-        print('')
-
-        def symbol(self) -> str:
-            """
-            Returns the character which is the current token.
-            Should only be called if token type is Symbol
-            """
-            return self.current_token
-
-        def identifier(self) -> str:
-            """
-            Returns the identifier which is the current token.
-            Should only be called if token type is Identifier
-            """
-            return self.current_token
-
-        def int_val(self) -> int:
-            """
-            Returns the integer value which is the current token.
-            Should only be called if token type is INT_CONST
-            """
-            return int(self.current_token)
-
-        def str_val(self) -> str:
-            """
-            Returns the string value which is the current token.
-            Should only be called if token type is STR_CONST
-            """
-            return self.current_token
 
 
 if __name__ == '__main__':

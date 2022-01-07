@@ -35,4 +35,6 @@ for inpath, outpath in zip(in_paths, out_paths):
             writer = VMWriter(outfile)
             engine = CompliationEngine(tokenizer, writer)
             engine.compile_class()
+            writer.close()
+
     print(f'done. Output is in {outpath}')

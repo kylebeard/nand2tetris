@@ -1,13 +1,14 @@
 from typing import List, NoReturn
 from enum import Enum
 from exceptions import JackVariableNotFoundError
+from Segment import Segment
 
 
 class VarKind(Enum):
-    VAR = 'var'
-    ARGUMENT = 'argument'
-    STATIC = 'static'
-    FIELD = 'field'
+    VAR = Segment.Local
+    ARGUMENT = Segment.Argument
+    STATIC = Segment.Static
+    FIELD = Segment.This
     locals = [VAR, ARGUMENT]
     globals = [STATIC, FIELD]
     all_kinds = [VAR, ARGUMENT, STATIC, FIELD]
