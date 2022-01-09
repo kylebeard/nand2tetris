@@ -5,3 +5,4 @@ tools/
 __pycache__
 .DS_Store
 *.class
+nand2tetris_decompiled_code/
