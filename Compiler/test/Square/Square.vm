@@ -1,3 +1,0 @@
-function Square.new 0
-call draw None
-pop temp 0

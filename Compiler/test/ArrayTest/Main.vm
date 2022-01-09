@@ -1,6 +1,0 @@
-function Main.testFunction 2
-push constant 0
-return
-function Main.main 4
-call testFunction None
-pop temp 0

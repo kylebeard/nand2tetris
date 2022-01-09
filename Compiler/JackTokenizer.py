@@ -1,7 +1,7 @@
 """
 Tokenizer for Jack language -- part of the Nand2Tetris course
 """
-from typing import List, TextIO, Tuple
+from typing import List, TextIO
 from Keywords import all_keywords
 from TokenType import TokenType
 import re
@@ -40,8 +40,7 @@ class JackTokenizer:
 
         # ignore comments and newlines
         while (line.startswith(('//', '/*')) or line == "\n"):
-            # doing everything line-by-line makes multi-line
-            # comments hard to deal with
+            # multi-line comments
             if line.startswith('/*'):
                 end_multi_line = line.find('*/')
                 while end_multi_line == -1:
@@ -66,7 +65,9 @@ class JackTokenizer:
         Read in the next token.
         Should only be called if has_more_tokens returns True
         """
-        if not len(self.tokens):
+
+        if len(self.tokens) == 0:
+            # parse the next line
             self.current_line = self.infile.readline().strip()
             self._parse_tokens()
         self.current_token = self.tokens.pop(0)
@@ -76,7 +77,6 @@ class JackTokenizer:
 
     def _parse_tokens(self):
         """parses the tokens in the current_line"""
-        # start tokenizing by splitting the current line on whitespace
         line = self.current_line
 
         tokens = []
@@ -96,13 +96,13 @@ class JackTokenizer:
             if line[:2] == '//':
                 break
 
-            # in-line multi-line comments
+            # in-line block comments
             if line[:2] == '/*':
                 line = line[2:]
                 end = line.find('*/')
                 if end == -1:
                     raise Exception(
-                        f'Multi-line in-line comments are not supported. Cause: /*{self.current_line}')
+                        f'In-line comments have to be single-line. Cause: {self.current_line}')
 
                 line = line[end + 2:]
                 continue
@@ -153,19 +153,9 @@ class JackTokenizer:
         self.token_types = token_types
 
     def token_type(self) -> TokenType:
-        """
-        Returns the type of the current token
-        Token types are actually determined in `_get_tokens`
-        when parsing the tokens in the current line
-        """
         return self.current_token_type
 
     def token_value(self) -> str:
-        """
-        Returns the value of current token.
-        int if token_type is INT_CONST
-        str otherwise
-        """
         return self.current_token
 
     def get_line(self) -> str:
@@ -183,11 +173,4 @@ class JackTokenizer:
 
 
 if __name__ == '__main__':
-    s = 'this  that  here > ther'
-    t = s\
-        .replace('&', '&amp;')\
-        .replace('<', '&lt;')\
-        .replace('>', '&gt;')\
-        .replace('"', '&quot;')
-
-    print(t)
+    """"""
