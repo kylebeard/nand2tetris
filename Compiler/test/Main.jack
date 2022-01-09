@@ -1,56 +1,10 @@
 class Main {
 
     function void main() {
-        var int s;
-        let s = Main.decide(1);
-        do Output.printInt(s);
-        let s = Main.decide2(0);
-        do Output.printInt(s);
+        var int x;
+        let x = 0;
+        let x = x + 1;
+        do Output.printInt(x);
         return;
     }
-
-    function int decide(int x){
-        if (x = 0) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-
-    function int decide2(int x) {
-        var int rv;
-        let rv = 0;
-        if (x = 1){
-            let rv = 1;
-        }
-
-        return rv;
-    }
-
-       /** Returns the next mask (the mask that should follow the given mask). */
-       /* 
-        function Main.nextMask 0
-        push argument 0
-        push constant 0
-        eq
-        if-goto Main.nextMask_ELSE_START0
-        push constant 1
-        return
-        label Main.nextMask_ELSE_START0
-        push argument 0
-        push constant 2
-        call Math.multiply 2
-        return
-       */
-       /*
-    function int nextMask(int mask) {
-    	if (mask = 0) {
-    	    return 1;
-    	}
-    	else {
-	    return mask * 2;
-    	}
-    }
-     */
-    
 }

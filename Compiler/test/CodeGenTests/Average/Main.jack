@@ -8,6 +8,44 @@
 // Inputs some numbers and computes their average
 class Main {
    function void main() {
+       /*
+       function Main.main 4
+       push const 18
+       call String.new 1
+       push const H
+       call String.appendChar 2
+       push const o
+       call String.appendChar 2
+       ...
+       push const " "
+       call string.appendChar 2
+       call Keyboard.readInt 1
+       pop local 1
+       push local 1
+       call Array.new 1
+       pop local 0
+       push const 0
+       pop local 2
+       label while_start0
+        push local 2
+        push local 1
+        lt
+        if-goto while_true0
+        goto while_end0
+        label while_true0
+            push local 0
+            push local 2
+            add
+            create string....
+            call Keyboard.readInt 1
+            pop temp 0
+            pop pointer 1
+            push temp 0
+            pop that 0
+            
+            goto while_start0
+        label while_end0
+       */
      var Array a; 
      var int length;
      var int i, sum;

@@ -1,0 +1,10473 @@
+   @256
+   D=A
+   @SP
+   M=D
+// call sys.init 0
+   @0
+   D=A
+   @R13
+   M=D
+   @sys.init
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL1
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL1)
+(GLOBAL_EQ)
+   @R15
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @EQ_TRUE
+   D;JEQ
+   D=0
+   @EQ_PUSH_D
+   0;JMP
+(EQ_TRUE)
+   D=-1
+(EQ_PUSH_D)
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   @R15
+   A=M
+   0;JMP
+(GLOBAL_LT)
+   @R15
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @LT_TRUE
+   D;JLT
+   D=0
+   @LT_PUSH_D
+   0;JMP
+(LT_TRUE)
+   D=-1
+(LT_PUSH_D)
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   @R15
+   A=M
+   0;JMP
+(GLOBAL_GT)
+   @R15
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @GT_TRUE
+   D;JGT
+   D=0
+   @GT_PUSH_D
+   0;JMP
+(GT_TRUE)
+   D=-1
+(GT_PUSH_D)
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   @R15
+   A=M
+   0;JMP
+(SAVE_CALLER_STATE)
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   @LCL
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   @ARG
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   @THAT
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   @SP
+   D=M
+   @5
+   D=D-A
+   @R13
+   D=D-M
+   @ARG
+   M=D
+   @SP
+   D=M
+   @LCL
+   M=D
+   @R14
+   A=M
+   0;JMP
+(RETURN)
+   @LCL
+   D=M
+   @endframe
+   M=D
+   @5
+   D=D-A
+   A=D
+   D=M
+   @retAddr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @ARG
+   A=M
+   M=D
+   @ARG
+   D=M
+   @SP
+   M=D+1
+   @endframe
+   D=M
+   @1
+   D=D-A
+   A=D
+   D=M
+   @THAT
+   M=D
+   @endframe
+   D=M
+   @2
+   D=D-A
+   A=D
+   D=M
+   @THIS
+   M=D
+   @endframe
+   D=M
+   @3
+   D=D-A
+   A=D
+   D=M
+   @ARG
+   M=D
+   @endframe
+   D=M
+   @4
+   D=D-A
+   A=D
+   D=M
+   @LCL
+   M=D
+   @retAddr
+   A=M
+   0;JMP
+// New File: Ball
+// function ball.new 0
+(ball.new)
+   @SP
+   A=M
+// push constant 15
+   @15
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call memory.alloc 1
+   @1
+   D=A
+   @R13
+   M=D
+   @memory.alloc
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL2
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL2)
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push argument 1
+   @1
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push argument 2
+   @2
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 10
+   @10
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push argument 3
+   @3
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 6
+   @6
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 11
+   @11
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push argument 4
+   @4
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 12
+   @12
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push argument 5
+   @5
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 6
+   @6
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 13
+   @13
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 14
+   @14
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ball.show 1
+   @1
+   D=A
+   @R13
+   M=D
+   @ball.show
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL3
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL3)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function ball.dispose 0
+(ball.dispose)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call memory.dealloc 1
+   @1
+   D=A
+   @R13
+   M=D
+   @memory.dealloc
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL4
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL4)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function ball.show 0
+(ball.show)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// neg
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call screen.setcolor 1
+   @1
+   D=A
+   @R13
+   M=D
+   @screen.setcolor
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL5
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL5)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ball.draw 1
+   @1
+   D=A
+   @R13
+   M=D
+   @ball.draw
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL6
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL6)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function ball.hide 0
+(ball.hide)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call screen.setcolor 1
+   @1
+   D=A
+   @R13
+   M=D
+   @screen.setcolor
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL7
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL7)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ball.draw 1
+   @1
+   D=A
+   @R13
+   M=D
+   @ball.draw
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL8
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL8)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function ball.draw 0
+(ball.draw)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 5
+   @5
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 5
+   @5
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call screen.drawrectangle 4
+   @4
+   D=A
+   @R13
+   M=D
+   @screen.drawrectangle
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL9
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL9)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function ball.getleft 0
+(ball.getleft)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function ball.getright 0
+(ball.getright)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 5
+   @5
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function ball.setdestination 3
+(ball.setdestination)
+   @SP
+   A=M
+   D=0
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   D=0
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   D=0
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push argument 1
+   @1
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push argument 2
+   @2
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.abs 1
+   @1
+   D=A
+   @R13
+   M=D
+   @math.abs
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL10
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL10)
+// pop local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.abs 1
+   @1
+   D=A
+   @R13
+   M=D
+   @math.abs
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL11
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL11)
+// pop local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @RET_ADDRESS_LT0
+   D=A
+   @GLOBAL_LT
+   0;JMP
+(RET_ADDRESS_LT0)
+// pop this 7
+   @7
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 7
+   @7
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto if_true0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.math.abs$if_true0
+   D;JNE
+// goto if_false0
+   @Ball.math.abs$if_false0
+   0;JMP
+// label if_true0
+(Ball.math.abs$if_true0)
+// push local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 2
+   @2
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push local 2
+   @2
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push argument 2
+   @2
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @RET_ADDRESS_LT1
+   D=A
+   @GLOBAL_LT
+   0;JMP
+(RET_ADDRESS_LT1)
+// pop this 8
+   @8
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push argument 1
+   @1
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @RET_ADDRESS_LT2
+   D=A
+   @GLOBAL_LT
+   0;JMP
+(RET_ADDRESS_LT2)
+// pop this 9
+   @9
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// goto if_end0
+   @Ball.math.abs$if_end0
+   0;JMP
+// label if_false0
+(Ball.math.abs$if_false0)
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push argument 1
+   @1
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @RET_ADDRESS_LT3
+   D=A
+   @GLOBAL_LT
+   0;JMP
+(RET_ADDRESS_LT3)
+// pop this 8
+   @8
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push argument 2
+   @2
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @RET_ADDRESS_LT4
+   D=A
+   @GLOBAL_LT
+   0;JMP
+(RET_ADDRESS_LT4)
+// pop this 9
+   @9
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// label if_end0
+(Ball.math.abs$if_end0)
+// push constant 2
+   @2
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.multiply 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.multiply
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL12
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL12)
+// push local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 4
+   @4
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push constant 2
+   @2
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.multiply 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.multiply
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL13
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL13)
+// pop this 5
+   @5
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push constant 2
+   @2
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.multiply 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.multiply
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL14
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL14)
+// pop this 6
+   @6
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function ball.move 0
+(ball.move)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ball.hide 1
+   @1
+   D=A
+   @R13
+   M=D
+   @ball.hide
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL15
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL15)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push this 4
+   @4
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @RET_ADDRESS_LT5
+   D=A
+   @GLOBAL_LT
+   0;JMP
+(RET_ADDRESS_LT5)
+// if-goto if_true0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.ball.hide$if_true0
+   D;JNE
+// goto if_false0
+   @Ball.ball.hide$if_false0
+   0;JMP
+// label if_true0
+(Ball.ball.hide$if_true0)
+// push this 4
+   @4
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 5
+   @5
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 4
+   @4
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// goto if_end0
+   @Ball.ball.hide$if_end0
+   0;JMP
+// label if_false0
+(Ball.ball.hide$if_false0)
+// push this 4
+   @4
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 6
+   @6
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 4
+   @4
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 9
+   @9
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto if_true1
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.ball.hide$if_true1
+   D;JNE
+// goto if_false1
+   @Ball.ball.hide$if_false1
+   0;JMP
+// label if_true1
+(Ball.ball.hide$if_true1)
+// push this 7
+   @7
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto if_true2
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.ball.hide$if_true2
+   D;JNE
+// goto if_false2
+   @Ball.ball.hide$if_false2
+   0;JMP
+// label if_true2
+(Ball.ball.hide$if_true2)
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// goto if_end2
+   @Ball.ball.hide$if_end2
+   0;JMP
+// label if_false2
+(Ball.ball.hide$if_false2)
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// label if_end2
+(Ball.ball.hide$if_end2)
+// goto if_end1
+   @Ball.ball.hide$if_end1
+   0;JMP
+// label if_false1
+(Ball.ball.hide$if_false1)
+// push this 7
+   @7
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto if_true3
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.ball.hide$if_true3
+   D;JNE
+// goto if_false3
+   @Ball.ball.hide$if_false3
+   0;JMP
+// label if_true3
+(Ball.ball.hide$if_true3)
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// goto if_end3
+   @Ball.ball.hide$if_end3
+   0;JMP
+// label if_false3
+(Ball.ball.hide$if_false3)
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// label if_end3
+(Ball.ball.hide$if_end3)
+// label if_end1
+(Ball.ball.hide$if_end1)
+// label if_end0
+(Ball.ball.hide$if_end0)
+// push this 8
+   @8
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto if_true4
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.ball.hide$if_true4
+   D;JNE
+// goto if_false4
+   @Ball.ball.hide$if_false4
+   0;JMP
+// label if_true4
+(Ball.ball.hide$if_true4)
+// push this 7
+   @7
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto if_true5
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.ball.hide$if_true5
+   D;JNE
+// goto if_false5
+   @Ball.ball.hide$if_false5
+   0;JMP
+// label if_true5
+(Ball.ball.hide$if_true5)
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// goto if_end5
+   @Ball.ball.hide$if_end5
+   0;JMP
+// label if_false5
+(Ball.ball.hide$if_false5)
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// label if_end5
+(Ball.ball.hide$if_end5)
+// goto if_end4
+   @Ball.ball.hide$if_end4
+   0;JMP
+// label if_false4
+(Ball.ball.hide$if_false4)
+// push this 7
+   @7
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto if_true6
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.ball.hide$if_true6
+   D;JNE
+// goto if_false6
+   @Ball.ball.hide$if_false6
+   0;JMP
+// label if_true6
+(Ball.ball.hide$if_true6)
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// goto if_end6
+   @Ball.ball.hide$if_end6
+   0;JMP
+// label if_false6
+(Ball.ball.hide$if_false6)
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// label if_end6
+(Ball.ball.hide$if_end6)
+// label if_end4
+(Ball.ball.hide$if_end4)
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 10
+   @10
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// gt
+   @RET_ADDRESS_GT0
+   D=A
+   @GLOBAL_GT
+   0;JMP
+(RET_ADDRESS_GT0)
+// not
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=!D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto if_true7
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.ball.hide$if_true7
+   D;JNE
+// goto if_false7
+   @Ball.ball.hide$if_false7
+   0;JMP
+// label if_true7
+(Ball.ball.hide$if_true7)
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 14
+   @14
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 10
+   @10
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// label if_false7
+(Ball.ball.hide$if_false7)
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 11
+   @11
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @RET_ADDRESS_LT6
+   D=A
+   @GLOBAL_LT
+   0;JMP
+(RET_ADDRESS_LT6)
+// not
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=!D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto if_true8
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.ball.hide$if_true8
+   D;JNE
+// goto if_false8
+   @Ball.ball.hide$if_false8
+   0;JMP
+// label if_true8
+(Ball.ball.hide$if_true8)
+// push constant 2
+   @2
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 14
+   @14
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 11
+   @11
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// label if_false8
+(Ball.ball.hide$if_false8)
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 12
+   @12
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// gt
+   @RET_ADDRESS_GT1
+   D=A
+   @GLOBAL_GT
+   0;JMP
+(RET_ADDRESS_GT1)
+// not
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=!D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto if_true9
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.ball.hide$if_true9
+   D;JNE
+// goto if_false9
+   @Ball.ball.hide$if_false9
+   0;JMP
+// label if_true9
+(Ball.ball.hide$if_true9)
+// push constant 3
+   @3
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 14
+   @14
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 12
+   @12
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// label if_false9
+(Ball.ball.hide$if_false9)
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 13
+   @13
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @RET_ADDRESS_LT7
+   D=A
+   @GLOBAL_LT
+   0;JMP
+(RET_ADDRESS_LT7)
+// not
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=!D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto if_true10
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.ball.hide$if_true10
+   D;JNE
+// goto if_false10
+   @Ball.ball.hide$if_false10
+   0;JMP
+// label if_true10
+(Ball.ball.hide$if_true10)
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 14
+   @14
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 13
+   @13
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// label if_false10
+(Ball.ball.hide$if_false10)
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ball.show 1
+   @1
+   D=A
+   @R13
+   M=D
+   @ball.show
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL16
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL16)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push this 14
+   @14
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function ball.bounce 5
+(ball.bounce)
+   @SP
+   A=M
+   D=0
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   D=0
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   D=0
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   D=0
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   D=0
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 10
+   @10
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.divide 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.divide
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL17
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL17)
+// pop local 2
+   @2
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 10
+   @10
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.divide 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.divide
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL18
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL18)
+// pop local 3
+   @3
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push argument 1
+   @1
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// eq
+   @RET_ADDRESS_EQ0
+   D=A
+   @GLOBAL_EQ
+   0;JMP
+(RET_ADDRESS_EQ0)
+// if-goto if_true0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.math.divide$if_true0
+   D;JNE
+// goto if_false0
+   @Ball.math.divide$if_false0
+   0;JMP
+// label if_true0
+(Ball.math.divide$if_true0)
+// push constant 10
+   @10
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 4
+   @4
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// goto if_end0
+   @Ball.math.divide$if_end0
+   0;JMP
+// label if_false0
+(Ball.math.divide$if_false0)
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @RET_ADDRESS_LT8
+   D=A
+   @GLOBAL_LT
+   0;JMP
+(RET_ADDRESS_LT8)
+// not
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=!D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push argument 1
+   @1
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// eq
+   @RET_ADDRESS_EQ1
+   D=A
+   @GLOBAL_EQ
+   0;JMP
+(RET_ADDRESS_EQ1)
+// and
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A&D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @RET_ADDRESS_LT9
+   D=A
+   @GLOBAL_LT
+   0;JMP
+(RET_ADDRESS_LT9)
+// push argument 1
+   @1
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// neg
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// eq
+   @RET_ADDRESS_EQ2
+   D=A
+   @GLOBAL_EQ
+   0;JMP
+(RET_ADDRESS_EQ2)
+// and
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A&D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// or
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A|D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto if_true1
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.math.divide$if_true1
+   D;JNE
+// goto if_false1
+   @Ball.math.divide$if_false1
+   0;JMP
+// label if_true1
+(Ball.math.divide$if_true1)
+// push constant 20
+   @20
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 4
+   @4
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// goto if_end1
+   @Ball.math.divide$if_end1
+   0;JMP
+// label if_false1
+(Ball.math.divide$if_false1)
+// push constant 5
+   @5
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 4
+   @4
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// label if_end1
+(Ball.math.divide$if_end1)
+// label if_end0
+(Ball.math.divide$if_end0)
+// push this 14
+   @14
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// eq
+   @RET_ADDRESS_EQ3
+   D=A
+   @GLOBAL_EQ
+   0;JMP
+(RET_ADDRESS_EQ3)
+// if-goto if_true2
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.math.divide$if_true2
+   D;JNE
+// goto if_false2
+   @Ball.math.divide$if_false2
+   0;JMP
+// label if_true2
+(Ball.math.divide$if_true2)
+// push constant 506
+   @506
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push local 3
+   @3
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 50
+   @50
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// neg
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.multiply 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.multiply
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL19
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL19)
+// push local 2
+   @2
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.divide 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.divide
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL20
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL20)
+// pop local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 4
+   @4
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.multiply 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.multiply
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL21
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL21)
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// goto if_end2
+   @Ball.math.multiply$if_end2
+   0;JMP
+// label if_false2
+(Ball.math.multiply$if_false2)
+// push this 14
+   @14
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 2
+   @2
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// eq
+   @RET_ADDRESS_EQ4
+   D=A
+   @GLOBAL_EQ
+   0;JMP
+(RET_ADDRESS_EQ4)
+// if-goto if_true3
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.math.multiply$if_true3
+   D;JNE
+// goto if_false3
+   @Ball.math.multiply$if_false3
+   0;JMP
+// label if_true3
+(Ball.math.multiply$if_true3)
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push local 3
+   @3
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 50
+   @50
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.multiply 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.multiply
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL22
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL22)
+// push local 2
+   @2
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.divide 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.divide
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL23
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL23)
+// pop local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 4
+   @4
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.multiply 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.multiply
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL24
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL24)
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// goto if_end3
+   @Ball.math.multiply$if_end3
+   0;JMP
+// label if_false3
+(Ball.math.multiply$if_false3)
+// push this 14
+   @14
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 3
+   @3
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// eq
+   @RET_ADDRESS_EQ5
+   D=A
+   @GLOBAL_EQ
+   0;JMP
+(RET_ADDRESS_EQ5)
+// if-goto if_true4
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Ball.math.multiply$if_true4
+   D;JNE
+// goto if_false4
+   @Ball.math.multiply$if_false4
+   0;JMP
+// label if_true4
+(Ball.math.multiply$if_true4)
+// push constant 250
+   @250
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push local 2
+   @2
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 25
+   @25
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// neg
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.multiply 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.multiply
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL25
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL25)
+// push local 3
+   @3
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.divide 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.divide
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL26
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL26)
+// pop local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 4
+   @4
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.multiply 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.multiply
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL27
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL27)
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// goto if_end4
+   @Ball.math.multiply$if_end4
+   0;JMP
+// label if_false4
+(Ball.math.multiply$if_false4)
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push local 2
+   @2
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 25
+   @25
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.multiply 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.multiply
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL28
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL28)
+// push local 3
+   @3
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.divide 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.divide
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL29
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL29)
+// pop local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 4
+   @4
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call math.multiply 2
+   @2
+   D=A
+   @R13
+   M=D
+   @math.multiply
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL30
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL30)
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// label if_end4
+(Ball.math.multiply$if_end4)
+// label if_end3
+(Ball.math.multiply$if_end3)
+// label if_end2
+(Ball.math.multiply$if_end2)
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ball.setdestination 3
+   @3
+   D=A
+   @R13
+   M=D
+   @ball.setdestination
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL31
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL31)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// New File: PongGame
+// function ponggame.new 0
+(ponggame.new)
+   @SP
+   A=M
+// push constant 7
+   @7
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call memory.alloc 1
+   @1
+   D=A
+   @R13
+   M=D
+   @memory.alloc
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL32
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL32)
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// call screen.clearscreen 0
+   @0
+   D=A
+   @R13
+   M=D
+   @screen.clearscreen
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL33
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL33)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 50
+   @50
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 6
+   @6
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push constant 230
+   @230
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 229
+   @229
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 6
+   @6
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 7
+   @7
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call bat.new 4
+   @4
+   D=A
+   @R13
+   M=D
+   @bat.new
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL34
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL34)
+// pop this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push constant 253
+   @253
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 222
+   @222
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 511
+   @511
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 229
+   @229
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ball.new 6
+   @6
+   D=A
+   @R13
+   M=D
+   @ball.new
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL35
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL35)
+// pop this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 400
+   @400
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ball.setdestination 3
+   @3
+   D=A
+   @R13
+   M=D
+   @ball.setdestination
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL36
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL36)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 238
+   @238
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 511
+   @511
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 240
+   @240
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call screen.drawrectangle 4
+   @4
+   D=A
+   @R13
+   M=D
+   @screen.drawrectangle
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL37
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL37)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 22
+   @22
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call output.movecursor 2
+   @2
+   D=A
+   @R13
+   M=D
+   @output.movecursor
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL38
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL38)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 8
+   @8
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.new 1
+   @1
+   D=A
+   @R13
+   M=D
+   @string.new
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL39
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL39)
+// push constant 83
+   @83
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL40
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL40)
+// push constant 99
+   @99
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL41
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL41)
+// push constant 111
+   @111
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL42
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL42)
+// push constant 114
+   @114
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL43
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL43)
+// push constant 101
+   @101
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL44
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL44)
+// push constant 58
+   @58
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL45
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL45)
+// push constant 32
+   @32
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL46
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL46)
+// push constant 48
+   @48
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL47
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL47)
+// call output.printstring 1
+   @1
+   D=A
+   @R13
+   M=D
+   @output.printstring
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL48
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL48)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 4
+   @4
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 5
+   @5
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function ponggame.dispose 0
+(ponggame.dispose)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call bat.dispose 1
+   @1
+   D=A
+   @R13
+   M=D
+   @bat.dispose
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL49
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL49)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ball.dispose 1
+   @1
+   D=A
+   @R13
+   M=D
+   @ball.dispose
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL50
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL50)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call memory.dealloc 1
+   @1
+   D=A
+   @R13
+   M=D
+   @memory.dealloc
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL51
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL51)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function ponggame.newinstance 0
+(ponggame.newinstance)
+   @SP
+   A=M
+// call ponggame.new 0
+   @0
+   D=A
+   @R13
+   M=D
+   @ponggame.new
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL52
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL52)
+// pop static 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @PongGame.0
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function ponggame.getinstance 0
+(ponggame.getinstance)
+   @SP
+   A=M
+// push static 0
+   @PongGame.0
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function ponggame.run 1
+(ponggame.run)
+   @SP
+   A=M
+   D=0
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// label while_start0
+(PongGame.ponggame.new$while_start0)
+// push this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// not
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=!D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto while_true0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @PongGame.ponggame.new$while_true0
+   D;JNE
+// goto while_end0
+   @PongGame.ponggame.new$while_end0
+   0;JMP
+// label while_true0
+(PongGame.ponggame.new$while_true0)
+// label while_start1
+(PongGame.ponggame.new$while_start1)
+// push local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// eq
+   @RET_ADDRESS_EQ6
+   D=A
+   @GLOBAL_EQ
+   0;JMP
+(RET_ADDRESS_EQ6)
+// push this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// not
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=!D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// and
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A&D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto while_true1
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @PongGame.ponggame.new$while_true1
+   D;JNE
+// goto while_end1
+   @PongGame.ponggame.new$while_end1
+   0;JMP
+// label while_true1
+(PongGame.ponggame.new$while_true1)
+// call keyboard.keypressed 0
+   @0
+   D=A
+   @R13
+   M=D
+   @keyboard.keypressed
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL53
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL53)
+// pop local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call bat.move 1
+   @1
+   D=A
+   @R13
+   M=D
+   @bat.move
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL54
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL54)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ponggame.moveball 1
+   @1
+   D=A
+   @R13
+   M=D
+   @ponggame.moveball
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL55
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL55)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 50
+   @50
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call sys.wait 1
+   @1
+   D=A
+   @R13
+   M=D
+   @sys.wait
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL56
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL56)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// goto while_start1
+   @PongGame.sys.wait$while_start1
+   0;JMP
+// label while_end1
+(PongGame.sys.wait$while_end1)
+// push local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 130
+   @130
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// eq
+   @RET_ADDRESS_EQ7
+   D=A
+   @GLOBAL_EQ
+   0;JMP
+(RET_ADDRESS_EQ7)
+// if-goto if_true0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @PongGame.sys.wait$if_true0
+   D;JNE
+// goto if_false0
+   @PongGame.sys.wait$if_false0
+   0;JMP
+// label if_true0
+(PongGame.sys.wait$if_true0)
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call bat.setdirection 2
+   @2
+   D=A
+   @R13
+   M=D
+   @bat.setdirection
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL57
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL57)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// goto if_end0
+   @PongGame.bat.setdirection$if_end0
+   0;JMP
+// label if_false0
+(PongGame.bat.setdirection$if_false0)
+// push local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 132
+   @132
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// eq
+   @RET_ADDRESS_EQ8
+   D=A
+   @GLOBAL_EQ
+   0;JMP
+(RET_ADDRESS_EQ8)
+// if-goto if_true1
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @PongGame.bat.setdirection$if_true1
+   D;JNE
+// goto if_false1
+   @PongGame.bat.setdirection$if_false1
+   0;JMP
+// label if_true1
+(PongGame.bat.setdirection$if_true1)
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 2
+   @2
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call bat.setdirection 2
+   @2
+   D=A
+   @R13
+   M=D
+   @bat.setdirection
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL58
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL58)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// goto if_end1
+   @PongGame.bat.setdirection$if_end1
+   0;JMP
+// label if_false1
+(PongGame.bat.setdirection$if_false1)
+// push local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 140
+   @140
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// eq
+   @RET_ADDRESS_EQ9
+   D=A
+   @GLOBAL_EQ
+   0;JMP
+(RET_ADDRESS_EQ9)
+// if-goto if_true2
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @PongGame.bat.setdirection$if_true2
+   D;JNE
+// goto if_false2
+   @PongGame.bat.setdirection$if_false2
+   0;JMP
+// label if_true2
+(PongGame.bat.setdirection$if_true2)
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// neg
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// label if_false2
+(PongGame.bat.setdirection$if_false2)
+// label if_end1
+(PongGame.bat.setdirection$if_end1)
+// label if_end0
+(PongGame.bat.setdirection$if_end0)
+// label while_start2
+(PongGame.bat.setdirection$while_start2)
+// push local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// eq
+   @RET_ADDRESS_EQ10
+   D=A
+   @GLOBAL_EQ
+   0;JMP
+(RET_ADDRESS_EQ10)
+// not
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=!D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// not
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=!D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// and
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A&D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto while_true2
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @PongGame.bat.setdirection$while_true2
+   D;JNE
+// goto while_end2
+   @PongGame.bat.setdirection$while_end2
+   0;JMP
+// label while_true2
+(PongGame.bat.setdirection$while_true2)
+// call keyboard.keypressed 0
+   @0
+   D=A
+   @R13
+   M=D
+   @keyboard.keypressed
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL59
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL59)
+// pop local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call bat.move 1
+   @1
+   D=A
+   @R13
+   M=D
+   @bat.move
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL60
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL60)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ponggame.moveball 1
+   @1
+   D=A
+   @R13
+   M=D
+   @ponggame.moveball
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL61
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL61)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 50
+   @50
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call sys.wait 1
+   @1
+   D=A
+   @R13
+   M=D
+   @sys.wait
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL62
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL62)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// goto while_start2
+   @PongGame.sys.wait$while_start2
+   0;JMP
+// label while_end2
+(PongGame.sys.wait$while_end2)
+// goto while_start0
+   @PongGame.sys.wait$while_start0
+   0;JMP
+// label while_end0
+(PongGame.sys.wait$while_end0)
+// push this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto if_true3
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @PongGame.sys.wait$if_true3
+   D;JNE
+// goto if_false3
+   @PongGame.sys.wait$if_false3
+   0;JMP
+// label if_true3
+(PongGame.sys.wait$if_true3)
+// push constant 10
+   @10
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 27
+   @27
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call output.movecursor 2
+   @2
+   D=A
+   @R13
+   M=D
+   @output.movecursor
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL63
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL63)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 9
+   @9
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.new 1
+   @1
+   D=A
+   @R13
+   M=D
+   @string.new
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL64
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL64)
+// push constant 71
+   @71
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL65
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL65)
+// push constant 97
+   @97
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL66
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL66)
+// push constant 109
+   @109
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL67
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL67)
+// push constant 101
+   @101
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL68
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL68)
+// push constant 32
+   @32
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL69
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL69)
+// push constant 79
+   @79
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL70
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL70)
+// push constant 118
+   @118
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL71
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL71)
+// push constant 101
+   @101
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL72
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL72)
+// push constant 114
+   @114
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call string.appendchar 2
+   @2
+   D=A
+   @R13
+   M=D
+   @string.appendchar
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL73
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL73)
+// call output.printstring 1
+   @1
+   D=A
+   @R13
+   M=D
+   @output.printstring
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL74
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL74)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// label if_false3
+(PongGame.output.printstring$if_false3)
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function ponggame.moveball 5
+(ponggame.moveball)
+   @SP
+   A=M
+   D=0
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   D=0
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   D=0
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   D=0
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+   D=0
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ball.move 1
+   @1
+   D=A
+   @R13
+   M=D
+   @ball.move
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL75
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL75)
+// pop this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// gt
+   @RET_ADDRESS_GT2
+   D=A
+   @GLOBAL_GT
+   0;JMP
+(RET_ADDRESS_GT2)
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 5
+   @5
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// eq
+   @RET_ADDRESS_EQ11
+   D=A
+   @GLOBAL_EQ
+   0;JMP
+(RET_ADDRESS_EQ11)
+// not
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=!D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// and
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A&D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto if_true0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @PongGame.ball.move$if_true0
+   D;JNE
+// goto if_false0
+   @PongGame.ball.move$if_false0
+   0;JMP
+// label if_true0
+(PongGame.ball.move$if_true0)
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 5
+   @5
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call bat.getleft 1
+   @1
+   D=A
+   @R13
+   M=D
+   @bat.getleft
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL76
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL76)
+// pop local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call bat.getright 1
+   @1
+   D=A
+   @R13
+   M=D
+   @bat.getright
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL77
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL77)
+// pop local 2
+   @2
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ball.getleft 1
+   @1
+   D=A
+   @R13
+   M=D
+   @ball.getleft
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL78
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL78)
+// pop local 3
+   @3
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ball.getright 1
+   @1
+   D=A
+   @R13
+   M=D
+   @ball.getright
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL79
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL79)
+// pop local 4
+   @4
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// eq
+   @RET_ADDRESS_EQ12
+   D=A
+   @GLOBAL_EQ
+   0;JMP
+(RET_ADDRESS_EQ12)
+// if-goto if_true1
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @PongGame.ball.getright$if_true1
+   D;JNE
+// goto if_false1
+   @PongGame.ball.getright$if_false1
+   0;JMP
+// label if_true1
+(PongGame.ball.getright$if_true1)
+// push local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 4
+   @4
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// gt
+   @RET_ADDRESS_GT3
+   D=A
+   @GLOBAL_GT
+   0;JMP
+(RET_ADDRESS_GT3)
+// push local 2
+   @2
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 3
+   @3
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @RET_ADDRESS_LT10
+   D=A
+   @GLOBAL_LT
+   0;JMP
+(RET_ADDRESS_LT10)
+// or
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A|D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// not
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=!D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// if-goto if_true2
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @PongGame.ball.getright$if_true2
+   D;JNE
+// goto if_false2
+   @PongGame.ball.getright$if_false2
+   0;JMP
+// label if_true2
+(PongGame.ball.getright$if_true2)
+// push local 4
+   @4
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 1
+   @1
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 10
+   @10
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @RET_ADDRESS_LT11
+   D=A
+   @GLOBAL_LT
+   0;JMP
+(RET_ADDRESS_LT11)
+// if-goto if_true3
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @PongGame.ball.getright$if_true3
+   D;JNE
+// goto if_false3
+   @PongGame.ball.getright$if_false3
+   0;JMP
+// label if_true3
+(PongGame.ball.getright$if_true3)
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// neg
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// goto if_end3
+   @PongGame.ball.getright$if_end3
+   0;JMP
+// label if_false3
+(PongGame.ball.getright$if_false3)
+// push local 3
+   @3
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 2
+   @2
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 10
+   @10
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// gt
+   @RET_ADDRESS_GT4
+   D=A
+   @GLOBAL_GT
+   0;JMP
+(RET_ADDRESS_GT4)
+// if-goto if_true4
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @PongGame.ball.getright$if_true4
+   D;JNE
+// goto if_false4
+   @PongGame.ball.getright$if_false4
+   0;JMP
+// label if_true4
+(PongGame.ball.getright$if_true4)
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// label if_false4
+(PongGame.ball.getright$if_false4)
+// label if_end3
+(PongGame.ball.getright$if_end3)
+// push this 6
+   @6
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 2
+   @2
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 6
+   @6
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 6
+   @6
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call bat.setwidth 2
+   @2
+   D=A
+   @R13
+   M=D
+   @bat.setwidth
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL80
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL80)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push this 4
+   @4
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 4
+   @4
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push constant 22
+   @22
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 7
+   @7
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call output.movecursor 2
+   @2
+   D=A
+   @R13
+   M=D
+   @output.movecursor
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL81
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL81)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push this 4
+   @4
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call output.printint 1
+   @1
+   D=A
+   @R13
+   M=D
+   @output.printint
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL82
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL82)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// label if_false2
+(PongGame.output.printint$if_false2)
+// label if_false1
+(PongGame.output.printint$if_false1)
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ball.bounce 2
+   @2
+   D=A
+   @R13
+   M=D
+   @ball.bounce
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL83
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL83)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// label if_false0
+(PongGame.ball.bounce$if_false0)
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// New File: Main
+// function main.main 1
+(main.main)
+   @SP
+   A=M
+   D=0
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ponggame.newinstance 0
+   @0
+   D=A
+   @R13
+   M=D
+   @ponggame.newinstance
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL84
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL84)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// call ponggame.getinstance 0
+   @0
+   D=A
+   @R13
+   M=D
+   @ponggame.getinstance
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL85
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL85)
+// pop local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ponggame.run 1
+   @1
+   D=A
+   @R13
+   M=D
+   @ponggame.run
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL86
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL86)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push local 0
+   @0
+   D=A
+   @index
+   M=D
+   @LCL
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call ponggame.dispose 1
+   @1
+   D=A
+   @R13
+   M=D
+   @ponggame.dispose
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL87
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL87)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// New File: Bat
+// function bat.new 0
+(bat.new)
+   @SP
+   A=M
+// push constant 5
+   @5
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call memory.alloc 1
+   @1
+   D=A
+   @R13
+   M=D
+   @memory.alloc
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL88
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL88)
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push argument 1
+   @1
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push argument 2
+   @2
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push argument 3
+   @3
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push constant 2
+   @2
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 4
+   @4
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call bat.show 1
+   @1
+   D=A
+   @R13
+   M=D
+   @bat.show
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL89
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL89)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function bat.dispose 0
+(bat.dispose)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call memory.dealloc 1
+   @1
+   D=A
+   @R13
+   M=D
+   @memory.dealloc
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL90
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL90)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function bat.show 0
+(bat.show)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// neg
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call screen.setcolor 1
+   @1
+   D=A
+   @R13
+   M=D
+   @screen.setcolor
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL91
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL91)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call bat.draw 1
+   @1
+   D=A
+   @R13
+   M=D
+   @bat.draw
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL92
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL92)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function bat.hide 0
+(bat.hide)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call screen.setcolor 1
+   @1
+   D=A
+   @R13
+   M=D
+   @screen.setcolor
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL93
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL93)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call bat.draw 1
+   @1
+   D=A
+   @R13
+   M=D
+   @bat.draw
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL94
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL94)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function bat.draw 0
+(bat.draw)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call screen.drawrectangle 4
+   @4
+   D=A
+   @R13
+   M=D
+   @screen.drawrectangle
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL95
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL95)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function bat.setdirection 0
+(bat.setdirection)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push argument 1
+   @1
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 4
+   @4
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function bat.getleft 0
+(bat.getleft)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function bat.getright 0
+(bat.getright)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function bat.setwidth 0
+(bat.setwidth)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call bat.hide 1
+   @1
+   D=A
+   @R13
+   M=D
+   @bat.hide
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL96
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL96)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push argument 1
+   @1
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push pointer 0
+   @THIS
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call bat.show 1
+   @1
+   D=A
+   @R13
+   M=D
+   @bat.show
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL97
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL97)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+// function bat.move 0
+(bat.move)
+   @SP
+   A=M
+// push argument 0
+   @0
+   D=A
+   @index
+   M=D
+   @ARG
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop pointer 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @THIS
+   M=D
+// push this 4
+   @4
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// eq
+   @RET_ADDRESS_EQ13
+   D=A
+   @GLOBAL_EQ
+   0;JMP
+(RET_ADDRESS_EQ13)
+// if-goto if_true0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Bat.bat.show$if_true0
+   D;JNE
+// goto if_false0
+   @Bat.bat.show$if_false0
+   0;JMP
+// label if_true0
+(Bat.bat.show$if_true0)
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// lt
+   @RET_ADDRESS_LT12
+   D=A
+   @GLOBAL_LT
+   0;JMP
+(RET_ADDRESS_LT12)
+// if-goto if_true1
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Bat.bat.show$if_true1
+   D;JNE
+// goto if_false1
+   @Bat.bat.show$if_false1
+   0;JMP
+// label if_true1
+(Bat.bat.show$if_true1)
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// label if_false1
+(Bat.bat.show$if_false1)
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call screen.setcolor 1
+   @1
+   D=A
+   @R13
+   M=D
+   @screen.setcolor
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL98
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL98)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call screen.drawrectangle 4
+   @4
+   D=A
+   @R13
+   M=D
+   @screen.drawrectangle
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL99
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL99)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// neg
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call screen.setcolor 1
+   @1
+   D=A
+   @R13
+   M=D
+   @screen.setcolor
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL100
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL100)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 3
+   @3
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call screen.drawrectangle 4
+   @4
+   D=A
+   @R13
+   M=D
+   @screen.drawrectangle
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL101
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL101)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// goto if_end0
+   @Bat.screen.drawrectangle$if_end0
+   0;JMP
+// label if_false0
+(Bat.screen.drawrectangle$if_false0)
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 511
+   @511
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// gt
+   @RET_ADDRESS_GT5
+   D=A
+   @GLOBAL_GT
+   0;JMP
+(RET_ADDRESS_GT5)
+// if-goto if_true2
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @Bat.screen.drawrectangle$if_true2
+   D;JNE
+// goto if_false2
+   @Bat.screen.drawrectangle$if_false2
+   0;JMP
+// label if_true2
+(Bat.screen.drawrectangle$if_true2)
+// push constant 511
+   @511
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// pop this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   D=D+M
+   @addr
+   M=D
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @addr
+   A=M
+   M=D
+// label if_false2
+(Bat.screen.drawrectangle$if_false2)
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call screen.setcolor 1
+   @1
+   D=A
+   @R13
+   M=D
+   @screen.setcolor
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL102
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL102)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 4
+   @4
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call screen.drawrectangle 4
+   @4
+   D=A
+   @R13
+   M=D
+   @screen.drawrectangle
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL103
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL103)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push constant 1
+   @1
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// neg
+   @SP
+   M=M-1
+   A=M
+   D=M
+   D=-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call screen.setcolor 1
+   @1
+   D=A
+   @R13
+   M=D
+   @screen.setcolor
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL104
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL104)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push constant 3
+   @3
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// sub
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A-D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 0
+   @0
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 2
+   @2
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 1
+   @1
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// push this 3
+   @3
+   D=A
+   @index
+   M=D
+   @THIS
+   D=M
+   @index
+   A=D+M
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// add
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @SP
+   M=M-1
+   A=M
+   A=M
+   D=A+D
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// call screen.drawrectangle 4
+   @4
+   D=A
+   @R13
+   M=D
+   @screen.drawrectangle
+   D=A
+   @R14
+   M=D
+   @RET_ADDRESS_CALL105
+   D=A
+   @SAVE_CALLER_STATE
+   0;JMP
+(RET_ADDRESS_CALL105)
+// pop temp 0
+   @SP
+   M=M-1
+   A=M
+   D=M
+   @5
+   M=D
+// label if_end0
+(Bat.screen.drawrectangle$if_end0)
+// push constant 0
+   @0
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+// Return
+   @RETURN
+   0;JMP
+(END)
+   @END
+   0;JMP

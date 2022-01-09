@@ -1,4 +1,5 @@
 """ Main file for VM Translator from Nand2Tetris"""
+import sys
 from typing import TextIO
 from VMParser import Parser
 from Commands import CommandType
@@ -50,7 +51,8 @@ def main(in_file: TextIO, writer: CodeWriter):
 def validate_push_pop(parser: Parser):
     if parser.arg1() not in Segments.values:
         raise ValueError(
-            f"Invalid segment in command: {parser.current_command}", f"Valid segments: {Segments.values}")
+            f"Invalid segment in command: {parser.current_command}",
+            f"Valid segments: {Segments.values}")
 
     try:
         index = int(parser.arg2())
@@ -83,8 +85,13 @@ def sign(x: int):
 def get_paths(in_path):
     if path.isdir(in_path):
         # get all paths to the .vm files in this directory
-        file_paths = [path.join(in_path, f) for f in listdir(in_path)
-                      if path.isfile(path.join(in_path, f)) and path.splitext(f)[1] == '.vm']
+        file_paths = [
+            path.join(
+                in_path,
+                f) for f in listdir(in_path) if path.isfile(
+                path.join(
+                    in_path,
+                    f)) and path.splitext(f)[1] == '.vm']
 
         dirname = path.split(in_path)[1]
         out_path = path.join(in_path, dirname + '.asm')
@@ -101,7 +108,7 @@ if __name__ == "__main__":
     simple = f'{proj8_path}'
 
     in_path = f'{simple}'
-    (vm_file_paths, out_path) = get_paths(in_path)
+    (vm_file_paths, out_path) = get_paths(sys.argv[1])
 
     print(f'{vm_file_paths = }\n{out_path = }')
 

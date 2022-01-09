@@ -62,6 +62,9 @@ class JSymbolTable:
         """
         self.locals.clear()
 
+    def exists(self, name: str) -> bool:
+        return any(sym.name == name for sym in self.locals + self.globals)
+
     def get(self, name: str) -> JSymbol:
         """helper function to get a symbol by name
         start searching locals first, then globals"""

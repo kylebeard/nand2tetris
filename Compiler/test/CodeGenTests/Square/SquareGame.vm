@@ -75,23 +75,25 @@ push argument 0
 pop pointer 0
 push constant 0
 pop local 1
-label WHILE_EXP0
+label WHILE_START0
 push local 1
 not
-not
-if-goto WHILE_END0
-label WHILE_EXP1
+if-goto WHILE_TRUE0
+goto WHILE_END0
+label WHILE_TRUE0
+label WHILE_START1
 push local 0
 push constant 0
 eq
-not
-if-goto WHILE_END1
+if-goto WHILE_TRUE1
+goto WHILE_END1
+label WHILE_TRUE1
 call Keyboard.keyPressed 0
 pop local 0
 push pointer 0
 call SquareGame.moveSquare 1
 pop temp 0
-goto WHILE_EXP1
+goto WHILE_START1
 label WHILE_END1
 push local 0
 push constant 81
@@ -99,8 +101,8 @@ eq
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push constant 0
-not
+push constant 1
+neg
 pop local 1
 label IF_FALSE0
 push local 0
@@ -159,21 +161,22 @@ label IF_TRUE6
 push constant 4
 pop this 1
 label IF_FALSE6
-label WHILE_EXP2
+label WHILE_START2
 push local 0
 push constant 0
 eq
 not
-not
-if-goto WHILE_END2
+if-goto WHILE_TRUE2
+goto WHILE_END2
+label WHILE_TRUE2
 call Keyboard.keyPressed 0
 pop local 0
 push pointer 0
 call SquareGame.moveSquare 1
 pop temp 0
-goto WHILE_EXP2
+goto WHILE_START2
 label WHILE_END2
-goto WHILE_EXP0
+goto WHILE_START0
 label WHILE_END0
 push constant 0
 return

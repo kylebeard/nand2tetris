@@ -96,21 +96,30 @@ class CompliationEngine:
         self.eat(CONSTRUCTOR, FUNCTION, METHOD)
         self.eat(VOID, *var_types)
 
-        print(f'Compiling `{self.token}` subroutine... ')
-        self.curr_func = CurrFunc(func_kind, self.token)
+        print(f'Compiling {self.token}() ... ')
+
+        self.curr_func = CurrFunc(kind=func_kind, name=self.token)
         self.eat(TokenType.IDENTIFIER)
         self.eat('(')
         self.compile_paramList()
         self.eat(')')
+
         self.compile_subroutineBody()
         self.curr_func = CurrFunc('', '')
-        print('subroutine compilation finished.')
+        # print('subroutine compilation finished.')
 
     @grammar_rule(PARAMETER_LIST)
     def compile_paramList(self) -> None:
         """
         grammer: ( (type varName) (',' type varName)*)?
         """
+        if self.curr_func.kind == METHOD:
+            # first argument to a method is always 'this'
+            # (the object on which this method is called)
+            # we never actually access 'this' through the symbol table
+            # but I add it to keep the indices of the arguments correct
+            self.def_symbol('this', self.classname, VarKind.ARGUMENT)
+
         # no parameter list
         if self.token == ')':
             return
@@ -133,14 +142,22 @@ class CompliationEngine:
         """
         self.eat('{')
         while self.token == VAR:
+            # doesn't generate any code, just add them to the symbol table
             self.compile_varDec()
 
         nlocals = self.sym_table.var_count(VarKind.VAR)
-        if self.curr_func is None:
-            self.error('curr_func is empty in compile_subroutineBody')
-
         full_name = f'{self.classname}.{self.curr_func.name}'
         self.writer.write_function(full_name, nlocals)
+
+        if self.curr_func.kind == CONSTRUCTOR:
+            object_size = self.sym_table.var_count(VarKind.FIELD)
+            self.writer.write_push(Segment.Constant, object_size)
+            self.writer.write_call('Memory.alloc', 1)
+            self.writer.write_pop(Segment.Pointer, 0)
+        elif self.curr_func.kind == METHOD:
+            # 'this' is always passed as the first argument
+            self.writer.write_push(Segment.Argument, 0)
+            self.writer.write_pop(Segment.Pointer, 0)
         self.compile_statements()
 
         self.eat('}')
@@ -178,18 +195,24 @@ class CompliationEngine:
     @grammar_rule(LET_STATEMENT)
     def compile_let(self) -> None:
         self.eat(LET)
-        var = self.token
+        sym = self.sym_table.get(self.token)
         self.eat(TokenType.IDENTIFIER)
 
         if self.maybe_eat('['):
-            raise NotImplementedError('arrays not implemented')
+            self.writer.write_push(sym.kind.value, sym.index)
             self.compile_expr()
             self.eat(']')
-
-        self.eat('=')
-        self.compile_expr()
-        sym = self.sym_table.get(var)
-        self.writer.write_pop(sym.kind.value, sym.index)
+            self.writer.write_arithmetic(ArithmeticCommand.ADD)
+            self.eat('=')
+            self.compile_expr()
+            self.writer.write_pop(Segment.Temp, 0)
+            self.writer.write_pop(Segment.Pointer, 1)
+            self.writer.write_push(Segment.Temp, 0)
+            self.writer.write_pop(Segment.That, 0)
+        else:
+            self.eat('=')
+            self.compile_expr()
+            self.writer.write_pop(sym.kind.value, sym.index)
 
         self.eat(';')
 
@@ -328,7 +351,14 @@ class CompliationEngine:
             self.writer.write_push(Segment.Constant, int(self.token))
             self.advance()
         elif self.token_type == TokenType.STR_CONST:
-            raise NotImplementedError('STR_CONST not implemented yet.')
+            string_length = len(self.token)
+            self.writer.write_push(Segment.Constant, string_length)
+            self.writer.write_call('String.new', 1)
+            for char in self.token:
+                char_code = ord(char)
+                self.writer.write_push(Segment.Constant, char_code)
+                self.writer.write_call('String.appendChar', 2)
+            self.advance()
         elif self.token in keyword_constants:
             if self.token == TRUE:
                 self.writer.write_push(Segment.Constant, 1)
@@ -336,7 +366,7 @@ class CompliationEngine:
             elif self.token in (FALSE, NULL):
                 self.writer.write_push(Segment.Constant, 0)
             elif self.token == THIS:
-                raise NotImplementedError('"this" keyword not implemented yet.')
+                self.writer.write_push(Segment.Pointer, 0)
             self.advance()
         elif self.maybe_eat('('):
             self.compile_expr()
@@ -360,10 +390,14 @@ class CompliationEngine:
 
             self.advance()
             if self.token == '[':
-                raise NotImplementedError('arrays not implemented')
                 self.eat('[')
+                sym = self.sym_table.get(name)
+                self.writer.write_push(sym.kind.value, sym.index)
                 self.compile_expr()
                 self.eat(']')
+                self.writer.write_arithmetic(ArithmeticCommand.ADD)
+                self.writer.write_pop(Segment.Pointer, 1)
+                self.writer.write_push(Segment.That, 0)
             elif self.token in ('.', '('):
                 self.compile_subroutineCall(name)
             else:  # otherwise it's just a plain varName
@@ -375,16 +409,31 @@ class CompliationEngine:
         subroutineName '(' expressionList ')'
         | (className| varName) '.' subroutineName '(' expressionList ')'
         """
+        nargs = 0
         if self.maybe_eat('.'):
-            name += f'.{self.token}'
+            if self.sym_table.exists(
+                    name):  # method call e.g. obj.method(arg1,...)
+                sym = self.sym_table.get(name)
+                # push the object as the first argument
+                self.writer.write_push(sym.kind.value, sym.index)
+                nargs = 1
+                name = f'{sym.type}.{self.token}'
+            else:  # function or constructor call
+                name += f'.{self.token}'
+
             self.eat(TokenType.IDENTIFIER)
+        # method call from within the class (implicit 'this.') e.g. do draw();
+        else:
+            self.writer.write_push(Segment.Pointer, 0)
+            nargs = 1
+            name = f'{self.classname}.{name}'
 
         self.eat('(')
-        nargs = self.compile_exprList()
+        nargs += self.compile_exprList()
         self.eat(')')
         self.writer.write_call(name, nargs)
 
-    @grammar_rule(EXPRESSIONLIST)
+    @ grammar_rule(EXPRESSIONLIST)
     def compile_exprList(self) -> int:
         """(expression (',' expression)* )?"""
         if self.token == ')':
@@ -455,14 +504,6 @@ class CompliationEngine:
     def def_symbol(self, name, typee, kind) -> int:
         self.sym_table.define(name, typee, kind)
         return self.sym_table.index_of(name)
-
-
-class Dummy:
-    def __init__(self) -> None:
-        self.x = '1'
-
-    def amethod(self) -> None:
-        print('amethod')
 
 
 def mock(e: str):
