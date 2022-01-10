@@ -6,7 +6,7 @@ from os import path, listdir
 from VMWriter import VMWriter
 if len(sys.argv) != 2:
     raise Exception(
-        'Usage: JackCompiler.py (file.jack|directory with .jack files)')
+        'Usage: JackCompiler.py (file.jack or directory with .jack files)')
 
 
 def get_paths(in_path) -> Tuple[List[str], List[str]]:
@@ -35,6 +35,5 @@ for inpath, outpath in zip(in_paths, out_paths):
             writer = VMWriter(outfile)
             engine = CompliationEngine(tokenizer, writer)
             engine.compile_class()
-            writer.close()
 
     print(f'done. Output is in {outpath}')

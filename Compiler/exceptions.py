@@ -5,3 +5,7 @@ class JackSyntaxError(Exception):
 
 class JackVariableNotFoundError(Exception):
     """Exception for use of an undefined variable."""
+
+
+class JackError(Exception):
+    """"""

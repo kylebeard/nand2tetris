@@ -1,6 +1,6 @@
 from typing import List, NoReturn
 from enum import Enum
-from exceptions import JackVariableNotFoundError
+from exceptions import JackError
 from Segment import Segment
 
 
@@ -20,7 +20,7 @@ class IdentifierKind(Enum):
     STATIC = 'static'
     FIELD = 'field'
     CLASS = 'class'
-#   SUBROUTINE = 'subroutine'
+    #   SUBROUTINE = 'subroutine'
     FUNCTION = 'function'
     METHOD = 'method'
     CONSTRUCTOR = 'constructor'
@@ -45,6 +45,14 @@ class JSymbol:
     def __str__(self) -> str:
         return f'JSymbol({self.name}, {self.type}, {self.kind}, {self.index})'
 
+    def __eq__(self, __o) -> bool:
+        locls = [VarKind.VAR, VarKind.ARGUMENT]
+        globls = [VarKind.FIELD, VarKind.STATIC]
+        both_local = self.kind in locls and __o.kind in locls
+        both_global = self.kind in globls and __o.kind in globls
+        same_name = self.name == __o.name
+        return (both_local or both_global) and same_name
+
 
 class JSymbolTable:
     def __init__(self) -> None:
@@ -52,13 +60,11 @@ class JSymbolTable:
         self.locals: List[JSymbol] = []
 
     def symbols(self) -> List[JSymbol]:
-        return self.globals + self.locals
+        return self.locals + self.globals
 
     def start_subroutine(self) -> None:
         """
-        Starts a new subroutine scope
-        (i.e., resets the subroutine's
-        symbol table).
+        Starts a new subroutine scope (i.e., resets the local symbol table).
         """
         self.locals.clear()
 
@@ -66,25 +72,25 @@ class JSymbolTable:
         return any(sym.name == name for sym in self.locals + self.globals)
 
     def get(self, name: str) -> JSymbol:
-        """helper function to get a symbol by name
-        start searching locals first, then globals"""
+        """
+        returns the JSymbol associated with 'name'
+        raises an exception if no symbol is found
+        """
         for sym in self.locals + self.globals:
             if sym.name == name:
                 return sym
-        self.error('variable {name} not found')
+        self.error(f'variable {name} not found')
 
     def define(self, name: str, type_: str, kind: VarKind) -> None:
         """
-        Defines a new identifier of the
-        given name, type, and kind,
-        and assigns it a running index.
-        STATIC and FIELD identifiers
-        have a class scope, while ARG
-        and VAR identifiers have a
-        subroutine scope.
+        Defines a new identifier of the given name, type, and kind,
+        and assigns it a running index. STATIC and FIELD identifiers have a class scope,
+        while ARG and VAR identifiers have a subroutine scope.
         """
         index = self.var_count(kind)
         new_symbol = JSymbol(name, type_, kind, index)
+        if new_symbol in self.symbols():
+            self.error(f'{name} is already defined')
 
         if kind in (VarKind.VAR, VarKind.ARGUMENT):
             self.locals.append(new_symbol)
@@ -93,51 +99,39 @@ class JSymbolTable:
 
     def var_count(self, kind: VarKind) -> int:
         """
-        Returns the number of
-        variables of the given kind
-        already defined in the current
-        scope.
+        Returns the number of variables of the given kind already defined.
         """
-
-        var_list = list(filter(lambda x: x.kind == kind, self.symbols()))
-        return len(var_list)
+        return len(list(filter(lambda x: x.kind == kind, self.symbols())))
 
     def kind_of(self, name: str) -> VarKind:
-        """
-        Returns the kind of the named
-        identifier in the current scope.
-        If the identifier is unknown in
-        the current scope, returns
-        NONE.
-        """
-        sym = self.get(name)
-        return sym.kind
+        """ Returns the kind of the named identifier. """
+        return self.get(name).kind
 
     def type_of(self, name: str) -> str:
         """
         Returns the type (int, char, boolean or name of class)
-        of the named identifier in the current scope.
+        of the named identifier.
         """
-        sym = self.get(name)
-        return sym.type
+        return self.get(name).type
 
     def index_of(self, name: str) -> int:
-        """
-        Returns the index assigned to the named identifier.
-        """
-        sym = self.get(name)
-        return sym.index
+        """ Returns the index assigned to the named identifier. """
+        return self.get(name).index
 
     def error(self, msg: str) -> NoReturn:
-        raise JackVariableNotFoundError(msg)
+        raise JackError(msg)
 
 
 if __name__ == '__main__':
-    s1 = JSymbol('var1', 'int', VarKind.VAR, 0)
-    s2 = JSymbol('var2', 'int', VarKind.VAR, 1)
-    s3 = JSymbol('var3', 'int', VarKind.VAR, 2)
-    s4 = JSymbol('var1', 'int', VarKind.FIELD, 0)
-    l1 = [s1, s2]
-    l2 = [s3, s4]
-    for sym in l1 + l2:
-        print(sym)
+    s1 = JSymbol('x', 'int', VarKind.VAR, 0)
+    s2 = JSymbol('x', 'str', VarKind.VAR, 1)
+    s5 = JSymbol('x', 'Point', VarKind.ARGUMENT, 0)
+    s6 = JSymbol('x', 'int', VarKind.STATIC, 0)
+    s7 = JSymbol('a', 'int', VarKind.VAR, 3)
+    s3 = JSymbol('y', 'int', VarKind.VAR, 2)
+    s4 = JSymbol('z', 'int', VarKind.FIELD, 0)
+    symlist = [s1, s3, s4]
+    print(f'{s2 in symlist = } (True)')
+    print(f'{s5 in symlist = } (True)')
+    print(f'{s6 in symlist = } (False)')
+    print(f'{s7 in symlist = } (False)')

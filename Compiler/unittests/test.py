@@ -47,10 +47,9 @@ def test_type_of(table):
     arg1 = table.type_of('arg1')
     field1 = table.type_of('field1')
     static1 = table.type_of('static1')
-    unknown = table.type_of('unknown')
 
     assert (var2 == 'str' and arg1 == 'int' and field1 == 'boolean'
-            and static1 == 'Square' and unknown is None)
+            and static1 == 'Square')
 
 
 def test_index_of(table):
@@ -58,6 +57,4 @@ def test_index_of(table):
     arg2 = table.index_of('arg2')
     field2 = table.index_of('field2')
     static2 = table.index_of('static2')
-    unknown = table.index_of('unknown')
-    assert (var1 == 0 and arg2 == 1 and field2 == 1 and static2 == 1
-            and unknown is None)
+    assert (var1 == 0 and arg2 == 1 and field2 == 1 and static2 == 1)

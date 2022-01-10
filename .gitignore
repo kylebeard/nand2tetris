@@ -1,8 +1,11 @@
 .mypy_cache/
 nand2tetris-helpers/
-projects/
+/projects/**
 tools/
 __pycache__
 .DS_Store
 *.class
 nand2tetris_decompiled_code/
+!projects/12
+!projects/12/*
+!projects/12/*/*

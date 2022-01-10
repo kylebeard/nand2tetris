@@ -1,0 +1,28 @@
+class Main {
+    function void main() {
+        var int x,y,z;
+        let x = 2 * 2;
+        do Output.printInt(x);
+        do Output.println();
+        do Output.printInt(8*3);
+        do Output.println();
+        do Output.printInt(639*31);
+        do Output.println();
+
+
+        do Output.printInt(3/2);
+        do Output.println();
+        do Output.printInt(-7/2);
+        do Output.println();
+        do Output.printInt(-639/-31);
+        do Output.println();
+        
+        do Output.printInt(Math.sqrt(9));
+        do Output.println();
+        do Output.printInt(Math.sqrt(181));
+        do Output.println();
+        do Output.printInt(Math.sqrt(32767));
+        do Output.println();
+        return;
+    }
+}

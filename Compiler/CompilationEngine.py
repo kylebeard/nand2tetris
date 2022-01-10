@@ -124,17 +124,17 @@ class CompliationEngine:
 
         nlocals = self.sym_table.var_count(VarKind.VAR)
         full_name = f'{self.classname}.{self.curr_func.name}'
-        self.writer.write_function(full_name, nlocals)
+        self.writer.function(full_name, nlocals)
 
         if self.curr_func.kind == CONSTRUCTOR:
             object_size = self.sym_table.var_count(VarKind.FIELD)
-            self.writer.write_push(Segment.Constant, object_size)
-            self.writer.write_call('Memory.alloc', 1)
-            self.writer.write_pop(Segment.Pointer, 0)
+            self.writer.push(Segment.Constant, object_size)
+            self.writer.call('Memory.alloc', 1)
+            self.writer.pop(Segment.Pointer, 0)
         elif self.curr_func.kind == METHOD:
             # 'this' is always passed as the first argument
-            self.writer.write_push(Segment.Argument, 0)
-            self.writer.write_pop(Segment.Pointer, 0)
+            self.writer.push(Segment.Argument, 0)
+            self.writer.pop(Segment.Pointer, 0)
         self.compile_statements()
 
         self.eat('}')
@@ -173,20 +173,20 @@ class CompliationEngine:
         self.eat(TokenType.IDENTIFIER)
 
         if self.maybe_eat('['):
-            self.writer.write_push(sym.kind.value, sym.index)
+            self.writer.push(sym.kind.value, sym.index)
             self.compile_expr()
             self.eat(']')
-            self.writer.write_arithmetic(ArithmeticCommand.ADD)
+            self.writer.arithmetic(ArithmeticCommand.ADD)
             self.eat('=')
             self.compile_expr()
-            self.writer.write_pop(Segment.Temp, 0)
-            self.writer.write_pop(Segment.Pointer, 1)
-            self.writer.write_push(Segment.Temp, 0)
-            self.writer.write_pop(Segment.That, 0)
+            self.writer.pop(Segment.Temp, 0)
+            self.writer.pop(Segment.Pointer, 1)
+            self.writer.push(Segment.Temp, 0)
+            self.writer.pop(Segment.That, 0)
         else:
             self.eat('=')
             self.compile_expr()
-            self.writer.write_pop(sym.kind.value, sym.index)
+            self.writer.pop(sym.kind.value, sym.index)
 
         self.eat(';')
 
@@ -205,20 +205,20 @@ class CompliationEngine:
         self.eat('(')
         self.compile_expr()
         self.eat(')')
-        self.writer.write_if(if_true)
-        self.writer.write_goto(if_false)
-        self.writer.write_label(if_true)
+        self.writer.if_goto(if_true)
+        self.writer.goto(if_false)
+        self.writer.label(if_true)
         self.eat('{')
         self.compile_statements()
         self.eat('}')
         if self.token == ELSE:
-            self.writer.write_goto(if_end)
-        self.writer.write_label(if_false)
+            self.writer.goto(if_end)
+        self.writer.label(if_false)
         if self.maybe_eat(ELSE):
             self.eat('{')
             self.compile_statements()
             self.eat('}')
-            self.writer.write_label(if_end)
+            self.writer.label(if_end)
 
     def compile_while(self) -> None:
         """
@@ -233,22 +233,22 @@ class CompliationEngine:
         self.eat('(')
 
         # start of the loop in vm
-        self.writer.write_label(start_label)
+        self.writer.label(start_label)
         self.compile_expr()
 
         self.eat(')')
 
-        self.writer.write_if(true_label)
-        self.writer.write_goto(end_label)
-        self.writer.write_label(true_label)
+        self.writer.if_goto(true_label)
+        self.writer.goto(end_label)
+        self.writer.label(true_label)
 
         self.eat('{')
         self.compile_statements()
         self.eat('}')
 
-        self.writer.write_goto(start_label)
+        self.writer.goto(start_label)
 
-        self.writer.write_label(end_label)
+        self.writer.label(end_label)
 
     def compile_do(self) -> None:
         """
@@ -261,18 +261,18 @@ class CompliationEngine:
         self.compile_subroutineCall(name)
         self.eat(';')
         # do statements don't use the return value, so dump it in Temp Segment
-        self.writer.write_pop(Segment.Temp, 0)
+        self.writer.pop(Segment.Temp, 0)
 
     def compile_return(self) -> None:
         """'return' expression? ';'"""
         self.eat(RETURN)
         if self.maybe_eat(';'):
-            self.writer.write_push(Segment.Constant, 0)
+            self.writer.push(Segment.Constant, 0)
         else:
             self.compile_expr()
             self.eat(';')
 
-        self.writer.write_return()
+        self.writer.return_()
 
     def compile_expr(self) -> None:
         """
@@ -285,29 +285,27 @@ class CompliationEngine:
             self.compile_expr()
             # '+', '-', '*', '/', '&', '|', '<', '>', '='
             if op == '+':
-                self.writer.write_arithmetic(ArithmeticCommand.ADD)
+                self.writer.arithmetic(ArithmeticCommand.ADD)
             elif op == '-':
-                self.writer.write_arithmetic(ArithmeticCommand.SUB)
+                self.writer.arithmetic(ArithmeticCommand.SUB)
             elif op == '*':
-                self.writer.write_call('Math.multiply', 2)
+                self.writer.call('Math.multiply', 2)
             elif op == '/':
-                self.writer.write_call('Math.divide', 2)
+                self.writer.call('Math.divide', 2)
             elif op == '&':
-                self.writer.write_arithmetic(ArithmeticCommand.AND)
+                self.writer.arithmetic(ArithmeticCommand.AND)
             elif op == '|':
-                self.writer.write_arithmetic(ArithmeticCommand.OR)
+                self.writer.arithmetic(ArithmeticCommand.OR)
             elif op == '<':
-                self.writer.write_arithmetic(ArithmeticCommand.LT)
+                self.writer.arithmetic(ArithmeticCommand.LT)
             elif op == '>':
-                self.writer.write_arithmetic(ArithmeticCommand.GT)
+                self.writer.arithmetic(ArithmeticCommand.GT)
             elif op == '=':
-                self.writer.write_arithmetic(ArithmeticCommand.EQ)
+                self.writer.arithmetic(ArithmeticCommand.EQ)
 
     def compile_term(self) -> None:
         """
-        integerConstant
-        | stringConstant
-        | keywordConstant
+        integerConstant | stringConstant | keywordConstant
         | varName
         | varName '[' expression ']'
         | subroutineCall
@@ -316,39 +314,44 @@ class CompliationEngine:
 
         """
         if self.token_type == TokenType.INT_CONST:
-            self.writer.write_push(Segment.Constant, int(self.token))
+            self.writer.push(Segment.Constant, int(self.token))
             self.advance()
+
         elif self.token_type == TokenType.STR_CONST:
             string_length = len(self.token)
-            self.writer.write_push(Segment.Constant, string_length)
-            self.writer.write_call('String.new', 1)
+            self.writer.push(Segment.Constant, string_length)
+            self.writer.call('String.new', 1)
             for char in self.token:
                 char_code = ord(char)
-                self.writer.write_push(Segment.Constant, char_code)
-                self.writer.write_call('String.appendChar', 2)
+                self.writer.push(Segment.Constant, char_code)
+                self.writer.call('String.appendChar', 2)
             self.advance()
+
         elif self.token in keyword_constants:
             if self.token == TRUE:
-                self.writer.write_push(Segment.Constant, 1)
-                self.writer.write_arithmetic(ArithmeticCommand.NEG)
+                self.writer.push(Segment.Constant, 1)
+                self.writer.arithmetic(ArithmeticCommand.NEG)
             elif self.token in (FALSE, NULL):
-                self.writer.write_push(Segment.Constant, 0)
+                self.writer.push(Segment.Constant, 0)
             elif self.token == THIS:
-                self.writer.write_push(Segment.Pointer, 0)
+                self.writer.push(Segment.Pointer, 0)
             self.advance()
+
         elif self.maybe_eat('('):
             self.compile_expr()
             self.eat(')')
+
         elif self.token in unary_ops:
             op = self.token
             self.advance()
             self.compile_term()
             if op == '-':
-                self.writer.write_arithmetic(ArithmeticCommand.NEG)
+                self.writer.arithmetic(ArithmeticCommand.NEG)
             elif op == '~':
-                self.writer.write_arithmetic(ArithmeticCommand.NOT)
+                self.writer.arithmetic(ArithmeticCommand.NOT)
             else:
                 self.error(f'a unary op: {unary_ops}')
+
         else:
             # we have to "look ahead" to know what type of expression this is
             # an array access, a subroutine call, or regular variable access
@@ -356,17 +359,17 @@ class CompliationEngine:
             self.eat(TokenType.IDENTIFIER)
             if self.maybe_eat('['):
                 sym = self.sym_table.get(name)
-                self.writer.write_push(sym.kind.value, sym.index)
+                self.writer.push(sym.kind.value, sym.index)
                 self.compile_expr()
                 self.eat(']')
-                self.writer.write_arithmetic(ArithmeticCommand.ADD)
-                self.writer.write_pop(Segment.Pointer, 1)
-                self.writer.write_push(Segment.That, 0)
+                self.writer.arithmetic(ArithmeticCommand.ADD)
+                self.writer.pop(Segment.Pointer, 1)
+                self.writer.push(Segment.That, 0)
             elif self.token in ('.', '('):
                 self.compile_subroutineCall(name)
             else:  # otherwise it's just a plain varName
                 sym = self.sym_table.get(name)
-                self.writer.write_push(sym.kind.value, sym.index)
+                self.writer.push(sym.kind.value, sym.index)
 
     def compile_subroutineCall(self, name) -> None:
         """
@@ -379,7 +382,7 @@ class CompliationEngine:
                 # method call e.g. obj.method(arg1,...)
                 sym = self.sym_table.get(name)
                 # push the object as the first argument
-                self.writer.write_push(sym.kind.value, sym.index)
+                self.writer.push(sym.kind.value, sym.index)
                 nargs = 1
                 name = f'{sym.type}.{self.token}'
             else:  # function or constructor call
@@ -389,14 +392,14 @@ class CompliationEngine:
         else:
             # method call from within the class (implicit 'this.')
             # e.g. do draw();
-            self.writer.write_push(Segment.Pointer, 0)
+            self.writer.push(Segment.Pointer, 0)
             nargs = 1
             name = f'{self.classname}.{name}'
 
         self.eat('(')
         nargs += self.compile_exprList()
         self.eat(')')
-        self.writer.write_call(name, nargs)
+        self.writer.call(name, nargs)
 
     def compile_exprList(self) -> int:
         """
@@ -465,3 +468,9 @@ class CompliationEngine:
 
 if __name__ == '__main__':
     """"""
+    print(chr(46))
+    print(chr(45))
+    print(chr(60))
+    print(chr(62))
+    print(chr(47))
+    print(chr(95))
