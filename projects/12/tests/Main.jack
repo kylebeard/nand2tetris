@@ -1,26 +1,94 @@
 class Main {
     function void main() {
+        //do Main.testMath();
+        var Array arr;
+        let arr = Memory.alloc(2);
+        let arr = Memory.alloc(2);
+        let arr = Memory.alloc(2);
+        let arr = Memory.alloc(2);
+        let arr = Memory.alloc(2);
+        do Output.printInt(Memory.getFreeList());
+        return;
+    }
+
+    function void printFreeList(){
+        var Array freeList;
+        let freeList = Memory.getFreeList();
+        do Output.printString("freeList: ");
+        do Output.printInt(freeList);
+        do Output.println();
+        return;
+    }
+
+    function void testMemory() {
+        var Array addr, arr, arr2, i, arr3;
+        let addr = Memory.alloc(2);
+        do Output.printInt(addr);
+        do Output.println();
+        let addr[0] = 1;
+        let addr[1] = 2;
+
+        let arr = Memory.alloc(100);
+        do Output.printInt(arr);
+        do Output.println();
+        let i = 0;
+        while (i < 100){
+           let arr[i] = i + 3;
+           let i = i + 1;
+        }
+
+        let arr2 = Memory.alloc(1000);
+        do Output.printInt(arr2);
+        do Output.println();
+        let i = 0;
+        while (i < 1000){
+           let arr2[i] = i + 104;
+           let i = i + 1;
+        }
+
+        do Memory.deAlloc(arr);
+        let arr3 = Memory.alloc(25);
+        do Output.printInt(arr3);
+        do Output.println();
+        let i = 0;
+        while (i < 25){
+           let arr3[i] = -i;
+           let i = i + 1;
+        }
+        return;
+    }
+
+    function void testMath() {
         var int x,y,z;
         let x = 2 * 2;
+        do Output.printString("Expected: 4 Actual: ");
         do Output.printInt(x);
         do Output.println();
+        do Output.printString("Expected: 24 Actual: ");
         do Output.printInt(8*3);
         do Output.println();
+        do Output.printString("Expected: 19808 Actual: ");
         do Output.printInt(639*31);
         do Output.println();
 
 
+        do Output.printString("Expected: 1 Actual: ");
         do Output.printInt(3/2);
         do Output.println();
+        do Output.printString("Expected: -3 Actual: ");
         do Output.printInt(-7/2);
         do Output.println();
+        do Output.printString("Expected: 20 Actual: ");
         do Output.printInt(-639/-31);
         do Output.println();
         
+        do Output.printString("Expected: 3 Actual: ");
         do Output.printInt(Math.sqrt(9));
         do Output.println();
+        do Output.printString("Expected: 13 Actual: ");
         do Output.printInt(Math.sqrt(181));
         do Output.println();
+        do Output.printString("Expected: 181 Actual: ");
         do Output.printInt(Math.sqrt(32767));
         do Output.println();
         return;

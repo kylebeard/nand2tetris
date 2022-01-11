@@ -1,5 +1,6 @@
 from typing import NamedTuple, NoReturn, TextIO, Tuple
 from ArithmeticCommand import ArithmeticCommand
+from exceptions import JackError
 from Segment import Segment
 from JSymbolTable import JSymbolTable, VarKind, JSymbol
 from exceptions import JackSyntaxError
@@ -24,6 +25,7 @@ class CompliationEngine:
         # the constructor, method or function (kind) we are compiling (kind,
         # name)
         self.curr_func = Function('', '')
+        self.has_return = False
         self.token: str = ''
         self.token_type: TokenType = TokenType.NONE
         self.sym_table = JSymbolTable()
@@ -68,6 +70,7 @@ class CompliationEngine:
         grammar: ('constructor'|'function'|'method') (void' | type) subroutineName
                  '(' parameterList ')' subroutineBody
         """
+        self.has_return = False
         self.sym_table.start_subroutine()
         self.if_counter = 0
         self.while_counter = 0
@@ -84,6 +87,10 @@ class CompliationEngine:
         self.eat(')')
 
         self.compile_subroutineBody()
+
+        if not self.has_return:
+            raise JackError(
+                f"No return statement found in {self.classname}.{self.curr_func.name}")
         self.curr_func = Function('', '')
         # print('subroutine compilation finished.')
 
@@ -164,6 +171,9 @@ class CompliationEngine:
 
     def compile_statements(self) -> None:
         while self.token in [LET, IF, DO, WHILE, RETURN]:
+            if self.token == RETURN:
+                self.has_return = True
+
             method = getattr(self, f'compile_{self.token}')
             method()
 
