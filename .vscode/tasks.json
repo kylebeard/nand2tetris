@@ -4,6 +4,12 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "build os classes",
+            "type": "shell",
+            "command": "${workspaceFolder}/projects/12/build.sh",
+            "group": "build"
+        },
+        {
             "label": "run pytest",
             "type": "shell",
             "command": "${workspaceFolder}/Compiler/runTests.sh"

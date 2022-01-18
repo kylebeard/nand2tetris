@@ -21,7 +21,7 @@ class JackTokenizer:
         self.infile = infile
         # self.outfile = outfile
         self.current_line: str = ''
-
+        self.line_number: int = 0
         self.current_token: str = ''
         self.current_token_type: TokenType = TokenType.NONE
 
@@ -37,10 +37,10 @@ class JackTokenizer:
         pos = self.infile.tell()
         line = self.infile.readline()
         line = line.strip(' \t')  # still want to recognize new lines
-
         # ignore comments and newlines
         while (line.startswith(('//', '/*')) or line == "\n"):
             # multi-line comments
+
             if line.startswith('/*'):
                 end_multi_line = line.find('*/')
                 while end_multi_line == -1:

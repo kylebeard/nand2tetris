@@ -44,6 +44,9 @@ class CompliationEngine:
         self.eat('{')
         while self.token in (STATIC, FIELD):
             self.compile_classVarDec()
+        if self.token == VAR:
+            raise JackError(
+                f"Cannot have var declaration outside of function scope. Current Token: {self.token}\nCurrent Line: {self.input.get_line()}")
         while self.token != '}':
             self.compile_subroutineDec()
         self.eat('}')
@@ -478,9 +481,4 @@ class CompliationEngine:
 
 if __name__ == '__main__':
     """"""
-    print(chr(46))
-    print(chr(45))
-    print(chr(60))
-    print(chr(62))
-    print(chr(47))
-    print(chr(95))
+    print(1e50)

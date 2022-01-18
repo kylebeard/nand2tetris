@@ -136,4 +136,12 @@ class Math {
         }
         return b;
     }
+
+    /** returns a % b*/
+    function int mod(int a, int b) {
+        let a = abs(a);
+        let b = abs(b);
+      //  (a/b)*b + a%b = a
+      return a - ((a/b)*b);
+    }
 }

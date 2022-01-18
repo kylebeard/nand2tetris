@@ -295,3 +295,20 @@ return
 label IF_FALSE0
 push argument 1
 return
+function Math.mod 0
+push pointer 0
+push argument 0
+call Math.abs 2
+pop argument 0
+push pointer 0
+push argument 1
+call Math.abs 2
+pop argument 1
+push argument 0
+push argument 0
+push argument 1
+call Math.divide 2
+push argument 1
+call Math.multiply 2
+sub
+return

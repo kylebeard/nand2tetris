@@ -8,36 +8,185 @@
  * The Hack physical screen consists of 512 rows (indexed 0..511, top to bottom)
  * of 256 pixels each (indexed 0..255, left to right). The top left pixel on 
  * the screen is indexed (0,0).
+ 16384 - 24575
  */
 class Screen {
-
+    static int screenBaseAddr, screenEndAddr, width, height;
+    static Array twoToThe;
+    static boolean color;
     /** Initializes the Screen. */
     function void init() {
+        var int i;
+        let screenBaseAddr = 16384;
+        let screenEndAddr = 24575;
+        let color = true;
+        let width = 511;
+        let height = 255;
+        let twoToThe = Array.new(16);
+        let twoToThe[0] = 1;
+        let i = 1;
+        while (i < 16) {
+            let twoToThe[i] = twoToThe[i-1] + twoToThe[i-1];
+            let i = i + 1;
+        }
+        return;
     }
 
     /** Erases the entire screen. */
     function void clearScreen() {
+        var int addr;
+        let addr = screenBaseAddr;
+        while (addr < (screenEndAddr + 1)) {
+            if (color) {//black
+                do Memory.poke(addr, -1);
+            } else { //white
+                do Memory.poke(addr, 0);
+            }
+            let addr = addr + 1;
+        }
+        return;
     }
-
+ 
     /** Sets the current color, to be used for all subsequent drawXXX commands.
      *  Black is represented by true, white by false. */
     function void setColor(boolean b) {
+        let color = b;
+        return;
     }
 
     /** Draws the (x,y) pixel, using the current color. */
     function void drawPixel(int x, int y) {
+        var int addr, value, mask, bit;
+        if ((x < 0) | (x > width) | (y < 0) | (y > height)) {
+            do Output.printString("ERROR: Invalid coordinates for drawPixel: ");
+            do Output.printInt(x);
+            do Output.printString(", ");
+            do Output.printInt(y);
+            do Sys.error(1);
+        }
+        // drawPixel(x,y) = 32 * y + x/16 + 16384
+        // x%16th bit x - (x/16)*16
+        let addr = (32*y) + (x/16) + screenBaseAddr;
+        let bit = Screen.mod(x, 16);
+        let value = Memory.peek(addr);
+        
+        if (color){
+            // mask for the 2nd bit will be 0000000000000100 
+            // or-ing that with value will turn that 1 bit on (black)
+            let mask = twoToThe[bit];
+            let value = value | mask;
+        } else {
+            // mask for 5th bit will be 1111111111011111
+            // and-ing that with value will turn that 1 bit off (white)
+            let mask = twoToThe[bit] + 1;
+            let mask = -mask;
+            let value = value & mask;
+        }
+        do Memory.poke(addr, value);
+        return;
     }
 
     /** Draws a line from pixel (x1,y1) to pixel (x2,y2), using the current color. */
     function void drawLine(int x1, int y1, int x2, int y2) {
+        var int dx, dy, a, b, targetAngle, diff, i, condition;
+        let dx = Math.abs(x2-x1);
+        let dy = Math.abs(y2-y1);
+        let a = 0;
+        let b = 0;
+        let i = 0;
+
+        // draw straight lines as fast as we can
+        if (x2 = x1) {
+            while (i < (dy+1)) {
+                if (y1 < y2) {
+                    do Screen.drawPixel(x1, y1+i);
+                } else {
+                    do Screen.drawPixel(x1, y1-i);
+                }
+                let i = i + 1;
+            }
+            return;
+        } else {
+            if (y2 = y1) {
+                while (i < (dx+1)) {
+                    if (x1 < x2){
+                        do Screen.drawPixel(x1+i, y1);
+                    } else {
+                        do Screen.drawPixel(x1-i, y1);
+                    }
+                    let i = i + 1;
+                }
+                return;
+            }
+        }
+
+
+        while ((~(a > dx)) | (~(b > dy))) {
+            //let diff=a*dy–b*dx
+            // when we set a=a+1, diff goes up by dy
+            // when we set b=b+1, diff goes down by dx
+            if ((x2 > x1) & (y2 > y1)){
+                do Screen.drawPixel(x1 + a, y1 + b);
+            } 
+            if ((x2 > x1) & (y2 < y1)) {
+                do Screen.drawPixel(x1 + a, y1 - b);
+            } 
+            if ((x2 < x1) & (y2 > y1)) {
+                do Screen.drawPixel(x1 - a, y1 + b);
+            } 
+            if ((x2 < x1) & (y2 < y1)) { 
+                do Screen.drawPixel(x1 - a, y1 - b);
+            } 
+                
+              
+
+            if (diff < 0) { 
+                let a = a + 1; 
+                let diff = diff + dy;
+            } else { 
+                let b = b + 1; 
+                let diff = diff - dx;
+            }
+        }
+        return;
     }
 
     /** Draws a filled rectangle whose top left corner is (x1, y1)
      * and bottom right corner is (x2,y2), using the current color. */
     function void drawRectangle(int x1, int y1, int x2, int y2) {
+        var int dy,i;        
+        let dy = Math.abs(y2-y1);
+        let i = 0;
+        while (i < (dy + 1)) {
+            do Screen.drawLine(x1, y1 + i, x2, y1 + i);
+            let i = i + 1;
+        }
+        return;
     }
 
     /** Draws a filled circle of radius r<=181 around (x,y), using the current color. */
     function void drawCircle(int x, int y, int r) {
+        var int dy, term;
+
+        if (r > 181) {
+            do Output.printString("Circle radius must be <= 181");
+            do Sys.error(1);
+        }
+
+        let dy = -r;
+        while (dy < (r + 1)) {
+            let term = Math.sqrt((r * r) - (dy * dy));
+            do Screen.drawLine(x - term, y + dy, x + term, y + dy);
+            let dy = dy + 1;
+        }
+        return;
+    }
+
+        /** returns a % b*/
+    function int mod(int a, int b) {
+        let a = Math.abs(a);
+        let b = Math.abs(b);
+      //  a/b *b + a%b = a
+      return a - ((a/b)*b);
     }
 }

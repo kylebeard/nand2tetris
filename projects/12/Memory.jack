@@ -10,21 +10,24 @@
  */ 
 class Memory {
     static Array ram, heap, freeList;
+    static int heapBase, heapEnd, maxSize;
   
     /** Initializes the class. */
     function void init() { 
         /*
-        a segment contains 
+        A segment contains:
             seg[0] = address of next segment
             seg[1] size of block
-            and seg[2] - seg[size+2] 
+            {seg[1]} data slots
         */
-
+        let heapBase = 2048;
+        let heapEnd = 16384;
+        let maxSize = (heapEnd - heapBase) - 2; // segments have 2 metadata elements 
         let ram = 0; // sets base address of ram to 0, so ram[i] == RAM[i]
-        let heap = 2048;
-        let freeList = heap;
+        let heap = heapBase;
+        let freeList = heapBase;
         let freeList[0] = 0; // the pointer to the next segment (initially there is only one segment)
-        let freeList[1] = 14334;
+        let freeList[1] = maxSize;
         return;
     }
 
@@ -45,30 +48,120 @@ class Memory {
     /** Finds an available RAM block of the given size and returns
      *  a reference to its base address. */
     function int alloc(int size) {
-        var int possibleSize, returnAddr, originalSize;
-        var Array temp;
-        let temp = freeList;
+
+        var int segmentSize, next, i, possibleSize, returnAddr, maxSegments;
+        var Array curr, prev;
+
+        if (size > maxSize) {
+            // reboot memory or else we get infinite recursion when the 
+            // compiler calls String.new (which calls Memory.alloc) to create the error message 
+            do Memory.init();
+            do Memory.error("ERROR: Memory size requested is greater than maximum possible memory segment: ", size, 1);
+        } 
+
+        if (freeList = 0) {
+            do Memory.init();
+            do Memory.error("Error: ran out of memory");
+        }
+
+        let curr = freeList;
         let possibleSize = size + 2;
-        while(true){
-            let originalSize = temp[1];
-            if (originalSize > (possibleSize - 1)) {
-                let freeList[0] = 0;
-                let freeList[1] = size;
-                let returnAddr = freeList + 2;
-                let freeList = freeList + possibleSize;
-                let freeList[0] = 0;
-                let freeList[1] = originalSize - possibleSize;
+        let i = 0;
+        let maxSegments = 14336/3; // if every egment had size 1
+        while (i < maxSegments) {
+            /* 
+            cases to handle:
+            choose the first element in freeList - need to adjust base address of freeList
+            segmentSize = size - simply remove that segment from the list completely
+            segmentSize = possibleSize - if not handled specially, we will end of with a segment with 0 data blocks
+                                         so it will never be allocated or de-allocated but it will take up 2 memory slots
+            segmentSize > possibleSize - need to adjust the previous segment's pointer 
+            no segments are large enough
+            */
+            if ((curr < 2048) | (curr > (heapEnd - 2))) {
+                do Memory.init();
+                do Memory.error("ERROR: curr segment base address is not in the heap. Address: ", curr, 1);
+            }
+
+            let next = curr[0];
+            let segmentSize = curr[1];
+
+            if (segmentSize = size) {
+                let curr[0] = 0;
+                let curr[1] = size;
+                let returnAddr = curr + 2;
+
+                // All data slots in this segment are used up, remove it from the list.
+                if (i = 0) {
+                    let freeList = next;
+                } else {
+                    let prev[0] = next;
+                }
                 return returnAddr;
             }
+
+            if (segmentSize = possibleSize) {
+                let curr[0] = 0;
+                // leave size alone. They will get 2 extra memory segments, but it prevents having 0 size segments
+                let returnAddr = curr + 2;
+                let freeList = next;
+                return returnAddr; 
+            }
+
+            if (segmentSize > possibleSize) {
+                let curr[0] = 0;
+                let curr[1] = size;
+                let returnAddr = curr + 2;
+
+                // This segment now starts at a new address.
+                let curr = curr + possibleSize;
+                if (i = 0) {
+                    // This is the first element of the list, 
+                    // so freeList's base address needs to be changed.
+                    let freeList = curr;
+                } else {
+                    // Adjust previous element's pointer to point to the new address.
+                    let prev[0] = curr;
+                }
+
+                // Create a new segment pointing to the next item in the list.
+                let curr[0] = next;
+                let curr[1] = segmentSize - possibleSize;
+                return returnAddr;
+            }
+
+            if (next = 0) {
+                do Memory.init();
+                // no memory segments available
+                do Memory.error("ERROR: No memory segments of requested size available. Requested: ", size, 1);
+            }
+            let prev = curr;
+            let curr = next; 
+            let i = i + 1;
             
-    }
+        } // while
         do Sys.error(1);
-        return -1;
+    }
+
+    function void error(String message, int ouputValue, int errorCode) {
+        do Output.printString(message);
+        do Output.printInt(ouputValue);
+        do Sys.error(errorCode); 
+        return;
     }
 
     /** De-allocates the given object (cast as an array) by making
      *  it available for future allocations. */
     function void deAlloc(Array o) {
+        if ((o < (heapBase + 2)) | (o > heapEnd)){
+            do Memory.init();
+            do Memory.error("Tried to deAlloc an object not on the heap. Object address: ", o, 1);
+        }
+        let o = o - 2; // Move to the real start of the segment.
+
+        // insert the segment to the start of freeList
+        let o[0] = freeList;
+        let freeList = o;
         return;
     }    
 }

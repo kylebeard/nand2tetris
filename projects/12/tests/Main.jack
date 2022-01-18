@@ -1,16 +1,90 @@
 class Main {
     function void main() {
-        //do Main.testMath();
-        var Array arr;
-        let arr = Memory.alloc(2);
-        let arr = Memory.alloc(2);
-        let arr = Memory.alloc(2);
-        let arr = Memory.alloc(2);
-        let arr = Memory.alloc(2);
-        do Output.printInt(Memory.getFreeList());
+        do Main.testSys();
         return;
     }
 
+    function void testSys() {
+        do Output.printString("Press any character to start sys.wait for 10 seconds ");
+        do Keyboard.readChar();
+        do Sys.wait(10000);
+        do Output.println();
+        do Output.printString("Done waiting for 10 seconds..");
+        return;
+    }
+
+    function void testString(){
+        var String str;
+        let str = String.new(10);
+        do Output.printInt(str.length());
+        do Keyboard.readChar();
+        do str.appendChar(65);
+        do str.appendChar(66);
+        do str.appendChar(67);
+        do Output.printString(str);
+        do Output.println();
+        
+        do Keyboard.readChar();
+        do Output.printInt(str.length());
+        
+        do Keyboard.readChar();
+        do Output.printChar(str.charAt(1));
+        do Output.println();
+        
+        do Keyboard.readChar();
+        do str.setCharAt(3, 68);
+        do Output.printInt(str.length());
+        do Output.printString(str);
+        do Output.println();
+        do Keyboard.readChar();
+       do Output.printChar(str.charAt(3));
+        do Keyboard.readChar();
+        do str.eraseLastChar();
+        do Output.printString(str);
+        do Output.println();
+        do Keyboard.readChar();
+        do Output.printInt(str.length());
+        do Keyboard.readChar();
+        do Output.printChar(String.doubleQuote());
+        do Keyboard.readChar();
+        do str.setInt(1234);
+        do Output.printString(str);
+        do Output.println();
+        do Keyboard.readChar();
+        do Output.printInt(str.intValue());
+        return;
+    }
+    function void testKeyboard() {
+        do Output.printString("Enter a Character: ");
+        do Output.printChar(Keyboard.readChar());
+        do Output.println();
+
+        do Output.printString(Keyboard.readLine("readline (try backSpace): "));
+        do Output.println();
+
+        do Output.printInt(Keyboard.readInt("readInt (try backSpace): "));
+        do Output.println();
+        return;
+    }
+
+    function void testOutput() {
+        do Output.printString("Hey");
+        do Sys.wait(2000);
+        do Output.backSpace();
+        do Sys.wait(2000);
+        do Output.printChar(129);
+        do Sys.wait(2000);
+        do Output.backSpace();
+        do Sys.wait(2000);
+        do Output.printString("Pi = ");
+        do Sys.wait(2000);
+        do Output.printInt(3);
+        do Sys.wait(2000);
+        do Output.printString(".");
+        do Sys.wait(2000);
+        do Output.printInt(14);
+        return;
+    }
     function void printFreeList(){
         var Array freeList;
         let freeList = Memory.getFreeList();
@@ -22,6 +96,18 @@ class Main {
 
     function void testMemory() {
         var Array addr, arr, arr2, i, arr3;
+        let arr = Memory.alloc(2);
+        do Memory.deAlloc(arr);
+        let arr = Memory.alloc(2);
+        do Memory.deAlloc(arr);
+        let arr = Memory.alloc(2);
+        do Memory.deAlloc(arr);
+        let arr = Memory.alloc(2);
+        do Memory.deAlloc(arr);
+        let arr = Memory.alloc(2);
+        do Memory.deAlloc(arr);
+     
+        do Output.printInt(Memory.getFreeList());
         let addr = Memory.alloc(2);
         do Output.printInt(addr);
         do Output.println();
