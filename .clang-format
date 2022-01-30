@@ -1,0 +1,12 @@
+---
+BasedOnStyle: LLVM
+---
+Language: Cpp
+AlignEscapedNewlines: Left
+AlignOperands: AlignAfterOperator
+AllowShortBlocksOnASingleLine: Empty
+AllowShortLoopsOnASingleLine: true
+BreakBeforeBinaryOperators: NonAssignment
+ColumnLimit: 100
+MaxEmptyLinesToKeep: 2
+IndentWidth: 4

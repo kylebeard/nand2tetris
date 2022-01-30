@@ -5,6 +5,44 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/CompilerInC/JackCompiler",
+            "cwd": "${workspaceRoot}"
+            // "args": ["-arg1", "-arg2"],
+        },
+
+        {
+            "type": "lldb-mi",
+            "request": "launch",
+            "name": "Launch Program",
+            "target": "./bin/executable",
+            "cwd": "${workspaceRoot}",
+            "valuesFormatting": "parseText"
+        },
+        {
+            "type": "gdb",
+            "request": "launch",
+            "name": "GDB JackCompiler",
+            "target": "./CompilerInC/JackCompiler",
+            "cwd": "${workspaceRoot}",
+            "valuesFormatting": "parseText"
+        },
+
+        {
+            "name": "(lldb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/CompilerInC/JackCompiler",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb"
+        },
+        {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",

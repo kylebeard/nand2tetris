@@ -1,0 +1,10 @@
+// a line comment
+/* a single-line block comment */
+/*
+a multi
+-
+line block comment
+*/
+class Main {
+    static /* in-line block comment */ int a; // in-line line comment
+}

@@ -4,6 +4,12 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "run c-compiler build.sh",
+            "type": "shell",
+            "command": "${workspaceFolder}/CompilerInC/build.sh",
+            "group": "build"
+        },
+        {
             "label": "build os classes",
             "type": "shell",
             "command": "${workspaceFolder}/projects/12/build.sh",
