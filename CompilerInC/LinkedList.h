@@ -1,8 +1,7 @@
 #include "utils.h"
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H 1
-typedef struct token
-{
+typedef struct token {
     char *value;
     TokenType type;
     struct token *next;
