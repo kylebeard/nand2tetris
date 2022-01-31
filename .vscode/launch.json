@@ -35,7 +35,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/CompilerInC/JackCompiler",
-            "args": [],
+            "args": ["./test/ParserTests/ArrayTest"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

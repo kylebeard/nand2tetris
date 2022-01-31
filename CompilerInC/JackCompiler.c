@@ -5,128 +5,125 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-int getPaths(char *inPath, char **paths);
+char **getPaths(char *, int *);
 int jackFilesInDir(DIR *);
 bool isJackFile(char *);
 char *changeExt(char *, char *);
 char *jack = ".jack";
-enum { ISFILE, ISDIR };
-
+char *outExt = "T.xml";
+const int MAX_TOKENS = 1000000;
+char *toXml(char *);
 int main(int argc, char *argv[]) {
     if (argc != 2) {
         printf("USAGE: JackCompiler <Path to .jack file or directory of .jack files>");
-        exit(1);
-    }
-
-    char **paths;
-    char *inPath = argv[1];
-    int nfiles = getPaths(inPath, paths);
-    if (nfiles == -1) {
-        printf("invalid path. Must point to file or directory");
-        exit(1);
-    }
-
-    printf("number of jack files found: %d\n", nfiles);
-    for (int i = 0; i < nfiles; i++) { printf("%s\n", paths[i]); }
-
-    return 0;
-
-    char *outPath = "/Users/kyle/Documents/Programming/nand2tetris/CompilerInC/"
-                    "test/TestT.xml";
-
-    // char *infile1, char *infile2 -> char **inFiles char **outFiles char
-    // ***paths
-    // -> char infile1[] char inFiles[][]
-    FILE *inFile, *outFile;
-
-    if ((inFile = fopen(inPath, "r")) == NULL) {
-        printf("file does not exist: %s", inPath);
         return 1;
     }
-    outFile = fopen(outPath, "w");
-    initTokenizer(inFile);
-    int i = 0;
-    bool b;
-    b = hasMoreTokens();
-    fprintf(outFile, "<tokens>\n");
-    while (b && i < 250) {
 
-        advance();
-        char *val = tokenVal();
-        TokenType tt = tokenType();
-        char *ttStr = getTokenTypeStr(tt);
-        // <tt>val</tt>
-        fprintf(outFile, "<%s> %s </%s>\n", ttStr, val, ttStr);
-        i++;
-        b = hasMoreTokens();
-        printf("hasMoreTokens: %d\n", b);
-    }
+    int nfiles = 0;
+    char **paths = getPaths(argv[1], &nfiles);
 
-    fprintf(outFile, "</tokens>\n");
-    freeTokenizer();
+    printf("number of jack files found: %d\n", nfiles);
+    FILE *inFile, *outFile;
+    for (int i = 0; i < nfiles; i++) {
+        char *inPath = paths[i];
+        char *outPath = changeExt(inPath, outExt);
+        printf("comiling %s\n to %s\n", inPath, outPath);
 
-    fclose(inFile);
-    fclose(outFile);
-    return 0;
-}
+        inFile = fopen(inPath, "r"); // getPaths() checks for existence
+        outFile = fopen(outPath, "w");
+        initTokenizer(inFile);
 
-int getPaths(char *inPath, char **paths) {
-    /*
-    file: replace ".jack" with "T.xml"
-    if inPath is file:
-        do $file
-    if inPath is dir:
-        foreach file in dir:
-            if ext == ".jack":
-                do $file
-    */
-    struct stat s;
-    DIR *dir;
-    struct dirent *entry;
-
-    stat(inPath, &s);
-    int files = 0;
-    if (S_ISDIR(s.st_mode)) {
-        dir = opendir(inPath);
-        files = jackFilesInDir;
-        if (!files) {
-            printf("no Jack files found in directory.");
-            exit(1);
+        fprintf(outFile, "<tokens>\n");
+        for (int i = 0; hasMoreTokens() && i < MAX_TOKENS; i++) {
+            advance();
+            char *ttStr = getTokenTypeStr(tokenType());
+            fprintf(outFile, "<%s> %s </%s>\n", ttStr, toXml(tokenVal()), ttStr);
         }
 
-        paths = calloc(files, sizeof(char *));
+        fprintf(outFile, "</tokens>\n");
+        freeTokenizer();
+
+        fclose(inFile);
+        fclose(outFile);
+    }
+    return 0;
+}
+char *toXml(char *tok) {
+    if (strnlen(tok, 100) > 1)
+        return tok;
+
+    switch (tok[0]) {
+    case '<':
+        return "&lt;";
+    case '>':
+        return "&gt;";
+    case '"':
+        return "&quot;";
+    case '&':
+        return "&amp;";
+    default:
+        return tok;
+    }
+}
+char **getPaths(char *inPath, int *numFiles) {
+    /*
+    if inPath is a file:
+        copy it to paths
+    if inPath is a directory:
+        read each file in the directory:
+            if it's a jack file:
+                contact inPath + / + file
+                append it to paths
+    */
+    char **paths = NULL;
+    struct stat s;
+    DIR *dir = NULL;
+    struct dirent *entry = NULL;
+
+    stat(inPath, &s);
+    if (S_ISDIR(s.st_mode)) {
+        dir = opendir(inPath);
+
+        int inPathLen = strnlen(inPath, 5000);
+        // so /path/to/dir and /path/to/dir/ work
+        if (inPath[inPathLen - 1] == '/') {
+            inPath[inPathLen - 1] = '\0';
+            inPathLen--;
+        }
 
         int i = 0;
         while ((entry = readdir(dir))) {
             if (!isJackFile(entry->d_name))
                 continue;
 
-            int nameLen = strnlen(entry->d_name, FILENAME_MAX);
-            char name[nameLen + 1];
-            strlcpy(name, entry->d_name, nameLen + 1);
-            paths[i++] = name;
+            paths = realloc(paths, ++(*numFiles) * sizeof(char **));
+            int nameLen = entry->d_namlen;
+            // +2 for \0 and '/' we may be adding
+            char *fullPath = calloc(inPathLen + nameLen + 2, sizeof(char));
+
+            strlcpy(fullPath, inPath, inPathLen + 1);
+            fullPath[inPathLen + 1] = '\0';
+            fullPath[inPathLen] = '/';
+            strlcat(fullPath, entry->d_name, inPathLen + nameLen + 2);
+            paths[i++] = fullPath;
         }
 
         closedir(dir);
-        return files;
+        if (!*numFiles) {
+            printf("no Jack files found in directory.\n");
+            exit(1);
+        }
+
+        return paths;
 
     } else if (S_ISREG(s.st_mode)) {
         paths = calloc(1, sizeof(char *));
         *paths = inPath;
-        return 1;
+        *numFiles = 1;
+        return paths;
     }
-    return -1;
-}
-
-int jackFilesInDir(DIR *dir) {
-    int files = 0;
-    struct dirent *entry;
-
-    while ((entry = readdir(dir))) {
-        if (isJackFile(entry->d_name))
-            files++;
-    }
-    return files;
+    printf("invalid path. Must point to file or directory");
+    exit(1);
 }
 
 bool isJackFile(char *name) {
@@ -136,4 +133,19 @@ bool isJackFile(char *name) {
     return strncmp(jack, dot, 5) == 0;
 }
 
-char *changeExt(char *file, char *toExt) {}
+/** `toExt` must include the '.'*/
+char *changeExt(char *file, char *toExt) {
+    char *dot = strrchr(file, '.');
+    if (!dot)
+        return NULL;
+
+    int fileNameLen = strnlen(file, FILENAME_MAX) - strnlen(dot, 50);
+    int newFileLen = fileNameLen + strnlen(toExt, 50);
+
+    char *newFile = calloc(newFileLen, sizeof(char));
+    strlcpy(newFile, file, fileNameLen + 1);
+    strlcat(newFile, toExt, newFileLen + 1);
+
+
+    return newFile;
+}

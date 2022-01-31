@@ -1,10 +1,10 @@
+#include "JackTokenizer.h"
+#include "LinkedList.h"
+#include <ctype.h>
+#include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
-#include <regex.h>
-#include "JackTokenizer.h"
-#include "LinkedList.h"
 
 const int LINE_SIZE = 1024;
 
@@ -15,7 +15,8 @@ token *currToken;
 char *symbols = "{}()[].,;+-*/&|<>=~";
 
 regex_t *kwRegex;
-char kwRegexStr[] = "^(class|constructor|function|method|field|static|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return)\\b";
+char kwRegexStr[] = "^(class|constructor|function|method|field|static|var|int|char|boolean|void|"
+                    "true|false|null|this|let|do|if|else|while|return)\\b";
 
 regex_t *intConstRegex;
 char intConstRegexStr[] = "^\\d+";
@@ -30,8 +31,7 @@ char identifierRegexStr[] = "^[a-zA-Z_]\\w*";
 bool matches(regex_t *regex, char *str, TokenType type, int *i);
 void parseNewLine();
 
-void initTokenizer(FILE *_inFile)
-{
+void initTokenizer(FILE *_inFile) {
     inFile = _inFile;
     tokensHead = calloc(1, sizeof(token));
     // compile the regexes
@@ -48,8 +48,7 @@ void initTokenizer(FILE *_inFile)
     regcomp(identifierRegex, identifierRegexStr, REG_EXTENDED | REG_ENHANCED);
 }
 
-void freeTokenizer()
-{
+void freeTokenizer() {
     free(kwRegex);
     free(intConstRegex);
     free(strConstRegex);
@@ -57,15 +56,12 @@ void freeTokenizer()
 }
 
 /* returns ponter to the first non-space character */
-char *skipSpaces(char *str)
-{
-    while (*str == ' ' || *str == '\t')
-        str++;
+char *skipSpaces(char *str) {
+    while (*str == ' ' || *str == '\t') str++;
     return str;
 }
 
-bool hasMoreTokens()
-{
+bool hasMoreTokens() {
     // algorithm
     // skip over every line that either
     //  - starts with '//'
@@ -76,26 +72,24 @@ bool hasMoreTokens()
     if (length(tokensHead) > 0)
         return true;
 
-    while (true)
-    {
+    while (true) {
         pos = ftell(inFile);
         if (fgets(line, LINE_SIZE, inFile) == NULL)
             return false;
-
         // skip whitespace
-        char *ptr = skipSpaces(line);
-        if (*ptr == '\n')
+        char *ptr = line;
+        while (isspace(*ptr)) ptr++;
+
+        if (strnlen(ptr, LINE_SIZE) == 0)
             continue;
 
         if (*ptr == '/' && *(ptr + 1) == '/')
             continue;
 
-        if (*ptr == '/' && *(ptr + 1) == '*')
-        {
+        if (*ptr == '/' && *(ptr + 1) == '*') {
             ptr += 2; // move past the '/*' we just found
             // read lines until we find the closing tag
-            while (!strstr(ptr, "*/"))
-            {
+            while (!strstr(ptr, "*/")) {
                 if (fgets(line, LINE_SIZE, inFile) == NULL)
                     return false;
 
@@ -113,16 +107,23 @@ bool hasMoreTokens()
     return true;
 }
 
-void advance()
-{
+void advance() {
     if (length(tokensHead) == 0)
         parseNewLine();
 
     currToken = removeFirst(tokensHead);
 }
 
-void parseNewLine()
-{
+void parseNewLine() {
+    /*
+    algorithm:
+    duplicate the input line so we always have the orignial line.
+    keep an index of where we are in the line.
+    loop through the line searching for tokens from dupLine[index] onward.
+    when a token is identified append it to the tokens linked list
+    and advance the index to the next character after that token.
+    Continue to the next iteration.
+    */
     fgets(line, LINE_SIZE, inFile);
     int lineLength = strnlen(line, LINE_SIZE);
     // printf("lineLength: %d\n", lineLength);
@@ -130,14 +131,11 @@ void parseNewLine()
     strlcpy(dupLine, line, LINE_SIZE);
 
     int i = 0;
-    while (i < lineLength)
-    {
-
-        if (dupLine[i] == '\n')
+    while (i < lineLength) {
+        if (dupLine[i] == '\n' || dupLine[i] == '\r')
             break;
 
-        if (dupLine[i] == ' ' || dupLine[i] == '\t')
-        {
+        if (dupLine[i] == ' ' || dupLine[i] == '\t') {
             i++;
             continue;
         }
@@ -146,8 +144,7 @@ void parseNewLine()
         if (dupLine[i] == '/' && dupLine[i + 1] == '/')
             break;
 
-        if (dupLine[i] == '/' && dupLine[i + 1] == '*')
-        {
+        if (dupLine[i] == '/' && dupLine[i + 1] == '*') {
             i += 2;
             char *endComment = strstr(&dupLine[i], "*/");
             if (endComment == NULL)
@@ -157,13 +154,12 @@ void parseNewLine()
             continue;
         }
 
-        //keyword
+        // keyword
         if (matches(kwRegex, &dupLine[i], KEYWORD, &i))
             continue;
 
-        //symbol
-        if (strchr(symbols, dupLine[i]))
-        {
+        // symbol
+        if (strchr(symbols, dupLine[i])) {
             char *tok = calloc(2, sizeof(char));
             strlcpy(tok, &dupLine[i], 2);
             append(tokensHead, tok, SYMBOL);
@@ -171,31 +167,26 @@ void parseNewLine()
             continue;
         }
 
-        //int const
+        // int const
         if (matches(intConstRegex, &dupLine[i], INT_CONST, &i))
             continue;
 
-        //str const
+        // str const
         if (matches(strConstRegex, &dupLine[i], STR_CONST, &i))
             continue;
 
-        //identifier
+        // identifier
         if (matches(identifierRegex, &dupLine[i], IDENTIFIER, &i))
             continue;
 
         printf("unrecognized token(s): %s\n", &dupLine[i]);
         exit(1);
     }
-
-    printf("new tokens:\n");
-    printList(tokensHead);
 }
 
-bool matches(regex_t *regex, char *str, TokenType type, int *i)
-{
+bool matches(regex_t *regex, char *str, TokenType type, int *i) {
     regmatch_t *match = calloc(1, sizeof(regmatch_t));
-    if (regexec(regex, str, 1, match, 0) != REG_NOMATCH)
-    {
+    if (regexec(regex, str, 1, match, 0) != REG_NOMATCH) {
         // the address of the current character (dupLine[i])
         // is passed so as far as the regex is concerned
         // we are at index 0. because of this `end` will contain
@@ -203,7 +194,12 @@ bool matches(regex_t *regex, char *str, TokenType type, int *i)
         // and increment i by end to move past the keyword.
         int end = match[0].rm_eo;
         char *tok = calloc(end + 2, sizeof(char));
-        strlcpy(tok, str, end + 1);
+        if (type == STR_CONST)
+            // end - 1 to offset the +1 to str & then to exclue the ending "
+            strlcpy(tok, str + 1, end - 1);
+        else
+            strlcpy(tok, str, end + 1);
+
         append(tokensHead, tok, type);
         *i += end;
         free(match);
@@ -213,18 +209,11 @@ bool matches(regex_t *regex, char *str, TokenType type, int *i)
     return false;
 }
 
-TokenType tokenType()
-{
-    return currToken->type;
-}
+TokenType tokenType() { return currToken->type; }
 
-char *tokenVal()
-{
-    return currToken->value;
-}
+char *tokenVal() { return currToken->value; }
 
-void error(char *msg)
-{
+void error(char *msg) {
 
     printf("ERROR: %s\nLine: %s\n ", msg, line);
     exit(1);

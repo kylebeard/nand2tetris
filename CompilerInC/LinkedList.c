@@ -1,11 +1,10 @@
 #include "LinkedList.h"
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 #include <sys/queue.h>
 #if 0
-int main()
-{
+int main() {
     printf("starting..");
     token headS;
     headS.next = NULL;
@@ -62,15 +61,13 @@ int main()
 
 #endif
 
-void append(token *head, char *val, TokenType type)
-{
+void append(token *head, char *val, TokenType type) {
     token *newToken = malloc(sizeof(token));
     newToken->value = val;
     newToken->type = type;
     newToken->next = NULL;
     token *curr = head;
-    while (1)
-    {
+    while (1) {
         if (curr->next == NULL)
             break;
         curr = curr->next;
@@ -79,27 +76,21 @@ void append(token *head, char *val, TokenType type)
     return;
 }
 
-int length(token *head)
-{
+int length(token *head) {
     int len = 0;
     token *curr;
-    for (curr = head->next; curr != NULL; curr = curr->next)
-    {
-        len++;
-    }
+    for (curr = head->next; curr != NULL; curr = curr->next) { len++; }
     return len;
 }
 
-token *removeFirst(token *head)
-{
+token *removeFirst(token *head) {
     token *removed = head->next;
     head->next = removed->next;
     removed->next = NULL;
     return removed;
 }
 
-void insertFirst(token *head, char *val, TokenType type)
-{
+void insertFirst(token *head, char *val, TokenType type) {
     token *newToken = calloc(1, sizeof(token));
     newToken->value = val;
     newToken->type = type;
@@ -110,8 +101,7 @@ void insertFirst(token *head, char *val, TokenType type)
     return;
 }
 
-void insertAt(token *head, int pos, char *val, TokenType type)
-{
+void insertAt(token *head, int pos, char *val, TokenType type) {
     if (pos == 0)
         insertFirst(head, val, type);
     else
@@ -119,43 +109,31 @@ void insertAt(token *head, int pos, char *val, TokenType type)
     return;
 }
 
-token *removeAt(token *head, int pos)
-{
+token *removeAt(token *head, int pos) {
     if (pos == 0)
         return removeFirst(head);
     else
         return removeFirst(tokenAt(head, pos - 1));
 }
 
-token *tokenAt(token *head, int pos)
-{
+token *tokenAt(token *head, int pos) {
     int i = 0;
     token *curr = head->next;
-    while (i < pos)
-    {
+    while (i < pos) {
         curr = curr->next;
         i++;
     }
     return curr;
 }
 
-void printList(token *head)
-{
+void printList(token *head) {
     int i = 0;
     token *curr;
-    for (curr = head->next; curr != NULL; curr = curr->next)
-    {
+    for (curr = head->next; curr != NULL; curr = curr->next) {
         printf("[%d] (%s) %s\n", i++, getTokenTypeStr(curr->type), curr->value);
     }
 }
 
-void clear(token *head)
-{
-    token *removed;
-    int len;
-    while ((len = length(head)))
-    {
-        removed = removeAt(head, len - 1);
-        free(removed);
-    }
+void clear(token *head) {
+    while (head->next != NULL) free(removeFirst(head));
 }
