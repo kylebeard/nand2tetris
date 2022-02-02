@@ -5,23 +5,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch",
-            "type": "lldb",
-            "request": "launch",
-            "program": "${workspaceFolder}/CompilerInC/JackCompiler",
-            "cwd": "${workspaceRoot}"
-            // "args": ["-arg1", "-arg2"],
-        },
-
-        {
-            "type": "lldb-mi",
-            "request": "launch",
-            "name": "Launch Program",
-            "target": "./bin/executable",
-            "cwd": "${workspaceRoot}",
-            "valuesFormatting": "parseText"
-        },
-        {
             "type": "gdb",
             "request": "launch",
             "name": "GDB JackCompiler",
@@ -35,7 +18,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/CompilerInC/JackCompiler",
-            "args": ["./test/ParserTests/ArrayTest"],
+            "args": ["./test/ParserTests/ExpressionLessSquare/Main.jack"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
