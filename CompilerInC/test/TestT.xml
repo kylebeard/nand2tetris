@@ -1,10 +1,10 @@
 <tokens>
-    <keyword> class </keyword>
-    <identifier> Main </identifier>
-    <symbol> { </symbol>
-    <keyword> static </keyword>
-    <keyword> int </keyword>
-    <identifier> a </identifier>
-    <symbol> ; </symbol>
-    <symbol> } </symbol>
+<keyword> class </keyword>
+<identifier> Main </identifier>
+<symbol> { </symbol>
+<keyword> static </keyword>
+<keyword> int </keyword>
+<identifier> a </identifier>
+<symbol> ; </symbol>
+<symbol> } </symbol>
 </tokens>

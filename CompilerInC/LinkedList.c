@@ -4,41 +4,60 @@
 #include <stdlib.h>
 #include <sys/queue.h>
 #if 0
+typedef struct Data {
+    char *val;
+    int index;
+} Data;
+void printData(void *data) {
+    Data *ptr = (Data *)data;
+    printf("index: %d - val: %s\n", ptr->index, ptr->val);
+}
+
 int main() {
     printf("starting..");
-    token headS;
+    Node headS;
     headS.next = NULL;
-    token *head = &headS;
+    Node *head = &headS;
     printf("length() expected: 0 actual: %d\n", length(head));
-    append(head, "first", STR_CONST);
+    Data d1 = {"first", 0};
+    append(head, &d1);
     printf("length() expected: 1 actual: %d\n", length(head));
-    append(head, "second", STR_CONST);
+    Data d2 = {"second", 1};
+    append(head, &d2);
     printf("length() expected: 2 actual: %d\n", length(head));
-    append(head, "third", STR_CONST);
+    Data d3 = {"third", 2};
+    append(head, &d3);
     printf("length() expected: 3 actual: %d\n", length(head));
-    append(head, "fourth", STR_CONST);
+    Data d4 = {"fourth", 3};
+    append(head, &d4);
     printf("list after 4 appends:\n");
-    printList(head);
+    printList(head, printData);
 
-    insertFirst(head, "inserted with insertFirst\n", STR_CONST);
-    printf("firstElement, expected: inserted with... actual: %s\n", head->next->value);
+    Data d5 = {"inserted with insertFirst\n", 4};
+    insertFirst(head, &d5);
+    Data *dptr = (Data *)head->next->data;
+    printf("firstElement, expected: inserted with... actual: %s\n", dptr->val);
     printf("length() expected: 5 actual: %d\n", length(head));
 
-    token *removed = removeFirst(head);
+    Node *removed = removeFirst(head);
     printf("length() expected: 4 actual: %d\n", length(head));
-    printf("removed expected: inserted with.. actual: %s\n", removed->value);
+    dptr = (Data *)removed->data;
+    printf("removed expected: inserted with.. actual: %s\n", dptr->val);
     free(removed);
 
-    printf("first after remove expected: first, actual: %s\n", head->next->value);
-
-    insertAt(head, 1, "1.5", INT_CONST);
+    dptr = (Data *)head->next->data;
+    printf("first after remove expected: first, actual: %s\n", dptr->val);
+    Data d6 = {"1.5", 5};
+    insertAt(head, 1, &d6);
     printf("after insert at 1\n");
-    printList(head);
+    printList(head, printData);
 
-    insertAt(head, 3, "2.5", INT_CONST);
+    Data d7 = {"2.5", 6};
+    insertAt(head, 3, &d7);
     printf("after insert at 3 (2.5)\n");
-    printList(head);
-
+    printList(head, printData);
+    return 0;
+    /*
     removed = removeAt(head, 3);
     free(removed);
     removed = removeAt(head, length(head) - 1);
@@ -57,68 +76,67 @@ int main() {
     printList(head);
     printf("tokenAt(1): %s\n", tokenAt(head, 1)->value);
     return 0;
+    */
 }
 
 #endif
 
-void append(token *head, char *val, TokenType type) {
-    token *newToken = malloc(sizeof(token));
-    newToken->value = val;
-    newToken->type = type;
-    newToken->next = NULL;
-    token *curr = head;
+void append(Node *head, void *data) {
+    Node *newNode = (Node *)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    Node *curr = head;
     while (1) {
         if (curr->next == NULL)
             break;
         curr = curr->next;
     }
-    curr->next = newToken;
+    curr->next = newNode;
     return;
 }
 
-int length(token *head) {
+int length(Node *head) {
     int len = 0;
-    token *curr;
+    Node *curr;
     for (curr = head->next; curr != NULL; curr = curr->next) { len++; }
     return len;
 }
 
-token *removeFirst(token *head) {
-    token *removed = head->next;
+Node *removeFirst(Node *head) {
+    Node *removed = head->next;
     head->next = removed->next;
     removed->next = NULL;
     return removed;
 }
 
-void insertFirst(token *head, char *val, TokenType type) {
-    token *newToken = calloc(1, sizeof(token));
-    newToken->value = val;
-    newToken->type = type;
+void insertFirst(Node *head, void *data) {
+    Node *newNode = (Node *)calloc(1, sizeof(Node));
+    newNode->data = data;
 
-    token *originalFirst = head->next;
-    head->next = newToken;
-    newToken->next = originalFirst;
+    Node *originalFirst = head->next;
+    head->next = newNode;
+    newNode->next = originalFirst;
     return;
 }
 
-void insertAt(token *head, int pos, char *val, TokenType type) {
+void insertAt(Node *head, int pos, void *data) {
     if (pos == 0)
-        insertFirst(head, val, type);
+        insertFirst(head, data);
     else
-        insertFirst(tokenAt(head, pos - 1), val, type);
+        insertFirst(nodeAt(head, pos - 1), data);
     return;
 }
 
-token *removeAt(token *head, int pos) {
+Node *removeAt(Node *head, int pos) {
     if (pos == 0)
         return removeFirst(head);
     else
-        return removeFirst(tokenAt(head, pos - 1));
+        return removeFirst(nodeAt(head, pos - 1));
 }
 
-token *tokenAt(token *head, int pos) {
+Node *nodeAt(Node *head, int pos) {
     int i = 0;
-    token *curr = head->next;
+    Node *curr = head->next;
     while (i < pos) {
         curr = curr->next;
         i++;
@@ -126,14 +144,12 @@ token *tokenAt(token *head, int pos) {
     return curr;
 }
 
-void printList(token *head) {
+void printList(Node *head, void (*fn)(void *)) {
     int i = 0;
-    token *curr;
-    for (curr = head->next; curr != NULL; curr = curr->next) {
-        printf("[%d] (%s) %s\n", i++, getTokenTypeStr(curr->type), curr->value);
-    }
+    Node *curr;
+    for (curr = head->next; curr != NULL; curr = curr->next) { (*fn)(curr->data); }
 }
 
-void clear(token *head) {
+void clear(Node *head) {
     while (head->next != NULL) free(removeFirst(head));
 }
