@@ -10,8 +10,8 @@ const int LINE_SIZE = 1024;
 
 static FILE *inFile;
 char line[LINE_SIZE];
-token *tokensHead;
-token *currToken;
+Node *tokensHead;
+Node *currToken;
 char *symbols = "{}()[].,;+-*/&|<>=~";
 
 regex_t *kwRegex;
@@ -30,21 +30,21 @@ char identifierRegexStr[] = "^[a-zA-Z_]\\w*";
 // private functions
 bool matches(regex_t *regex, char *str, TokenType type, int *i);
 void parseNewLine();
-
+void printTokens(void *);
 void initTokenizer(FILE *_inFile) {
     inFile = _inFile;
-    tokensHead = calloc(1, sizeof(token));
+    tokensHead = (Node *)calloc(1, sizeof(Node));
     // compile the regexes
-    kwRegex = malloc(sizeof(regex_t));
+    kwRegex = (regex_t *)malloc(sizeof(regex_t));
     regcomp(kwRegex, kwRegexStr, REG_EXTENDED | REG_ENHANCED);
 
-    intConstRegex = malloc(sizeof(regex_t));
+    intConstRegex = (regex_t *)malloc(sizeof(regex_t));
     regcomp(intConstRegex, intConstRegexStr, REG_EXTENDED | REG_ENHANCED);
 
-    strConstRegex = malloc(sizeof(regex_t));
+    strConstRegex = (regex_t *)malloc(sizeof(regex_t));
     regcomp(strConstRegex, strConstRegexStr, REG_EXTENDED | REG_ENHANCED);
 
-    identifierRegex = malloc(sizeof(regex_t));
+    identifierRegex = (regex_t *)malloc(sizeof(regex_t));
     regcomp(identifierRegex, identifierRegexStr, REG_EXTENDED | REG_ENHANCED);
 }
 
@@ -53,6 +53,8 @@ void freeTokenizer() {
     free(intConstRegex);
     free(strConstRegex);
     free(identifierRegex);
+    clear(tokensHead);
+    free(tokensHead);
 }
 
 /* returns ponter to the first non-space character */
@@ -160,9 +162,12 @@ void parseNewLine() {
 
         // symbol
         if (strchr(symbols, dupLine[i])) {
-            char *tok = calloc(2, sizeof(char));
+            char *tok = (char *)calloc(2, sizeof(char));
             strlcpy(tok, &dupLine[i], 2);
-            append(tokensHead, tok, SYMBOL);
+            Token *tokPtr = (Token *)calloc(1, sizeof(Token));
+            tokPtr->type = SYMBOL;
+            tokPtr->value = tok;
+            append(tokensHead, tokPtr);
             i++;
             continue;
         }
@@ -182,10 +187,13 @@ void parseNewLine() {
         printf("unrecognized token(s): %s\n", &dupLine[i]);
         exit(1);
     }
+
+    // printf("\n\nnew tokens:\n");
+    // printList(tokensHead, printTokens);
 }
 
 bool matches(regex_t *regex, char *str, TokenType type, int *i) {
-    regmatch_t *match = calloc(1, sizeof(regmatch_t));
+    regmatch_t *match = (regmatch_t *)calloc(1, sizeof(regmatch_t));
     if (regexec(regex, str, 1, match, 0) != REG_NOMATCH) {
         // the address of the current character (dupLine[i])
         // is passed so as far as the regex is concerned
@@ -193,14 +201,17 @@ bool matches(regex_t *regex, char *str, TokenType type, int *i) {
         // the length of the keyword, so we can just create a new token
         // and increment i by end to move past the keyword.
         int end = match[0].rm_eo;
-        char *tok = calloc(end + 2, sizeof(char));
+        char *tok = (char *)calloc(end + 2, sizeof(char));
         if (type == STR_CONST)
             // end - 1 to offset the +1 to str & then to exclue the ending "
             strlcpy(tok, str + 1, end - 1);
         else
             strlcpy(tok, str, end + 1);
 
-        append(tokensHead, tok, type);
+        Token *tokPtr = (Token *)calloc(1, sizeof(Token));
+        tokPtr->type = type;
+        tokPtr->value = tok;
+        append(tokensHead, tokPtr);
         *i += end;
         free(match);
         return true;
@@ -209,12 +220,21 @@ bool matches(regex_t *regex, char *str, TokenType type, int *i) {
     return false;
 }
 
-TokenType tokenType() { return currToken->type; }
+TokenType tokenType() {
+    Token *p = (Token *)currToken->data;
+    return p->type;
+}
 
-char *tokenVal() { return currToken->value; }
+char *tokenVal() { return ((Token *)currToken->data)->value; }
 
 void error(char *msg) {
 
     printf("ERROR: %s\nLine: %s\n ", msg, line);
     exit(1);
+}
+
+void printTokens(void *data) {
+    Token *tok = (Token *)data;
+    Token stok = *tok;
+    printf("(%s) %s\n", getTokenTypeStr(tok->type), tok->value);
 }

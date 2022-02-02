@@ -1,8 +1,13 @@
+#include "utils.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include "utils.h"
 #ifndef TOKENIZER_H
 #define TOKENIZER_H 1
+typedef struct Token {
+    char *value;
+    TokenType type;
+} Token;
+
 void initTokenizer(FILE *inFile);
 void freeTokenizer();
 bool hasMoreTokens();

@@ -13,6 +13,7 @@ char *jack = ".jack";
 char *outExt = "T.xml";
 const int MAX_TOKENS = 1000000;
 char *toXml(char *);
+
 int main(int argc, char *argv[]) {
     if (argc != 2) {
         printf("USAGE: JackCompiler <Path to .jack file or directory of .jack files>");
@@ -37,7 +38,9 @@ int main(int argc, char *argv[]) {
         for (int i = 0; hasMoreTokens() && i < MAX_TOKENS; i++) {
             advance();
             char *ttStr = getTokenTypeStr(tokenType());
-            fprintf(outFile, "<%s> %s </%s>\n", ttStr, toXml(tokenVal()), ttStr);
+            char *val = tokenVal();
+            val = toXml(val);
+            fprintf(outFile, "<%s> %s </%s>\n", ttStr, val, ttStr);
         }
 
         fprintf(outFile, "</tokens>\n");
@@ -96,10 +99,10 @@ char **getPaths(char *inPath, int *numFiles) {
             if (!isJackFile(entry->d_name))
                 continue;
 
-            paths = realloc(paths, ++(*numFiles) * sizeof(char **));
+            paths = (char **)realloc(paths, ++(*numFiles) * sizeof(char **));
             int nameLen = entry->d_namlen;
             // +2 for \0 and '/' we may be adding
-            char *fullPath = calloc(inPathLen + nameLen + 2, sizeof(char));
+            char *fullPath = (char *)calloc(inPathLen + nameLen + 2, sizeof(char));
 
             strlcpy(fullPath, inPath, inPathLen + 1);
             fullPath[inPathLen + 1] = '\0';
@@ -117,7 +120,7 @@ char **getPaths(char *inPath, int *numFiles) {
         return paths;
 
     } else if (S_ISREG(s.st_mode)) {
-        paths = calloc(1, sizeof(char *));
+        paths = (char **)calloc(1, sizeof(char *));
         *paths = inPath;
         *numFiles = 1;
         return paths;
@@ -142,7 +145,7 @@ char *changeExt(char *file, char *toExt) {
     int fileNameLen = strnlen(file, FILENAME_MAX) - strnlen(dot, 50);
     int newFileLen = fileNameLen + strnlen(toExt, 50);
 
-    char *newFile = calloc(newFileLen, sizeof(char));
+    char *newFile = (char *)calloc(newFileLen, sizeof(char));
     strlcpy(newFile, file, fileNameLen + 1);
     strlcat(newFile, toExt, newFileLen + 1);
 
