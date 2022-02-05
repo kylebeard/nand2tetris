@@ -61,7 +61,9 @@ void compileClassVarDec() {
     eat((char **)expect, 2);
     eatType();
     eatTT(IDENTIFIER);
-    while (maybeEat(",")) { eatTT(IDENTIFIER); }
+    while (maybeEat(",")) {
+        eatTT(IDENTIFIER);
+    }
     eatStr(";");
 
     endRule(CLASS_VAR_DEC);
@@ -111,6 +113,9 @@ void compileSubroutineBody() {
     */
     startRule(SUBROUTINE_BODY);
     eatStr("{");
+    while (!strncmp(currentToken, kwStr(VAR), 4))
+        compileVarDec();
+    compileStatements();
     eatStr("}");
     endRule(SUBROUTINE_BODY);
 }
@@ -118,6 +123,17 @@ void compileVarDec() {
     /*
     'var' type varName (', ' varName)* ';'
     */
+    startRule(VAR_DEC);
+
+    eatStr(kwStr(VAR));
+    eatType();
+    eatTT(IDENTIFIER);
+    while (maybeEat(","))
+        eatTT(IDENTIFIER);
+
+    eatStr(";");
+
+    endRule(VAR_DEC);
 }
 void compileStatements() {
     /*

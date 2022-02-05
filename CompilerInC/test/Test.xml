@@ -47,6 +47,12 @@
         <symbol> ) </symbol>
         <subroutineBody>
             <symbol> { </symbol>
+            <varDec>
+                <keyword> var </keyword>
+                <keyword> int </keyword>
+                <identifier> j </identifier>
+                <symbol> ; </symbol>
+            </varDec>
             <symbol> } </symbol>
         </subroutineBody>
     </subroutineDec>
@@ -62,6 +68,14 @@
         <symbol> ) </symbol>
         <subroutineBody>
             <symbol> { </symbol>
+            <varDec>
+                <keyword> var </keyword>
+                <keyword> boolean </keyword>
+                <identifier> k </identifier>
+                <symbol> , </symbol>
+                <identifier> l </identifier>
+                <symbol> ; </symbol>
+            </varDec>
             <symbol> } </symbol>
         </subroutineBody>
     </subroutineDec>
@@ -77,6 +91,12 @@
         <symbol> ) </symbol>
         <subroutineBody>
             <symbol> { </symbol>
+            <varDec>
+                <keyword> var </keyword>
+                <keyword> char </keyword>
+                <identifier> x </identifier>
+                <symbol> ; </symbol>
+            </varDec>
             <symbol> } </symbol>
         </subroutineBody>
     </subroutineDec>
@@ -95,6 +115,26 @@
         <symbol> ) </symbol>
         <subroutineBody>
             <symbol> { </symbol>
+            <varDec>
+                <keyword> var </keyword>
+                <identifier> AClass </identifier>
+                <identifier> a </identifier>
+                <symbol> ; </symbol>
+            </varDec>
+            <varDec>
+                <keyword> var </keyword>
+                <keyword> int </keyword>
+                <identifier> x </identifier>
+                <symbol> , </symbol>
+                <identifier> y </identifier>
+                <symbol> ; </symbol>
+            </varDec>
+            <varDec>
+                <keyword> var </keyword>
+                <keyword> boolean </keyword>
+                <identifier> g </identifier>
+                <symbol> ; </symbol>
+            </varDec>
             <symbol> } </symbol>
         </subroutineBody>
     </subroutineDec>
@@ -125,6 +165,56 @@
         <symbol> ) </symbol>
         <subroutineBody>
             <symbol> { </symbol>
+            <varDec>
+                <keyword> var </keyword>
+                <keyword> int </keyword>
+                <identifier> x </identifier>
+                <symbol> , </symbol>
+                <identifier> y </identifier>
+                <symbol> , </symbol>
+                <identifier> z </identifier>
+                <symbol> ; </symbol>
+            </varDec>
+            <varDec>
+                <keyword> var </keyword>
+                <keyword> boolean </keyword>
+                <identifier> q </identifier>
+                <symbol> ; </symbol>
+            </varDec>
+            <varDec>
+                <keyword> var </keyword>
+                <identifier> Hi </identifier>
+                <identifier> hey </identifier>
+                <symbol> , </symbol>
+                <identifier> hello </identifier>
+                <symbol> , </symbol>
+                <identifier> heyThere </identifier>
+                <symbol> ; </symbol>
+            </varDec>
+            <varDec>
+                <keyword> var </keyword>
+                <keyword> int </keyword>
+                <identifier> s </identifier>
+                <symbol> ; </symbol>
+            </varDec>
+            <varDec>
+                <keyword> var </keyword>
+                <keyword> int </keyword>
+                <identifier> e </identifier>
+                <symbol> ; </symbol>
+            </varDec>
+            <varDec>
+                <keyword> var </keyword>
+                <keyword> int </keyword>
+                <identifier> r </identifier>
+                <symbol> ; </symbol>
+            </varDec>
+            <varDec>
+                <keyword> var </keyword>
+                <keyword> char </keyword>
+                <identifier> u </identifier>
+                <symbol> ; </symbol>
+            </varDec>
             <symbol> } </symbol>
         </subroutineBody>
     </subroutineDec>

@@ -5,8 +5,26 @@ static boolean x, y, z, a, b, c;
 field Point p1, p2;
 
 // compileSubroutineDec
-method void x(int y){}
-function char hi(char x){}
-constructor int y(boolean z){}
-method AClass z(Point p1, Point p2){}
-function boolean b(int x, int y, int z, char a, boolean b, SomeClass sc){}
+method void x(int y){
+    var int j;
+}
+function char hi(char x){
+    var boolean k, l;
+}
+constructor int y(boolean z){
+    var char x;
+}
+method AClass z(Point p1, Point p2){
+    var AClass a;
+    var int x,y;
+    var boolean g;
+}
+function boolean b(int x, int y, int z, char a, boolean b, SomeClass sc){
+    var int x,y,z;
+    var boolean q;
+    var Hi hey, hello, heyThere;
+    var int s;
+    var int e;
+    var int r;
+    var char u;
+}
