@@ -196,7 +196,6 @@ void compileIf() {
 }
 void compileDo() {
     /*
-
     'do' subroutineCall';'
     */
 }
@@ -205,12 +204,33 @@ void compileWhile() {
 
     'while' '(' expression ')' '{' statements '}'
     */
+    startRule(WHILE_STATEMENT);
+
+    eatStr(kwStr(WHILE));
+    eatStr("(");
+    compileExpr();
+    eatStr(")");
+
+    eatStr("{");
+    compileStatements();
+    eatStr("}");
+
+    endRule(WHILE_STATEMENT);
 }
 void compileReturn() {
     /*
 
     'return' expression? ':'
     */
+    startRule(RETURN_STATEMENT);
+
+    eatStr(kwStr(RETURN));
+    if (!maybeEat(";")) {
+        compileExpr();
+        eatStr(";");
+    }
+
+    endRule(RETURN_STATEMENT);
 }
 void compileExpr() {
     /*
