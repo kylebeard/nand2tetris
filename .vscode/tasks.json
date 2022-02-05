@@ -4,22 +4,36 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "run c-compiler build.sh",
+            "label": "build c-compiler",
             "type": "shell",
             "command": "${workspaceFolder}/CompilerInC/build.sh",
             "group": "build"
         },
         {
-            "label": "build os classes",
+            "label": "run c-compiler on Test.jack",
             "type": "shell",
-            "command": "${workspaceFolder}/projects/12/build.sh",
-            "group": "build"
+            "command": "${workspaceFolder}/CompilerInC/JackCompiler",
+            "args": ["${workspaceFolder}/CompilerInC/test/Test.jack"]
         },
         {
-            "label": "run pytest",
+            "label": "build & run c-compiler on Test.jack",
             "type": "shell",
-            "command": "${workspaceFolder}/Compiler/runTests.sh"
+            "dependsOrder": "sequence",
+            "dependsOn": ["build c-compiler", "run c-compiler on Test.jack"],
+            "group": "build"
         },
+
+        // {
+        //     "label": "build os classes",
+        //     "type": "shell",
+        //     "command": "${workspaceFolder}/projects/12/build.sh",
+        //     "group": "build"
+        // },
+        // {
+        //     "label": "run pytest",
+        //     "type": "shell",
+        //     "command": "${workspaceFolder}/Compiler/runTests.sh"
+        // },
         {
             "label": "git add",
             "type": "shell",
@@ -41,17 +55,17 @@
             "dependsOrder": "sequence",
             "dependsOn": ["run pytest", "git add", "git commit", "git push"],
             "group": "build"
-        },
-        {
-            "label": "Run test.sh",
-            "type": "process",
-            "command": "./test.sh",
-            "echoCommand": true,
-            "options": {
-                "cwd": "Compiler"
-            },
-            "group": "build"
         }
+        // {
+        //     "label": "Run test.sh",
+        //     "type": "process",
+        //     "command": "./test.sh",
+        //     "echoCommand": true,
+        //     "options": {
+        //         "cwd": "Compiler"
+        //     },
+        //     "group": "build"
+        // }
     ],
     "inputs": [
         {

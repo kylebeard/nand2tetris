@@ -150,7 +150,7 @@ void parseNewLine() {
             i += 2;
             char *endComment = strstr(&dupLine[i], "*/");
             if (endComment == NULL)
-                error("Didn't find closing '*/' for comment.");
+                tokenizerError("Didn't find closing '*/' for comment.");
 
             i = (endComment - dupLine) + 2; //+2 to get just after the */
             continue;
@@ -227,7 +227,7 @@ TokenType tokenType() {
 
 char *tokenVal() { return ((Token *)currToken->data)->value; }
 
-void error(char *msg) {
+void tokenizerError(char *msg) {
 
     printf("ERROR: %s\nLine: %s\n ", msg, line);
     exit(1);
@@ -238,3 +238,5 @@ void printTokens(void *data) {
     Token stok = *tok;
     printf("(%s) %s\n", getTokenTypeStr(tok->type), tok->value);
 }
+
+char *getLine() { return line; }

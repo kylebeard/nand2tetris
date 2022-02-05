@@ -1,0 +1,38 @@
+<class>
+    <classVarDec>
+        <keyword> static </keyword>
+        <keyword> int </keyword>
+        <identifier> x </identifier>
+        <symbol> ; </symbol>
+    </classVarDec>
+    <classVarDec>
+        <keyword> field </keyword>
+        <keyword> char </keyword>
+        <identifier> y </identifier>
+        <symbol> ; </symbol>
+    </classVarDec>
+    <classVarDec>
+        <keyword> static </keyword>
+        <keyword> boolean </keyword>
+        <identifier> x </identifier>
+        <symbol> , </symbol>
+        <identifier> y </identifier>
+        <symbol> , </symbol>
+        <identifier> z </identifier>
+        <symbol> , </symbol>
+        <identifier> a </identifier>
+        <symbol> , </symbol>
+        <identifier> b </identifier>
+        <symbol> , </symbol>
+        <identifier> c </identifier>
+        <symbol> ; </symbol>
+    </classVarDec>
+    <classVarDec>
+        <keyword> field </keyword>
+        <identifier> Point </identifier>
+        <identifier> p1 </identifier>
+        <symbol> , </symbol>
+        <identifier> p2 </identifier>
+        <symbol> ; </symbol>
+    </classVarDec>
+</class>

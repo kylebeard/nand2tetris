@@ -1,8 +1,25 @@
 #include "utils.h"
-char *getTokenTypeStr(TokenType tt)
-{
-    switch (tt)
-    {
+#include <string.h>
+char *toXml(char *tok) {
+    if (strnlen(tok, 100) > 1)
+        return tok;
+
+    switch (tok[0]) {
+    case '<':
+        return "&lt;";
+    case '>':
+        return "&gt;";
+    case '"':
+        return "&quot;";
+    case '&':
+        return "&amp;";
+    default:
+        return tok;
+    }
+}
+
+char *getTokenTypeStr(TokenType tt) {
+    switch (tt) {
     case KEYWORD:
         return "keyword";
     case SYMBOL:
@@ -13,18 +30,13 @@ char *getTokenTypeStr(TokenType tt)
         return "integerConstant";
     case STR_CONST:
         return "stringConstant";
-    case UNKNOWN:
-        return "unknown";
-
     default:
-        return (char *)NULL;
+        return "unknown";
     }
 }
 
-char *getKeywordStr(Keyword kw)
-{
-    switch (kw)
-    {
+char *getKeywordStr(Keyword kw) {
+    switch (kw) {
     case CLASS:
         return "class";
     case CONSTRUCTOR:
@@ -69,5 +81,42 @@ char *getKeywordStr(Keyword kw)
         return "return";
     default:
         return (char *)NULL;
+    }
+}
+
+char *getRuleStr(GrammarRule rule) {
+    switch (rule) {
+    case CLASS_RULE:
+        return "class";
+    case CLASS_VAR_DEC:
+        return "classVarDec";
+    case SUBROUTINE_DEC:
+        return "subroutineDec";
+    case PARAMETER_LIST:
+        return "parameterList";
+    case SUBROUTINE_BODY:
+        return "subroutineBody";
+    case VAR_DEC:
+        return "varDec";
+    case STATEMENTS:
+        return "statements";
+    case LET_STATEMENT:
+        return "letStatement";
+    case IF_STATEMENT:
+        return "ifStatement";
+    case WHILE_STATEMENT:
+        return "whileStatement";
+    case DO_STATEMENT:
+        return "doStatement";
+    case RETURN_STATEMENT:
+        return "returnStatement";
+    case EXPRESSION:
+        return "expression";
+    case TERM:
+        return "term";
+    case EXPRESSION_LIST:
+        return "expressionList";
+    default:
+        return "unknownRule";
     }
 }

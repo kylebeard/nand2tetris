@@ -1,3 +1,4 @@
+#include "CompilationEngine.h"
 #include "JackTokenizer.h"
 #include "utils.h"
 #include <dirent.h>
@@ -13,6 +14,7 @@ char *jack = ".jack";
 char *outExt = "T.xml";
 const int MAX_TOKENS = 1000000;
 char *toXml(char *);
+int tokenizerOnly(int, char **);
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
@@ -27,47 +29,24 @@ int main(int argc, char *argv[]) {
     FILE *inFile, *outFile;
     for (int i = 0; i < nfiles; i++) {
         char *inPath = paths[i];
-        char *outPath = changeExt(inPath, outExt);
-        printf("comiling %s\n to %s\n", inPath, outPath);
+        char *outPath = changeExt(inPath, ".xml");
+        printf("comiling %s\nto %s\n", inPath, outPath);
 
         inFile = fopen(inPath, "r"); // getPaths() checks for existence
         outFile = fopen(outPath, "w");
+
         initTokenizer(inFile);
+        initCompilationEngine(outFile);
 
-        fprintf(outFile, "<tokens>\n");
-        for (int i = 0; hasMoreTokens() && i < MAX_TOKENS; i++) {
-            advance();
-            char *ttStr = getTokenTypeStr(tokenType());
-            char *val = tokenVal();
-            val = toXml(val);
-            fprintf(outFile, "<%s> %s </%s>\n", ttStr, val, ttStr);
-        }
+        compileClass();
 
-        fprintf(outFile, "</tokens>\n");
         freeTokenizer();
-
         fclose(inFile);
         fclose(outFile);
     }
     return 0;
 }
-char *toXml(char *tok) {
-    if (strnlen(tok, 100) > 1)
-        return tok;
 
-    switch (tok[0]) {
-    case '<':
-        return "&lt;";
-    case '>':
-        return "&gt;";
-    case '"':
-        return "&quot;";
-    case '&':
-        return "&amp;";
-    default:
-        return tok;
-    }
-}
 char **getPaths(char *inPath, int *numFiles) {
     /*
     if inPath is a file:
@@ -151,4 +130,42 @@ char *changeExt(char *file, char *toExt) {
 
 
     return newFile;
+}
+
+
+int tokenizerOnly(int argc, char *argv[]) {
+    if (argc != 2) {
+        printf("USAGE: JackCompiler <Path to .jack file or directory of .jack files>");
+        return 1;
+    }
+
+    int nfiles = 0;
+    char **paths = getPaths(argv[1], &nfiles);
+
+    printf("number of jack files found: %d\n", nfiles);
+    FILE *inFile, *outFile;
+    for (int i = 0; i < nfiles; i++) {
+        char *inPath = paths[i];
+        char *outPath = changeExt(inPath, outExt);
+        printf("comiling %s\n to %s\n", inPath, outPath);
+
+        inFile = fopen(inPath, "r"); // getPaths() checks for existence
+        outFile = fopen(outPath, "w");
+        initTokenizer(inFile);
+        fprintf(outFile, "<tokens>\n");
+        for (int i = 0; hasMoreTokens() && i < MAX_TOKENS; i++) {
+            advance();
+            char *ttStr = getTokenTypeStr(tokenType());
+            char *val = tokenVal();
+            val = toXml(val);
+            fprintf(outFile, "<%s> %s </%s>\n", ttStr, val, ttStr);
+        }
+
+        fprintf(outFile, "</tokens>\n");
+        freeTokenizer();
+
+        fclose(inFile);
+        fclose(outFile);
+    }
+    return 0;
 }

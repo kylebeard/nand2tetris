@@ -16,11 +16,55 @@ void test_strstr();
 void test_strlcpy();
 void test_charptrs(char ***);
 void test_speed();
+char *join(char **, char *, size_t);
+void test_join();
+void test_not();
 typedef int *intp;
 int main() {
-    // test_regex();
+    test_not();
     return 0;
 }
+
+void test_not() {
+    int zero = 0;
+    int negOne = -1;
+    int posOne = 1;
+    if (!zero)
+        printf("!zero\n");
+    if (!negOne)
+        printf("!negOne\n");
+    if (!posOne)
+        printf("!posOne\n");
+}
+void test_join() {
+    char **vals = malloc(3 * sizeof(char *));
+    char *s1 = "str1";
+    char *s2 = "str2";
+    char *s3 = "str3";
+    *vals = s1;
+    *(vals + 1) = s2;
+    *(vals + 2) = s3;
+    for (int i = 0; i < 3; i++) { printf("%s\n", vals[i]); }
+    char *joined = join(vals, ", ", 3);
+    printf("joined: %s\n", joined);
+}
+
+char *join(char **vals, char *sep, size_t len) {
+    size_t seplen = strlen(sep);
+    char *joined = calloc(1, strlen(vals[0]) + 1);
+    strcpy(joined, vals[0]);
+    for (int i = 1; i < len; i++) {
+        size_t joinedlen = strlen(joined);
+        size_t currValLen = strlen(vals[i]);
+        joined = realloc(joined, joinedlen + seplen + currValLen + 1);
+        strlcat(joined, sep, joinedlen + seplen + 1);
+        strlcat(joined, vals[i], joinedlen + seplen + currValLen + 1);
+    }
+
+    return joined;
+}
+
+
 void test_speed() {
     int count = 500;
     for (int i = 0; i < 500; i++) {

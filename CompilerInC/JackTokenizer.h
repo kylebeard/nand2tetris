@@ -14,6 +14,6 @@ bool hasMoreTokens();
 void advance();
 TokenType tokenType();
 char *tokenVal();
-
-void error(char *msg);
+char *getLine();
+void tokenizerError(char *msg);
 #endif

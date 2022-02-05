@@ -1,10 +1,4 @@
-// a line comment
-/* a single-line block comment */
-/*
-a multi
--
-line block comment
-*/
-class Main {
-    static /* in-line block comment */ int a; // in-line line comment
-}
+static int x;
+field char y;
+static boolean x, y, z, a, b, c;
+field Point p1, p2;

@@ -6,6 +6,7 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "files.associations": {
+        "*.tcc": "cpp",
         "unistd.h": "c",
         "stdio.h": "c",
         "cstdio": "c",
@@ -36,6 +37,23 @@
         "array": "c",
         "utility": "c",
         "stat.h": "c",
-        "dirent.h": "c"
+        "dirent.h": "c",
+        "__locale": "c",
+        "ios": "c",
+        "jacktokenizer.h": "c",
+        "utils.h": "c",
+        "__availability": "c",
+        "__errc": "c",
+        "__hash_table": "c",
+        "__tuple": "c",
+        "locale": "c",
+        "__config": "c",
+        "core": "c",
+        "iostream": "c",
+        "istream": "c",
+        "new": "c",
+        "ostream": "c",
+        "stdexcept": "c",
+        "streambuf": "c"
     }
 }

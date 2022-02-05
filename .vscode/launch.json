@@ -18,7 +18,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/CompilerInC/JackCompiler",
-            "args": ["./test/ParserTests/ExpressionLessSquare/Main.jack"],
+            "args": ["./test/Test.jack"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
