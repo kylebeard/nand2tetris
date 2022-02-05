@@ -5,28 +5,30 @@
 #include <string.h>
 
 void eat(char **, size_t);
-void eat_tt(TokenType);
-void eat_str(char *);
+void eatTT(TokenType);
+void eatStr(char *);
+void eatReturnType(); // 'void' || eatType()
+bool maybeEat(char *);
+void eatType(); // int, char, boolean or className (identifier)
+
 void advanceTokenizer();
 void writeToken();
 void startRule(GrammarRule);
 void endRule(GrammarRule);
 char *join(char **, char *, size_t);
-void eatType(); // int, char, boolean or className (identifier)
-bool maybe_eat(char *);
 void error(char *msg);
 
 FILE *out;
 char *currentToken;
 TokenType currentTokenType;
+
 const int MAX_TOKEN_SIZE = 255;
-const int MAX_TOKEN_TYPE_SIZE = 16; // longest string retuned by getTokenTypeStr()
+const int MAX_TOKEN_TYPE_SIZE = 16; // longest string retuned by ttStr()
 
 void initCompilationEngine(FILE *_outFile) {
     out = _outFile;
     advanceTokenizer();
 }
-
 
 void compileClass() {
     /*
@@ -39,20 +41,28 @@ void compileClass() {
     compileClassVarDec();
     compileClassVarDec();
 
+    compileSubroutineDec();
+    compileSubroutineDec();
+    compileSubroutineDec();
+    compileSubroutineDec();
+    compileSubroutineDec();
+
     endRule(CLASS_RULE);
 }
+
+
 void compileClassVarDec() {
     /*
     ('static'|'field' ) type varName (',' varName)* ';'
     */
     startRule(CLASS_VAR_DEC);
 
-    char *expected[2] = {getKeywordStr(STATIC), getKeywordStr(FIELD)};
-    eat((char **)expected, 2);
+    char *expect[2] = {kwStr(STATIC), kwStr(FIELD)};
+    eat((char **)expect, 2);
     eatType();
-    eat_tt(IDENTIFIER);
-    while (maybe_eat(",")) { eat_tt(IDENTIFIER); }
-    eat_str(";");
+    eatTT(IDENTIFIER);
+    while (maybeEat(",")) { eatTT(IDENTIFIER); }
+    eatStr(";");
 
     endRule(CLASS_VAR_DEC);
 }
@@ -62,16 +72,47 @@ void compileSubroutineDec() {
     ('constructor' | 'function' | 'method') ('void' | type) subroutineName
     '(' parameterList ')' subroutineBody
     */
+    startRule(SUBROUTINE_DEC);
+
+    char *expect[3] = {kwStr(CONSTRUCTOR), kwStr(FUNCTION), kwStr(METHOD)};
+    eat((char **)expect, 3);
+    eatReturnType();
+    eatTT(IDENTIFIER);
+    eatStr("(");
+    compileParamList();
+    eatStr(")");
+    compileSubroutineBody();
+    endRule(SUBROUTINE_DEC);
 }
 void compileParamList() {
     /*
     ((type varName) (',' type varName)*)?
     */
+
+    startRule(PARAMETER_LIST);
+
+    if (!strncmp(currentToken, ")", 2)) {
+        endRule(CLASS_RULE);
+        return;
+    }
+
+    eatType();
+    eatTT(IDENTIFIER);
+    while (maybeEat(",")) {
+        eatType();
+        eatTT(IDENTIFIER);
+    }
+
+    endRule(PARAMETER_LIST);
 }
 void compileSubroutineBody() {
     /*
     '{' varDec* statements '}'
     */
+    startRule(SUBROUTINE_BODY);
+    eatStr("{");
+    eatStr("}");
+    endRule(SUBROUTINE_BODY);
 }
 void compileVarDec() {
     /*
@@ -155,22 +196,22 @@ void eat(char **possibilities, size_t len) {
     error(*ret);
 }
 
-void eat_tt(TokenType tt) {
+void eatTT(TokenType tt) {
     if (currentTokenType == tt) {
         writeToken();
         advanceTokenizer();
         return;
     }
     char **ret = malloc(sizeof(char **));
-    asprintf(ret, "Expected Token Type: %s", getTokenTypeStr(currentTokenType));
+    asprintf(ret, "Expected Token Type: %s", ttStr(currentTokenType));
     error(*ret);
 }
 
 // int, char, boolean or className (identifier)
 void eatType() {
-    int i = strncmp(currentToken, getKeywordStr(INT), 3);
-    int c = strncmp(currentToken, getKeywordStr(CHAR), 4);
-    int b = strncmp(currentToken, getKeywordStr(BOOLEAN), 7);
+    int i = strncmp(currentToken, kwStr(INT), 3);
+    int c = strncmp(currentToken, kwStr(CHAR), 4);
+    int b = strncmp(currentToken, kwStr(BOOLEAN), 7);
     if (!i || !c || !b || currentTokenType == IDENTIFIER) {
         writeToken();
         advanceTokenizer();
@@ -180,7 +221,7 @@ void eatType() {
     error("Expected Type (int, char, boolean or className (identifier))");
 }
 
-bool maybe_eat(char *expected) {
+bool maybeEat(char *expected) {
     if (!strncmp(currentToken, expected, strlen(expected))) {
         writeToken();
         advanceTokenizer();
@@ -190,24 +231,28 @@ bool maybe_eat(char *expected) {
     return false;
 }
 
-void eat_str(char *str) {
-    if (!maybe_eat(str)) {
+void eatStr(char *str) {
+    if (!maybeEat(str)) {
         char **ret = malloc(sizeof(char **));
         asprintf(ret, "Expected '%s'", str);
         error(*ret);
     }
 }
 
+void eatReturnType() {
+    if (!maybeEat(kwStr(VOID)))
+        eatType();
+}
 void writeToken() {
-    char *ttStr = getTokenTypeStr(currentTokenType);
+    char *tt = ttStr(currentTokenType);
     char *val = tokenVal();
     val = toXml(currentToken);
-    fprintf(out, "<%s> %s </%s>\n", ttStr, val, ttStr);
+    fprintf(out, "<%s> %s </%s>\n", tt, val, tt);
 }
 
-void startRule(GrammarRule rule) { fprintf(out, "<%s>\n", getRuleStr(rule)); }
+void startRule(GrammarRule rule) { fprintf(out, "<%s>\n", ruleStr(rule)); }
 
-void endRule(GrammarRule rule) { fprintf(out, "</%s>\n", getRuleStr(rule)); }
+void endRule(GrammarRule rule) { fprintf(out, "</%s>\n", ruleStr(rule)); }
 
 void error(char *msg) {
     printf("ERROR: %s\n", msg);

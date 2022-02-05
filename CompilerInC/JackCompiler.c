@@ -155,10 +155,10 @@ int tokenizerOnly(int argc, char *argv[]) {
         fprintf(outFile, "<tokens>\n");
         for (int i = 0; hasMoreTokens() && i < MAX_TOKENS; i++) {
             advance();
-            char *ttStr = getTokenTypeStr(tokenType());
+            char *tt = ttStr(tokenType());
             char *val = tokenVal();
             val = toXml(val);
-            fprintf(outFile, "<%s> %s </%s>\n", ttStr, val, ttStr);
+            fprintf(outFile, "<%s> %s </%s>\n", tt, val, tt);
         }
 
         fprintf(outFile, "</tokens>\n");

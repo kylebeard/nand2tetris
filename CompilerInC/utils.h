@@ -4,7 +4,7 @@
 char *toXml(char *);
 enum TokenType { KEYWORD, SYMBOL, IDENTIFIER, INT_CONST, STR_CONST, UNKNOWN };
 typedef enum TokenType TokenType;
-char *getTokenTypeStr(TokenType tt);
+char *ttStr(TokenType tt);
 
 enum Keyword {
     CLASS,
@@ -31,7 +31,7 @@ enum Keyword {
 };
 typedef enum Keyword Keyword;
 
-char *getKeywordStr(Keyword kw);
+char *kwStr(Keyword kw);
 
 // rules handled directly type, class name, subroutine name, variable name, statement,
 // subroutine call,
@@ -54,6 +54,6 @@ enum GrammarRule {
 
 };
 typedef enum GrammarRule GrammarRule;
-char *getRuleStr(GrammarRule);
+char *ruleStr(GrammarRule);
 
 #endif

@@ -236,7 +236,7 @@ void tokenizerError(char *msg) {
 void printTokens(void *data) {
     Token *tok = (Token *)data;
     Token stok = *tok;
-    printf("(%s) %s\n", getTokenTypeStr(tok->type), tok->value);
+    printf("(%s) %s\n", ttStr(tok->type), tok->value);
 }
 
 char *getLine() { return line; }

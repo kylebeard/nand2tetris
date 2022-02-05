@@ -18,7 +18,7 @@ char *toXml(char *tok) {
     }
 }
 
-char *getTokenTypeStr(TokenType tt) {
+char *ttStr(TokenType tt) {
     switch (tt) {
     case KEYWORD:
         return "keyword";
@@ -35,7 +35,7 @@ char *getTokenTypeStr(TokenType tt) {
     }
 }
 
-char *getKeywordStr(Keyword kw) {
+char *kwStr(Keyword kw) {
     switch (kw) {
     case CLASS:
         return "class";
@@ -84,7 +84,7 @@ char *getKeywordStr(Keyword kw) {
     }
 }
 
-char *getRuleStr(GrammarRule rule) {
+char *ruleStr(GrammarRule rule) {
     switch (rule) {
     case CLASS_RULE:
         return "class";
