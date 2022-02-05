@@ -10,7 +10,7 @@ void eatStr(char *);
 void eatReturnType(); // 'void' || eatType()
 bool maybeEat(char *);
 void eatType(); // int, char, boolean or className (identifier)
-
+bool cmpTok(char *);
 void advanceTokenizer();
 void writeToken();
 void startRule(GrammarRule);
@@ -141,11 +141,37 @@ void compileStatements() {
     Statement:
     letStatement | ifStatement| whileStatement | doStatement | returnStatement
     */
+    startRule(STATEMENTS);
+    while (cmpTok(kwStr(LET)) || cmpTok(kwStr(IF)) || cmpTok(kwStr(WHILE)) || cmpTok(kwStr(DO))
+           || cmpTok(kwStr(RETURN))) {
+        if (cmpTok(kwStr(LET)))
+            compileLet();
+        else if (cmpTok(kwStr(IF)))
+            compileIf();
+        else if (cmpTok(kwStr(WHILE)))
+            compileWhile();
+        else if (cmpTok(kwStr(DO)))
+            compileDo();
+        else if (cmpTok(kwStr(RETURN)))
+            compileReturn();
+    }
+    endRule(STATEMENTS);
 }
 void compileLet() {
     /*
     'let' varName ('[' expression ']')? '=' expression ';'
     */
+    startRule(LET_STATEMENT);
+    eatStr(kwStr(LET));
+    eatTT(IDENTIFIER);
+    if (maybeEat("[")) {
+        compileExpr();
+        eatStr("]");
+    }
+    eatStr("=");
+    compileExpr();
+    eatStr(";");
+    endRule(LET_STATEMENT);
 }
 void compileIf() {
     /*
@@ -175,6 +201,9 @@ void compileExpr() {
     /*
 
     */
+    startRule(EXPRESSION);
+    eatStr("1");
+    endRule(EXPRESSION);
 }
 void compileTerm() {
     /*
@@ -269,7 +298,7 @@ void writeToken() {
 void startRule(GrammarRule rule) { fprintf(out, "<%s>\n", ruleStr(rule)); }
 
 void endRule(GrammarRule rule) { fprintf(out, "</%s>\n", ruleStr(rule)); }
-
+bool cmpTok(char *s) { return !strncmp(currentToken, s, MAX_TOKEN_SIZE); }
 void error(char *msg) {
     printf("ERROR: %s\n", msg);
     printf("Current Token: %s\n", currentToken);

@@ -3,9 +3,9 @@ BasedOnStyle: LLVM
 ---
 Language: Cpp
 AlignEscapedNewlines: Left
-AlignOperands: AlignAfterOperator
+AlignOperands: Align
 AllowShortBlocksOnASingleLine: Empty
-BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeBinaryOperators: All
 ColumnLimit: 100
 MaxEmptyLinesToKeep: 2
 IndentWidth: 4

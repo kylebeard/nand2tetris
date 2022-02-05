@@ -7,6 +7,9 @@ field Point p1, p2;
 // compileSubroutineDec
 method void x(int y){
     var int j;
+    let x = 1;
+    let hey = 1;
+    let what[1] = 1;
 }
 function char hi(char x){
     var boolean k, l;
