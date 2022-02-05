@@ -10,6 +10,11 @@ method void x(int y){
     let x = 1;
     let hey = 1;
     let what[1] = 1;
+    if (1) {
+        let x = 1;
+    } else {
+        let x = 1;
+    }
 }
 function char hi(char x){
     var boolean k, l;
@@ -30,4 +35,5 @@ function boolean b(int x, int y, int z, char a, boolean b, SomeClass sc){
     var int e;
     var int r;
     var char u;
+
 }

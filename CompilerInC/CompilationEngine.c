@@ -178,6 +178,21 @@ void compileIf() {
 
     'if' '(' expression ')' '{' statements "}' ('else' '{' statements '}')?
     */
+    startRule(IF_STATEMENT);
+    eatStr(kwStr(IF));
+    eatStr("(");
+    compileExpr();
+    eatStr(")");
+
+    eatStr("{");
+    compileStatements();
+    eatStr("}");
+    if (maybeEat(kwStr(ELSE))) {
+        eatStr("{");
+        compileStatements();
+        eatStr("}");
+    }
+    endRule(IF_STATEMENT);
 }
 void compileDo() {
     /*
