@@ -3,6 +3,9 @@ static int x;
 field char y;
 static boolean x, y, z, a, b, c;
 field Point p1, p2;
+do Memory.peek(12, -1);
+let x = Memory.poke(12,129);
+let y = x*2;
 
 // compileSubroutineDec
 method void x(int y){

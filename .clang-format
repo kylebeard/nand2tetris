@@ -5,7 +5,9 @@ Language: Cpp
 AlignEscapedNewlines: Left
 AlignOperands: Align
 AllowShortBlocksOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: None
 BreakBeforeBinaryOperators: All
 ColumnLimit: 100
 MaxEmptyLinesToKeep: 2
 IndentWidth: 4
+UseCRLF: false

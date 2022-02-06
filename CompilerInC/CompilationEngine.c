@@ -4,9 +4,11 @@
 #include <stdio.h>
 #include <string.h>
 
-void eat(char **, size_t);
+void eatOneOf(char **, size_t);
+bool maybeEatOneOf(char **, size_t);
 void eatTT(TokenType);
-void eatStr(char *);
+bool maybeEatTT(TokenType);
+void eat(char *);
 void eatReturnType(); // 'void' || eatType()
 bool maybeEat(char *);
 void eatType(); // int, char, boolean or className (identifier)
@@ -17,10 +19,15 @@ void startRule(GrammarRule);
 void endRule(GrammarRule);
 char *join(char **, char *, size_t);
 void error(char *msg);
+void compileSubCall();
 
 FILE *out;
 char *currentToken;
 TokenType currentTokenType;
+
+char *kwConstants[4] = {"true", "false", "null", "this"};
+char *binOps = "+-*/&|<>=";
+char *unaryOps = "-~";
 
 const int MAX_TOKEN_SIZE = 255;
 const int MAX_TOKEN_TYPE_SIZE = 16; // longest string retuned by ttStr()
@@ -36,16 +43,16 @@ void compileClass() {
     */
     startRule(CLASS_RULE);
 
-    compileClassVarDec();
-    compileClassVarDec();
-    compileClassVarDec();
-    compileClassVarDec();
+    eat(kwStr(CLASS));
+    eatTT(IDENTIFIER);
+    eat("{");
+    while (cmpTok(kwStr(STATIC)) || cmpTok(kwStr(FIELD)))
+        compileClassVarDec();
 
-    compileSubroutineDec();
-    compileSubroutineDec();
-    compileSubroutineDec();
-    compileSubroutineDec();
-    compileSubroutineDec();
+    while (cmpTok(kwStr(CONSTRUCTOR)) || cmpTok(kwStr(METHOD)) || cmpTok(kwStr(FUNCTION)))
+        compileSubroutineDec();
+
+    eat("}");
 
     endRule(CLASS_RULE);
 }
@@ -58,13 +65,13 @@ void compileClassVarDec() {
     startRule(CLASS_VAR_DEC);
 
     char *expect[2] = {kwStr(STATIC), kwStr(FIELD)};
-    eat((char **)expect, 2);
+    eatOneOf((char **)expect, 2);
     eatType();
     eatTT(IDENTIFIER);
     while (maybeEat(",")) {
         eatTT(IDENTIFIER);
     }
-    eatStr(";");
+    eat(";");
 
     endRule(CLASS_VAR_DEC);
 }
@@ -77,12 +84,12 @@ void compileSubroutineDec() {
     startRule(SUBROUTINE_DEC);
 
     char *expect[3] = {kwStr(CONSTRUCTOR), kwStr(FUNCTION), kwStr(METHOD)};
-    eat((char **)expect, 3);
+    eatOneOf((char **)expect, 3);
     eatReturnType();
     eatTT(IDENTIFIER);
-    eatStr("(");
+    eat("(");
     compileParamList();
-    eatStr(")");
+    eat(")");
     compileSubroutineBody();
     endRule(SUBROUTINE_DEC);
 }
@@ -94,7 +101,7 @@ void compileParamList() {
     startRule(PARAMETER_LIST);
 
     if (!strncmp(currentToken, ")", 2)) {
-        endRule(CLASS_RULE);
+        endRule(PARAMETER_LIST);
         return;
     }
 
@@ -112,11 +119,11 @@ void compileSubroutineBody() {
     '{' varDec* statements '}'
     */
     startRule(SUBROUTINE_BODY);
-    eatStr("{");
+    eat("{");
     while (!strncmp(currentToken, kwStr(VAR), 4))
         compileVarDec();
     compileStatements();
-    eatStr("}");
+    eat("}");
     endRule(SUBROUTINE_BODY);
 }
 void compileVarDec() {
@@ -125,13 +132,13 @@ void compileVarDec() {
     */
     startRule(VAR_DEC);
 
-    eatStr(kwStr(VAR));
+    eat(kwStr(VAR));
     eatType();
     eatTT(IDENTIFIER);
     while (maybeEat(","))
         eatTT(IDENTIFIER);
 
-    eatStr(";");
+    eat(";");
 
     endRule(VAR_DEC);
 }
@@ -162,15 +169,15 @@ void compileLet() {
     'let' varName ('[' expression ']')? '=' expression ';'
     */
     startRule(LET_STATEMENT);
-    eatStr(kwStr(LET));
+    eat(kwStr(LET));
     eatTT(IDENTIFIER);
     if (maybeEat("[")) {
         compileExpr();
-        eatStr("]");
+        eat("]");
     }
-    eatStr("=");
+    eat("=");
     compileExpr();
-    eatStr(";");
+    eat(";");
     endRule(LET_STATEMENT);
 }
 void compileIf() {
@@ -179,18 +186,18 @@ void compileIf() {
     'if' '(' expression ')' '{' statements "}' ('else' '{' statements '}')?
     */
     startRule(IF_STATEMENT);
-    eatStr(kwStr(IF));
-    eatStr("(");
+    eat(kwStr(IF));
+    eat("(");
     compileExpr();
-    eatStr(")");
+    eat(")");
 
-    eatStr("{");
+    eat("{");
     compileStatements();
-    eatStr("}");
+    eat("}");
     if (maybeEat(kwStr(ELSE))) {
-        eatStr("{");
+        eat("{");
         compileStatements();
-        eatStr("}");
+        eat("}");
     }
     endRule(IF_STATEMENT);
 }
@@ -198,6 +205,16 @@ void compileDo() {
     /*
     'do' subroutineCall';'
     */
+    startRule(DO_STATEMENT);
+    eat(kwStr(DO));
+    eatTT(IDENTIFIER);
+    if (maybeEat("."))
+        eatTT(IDENTIFIER);
+    eat("(");
+    compileExprList();
+    eat(")");
+    eat(";");
+    endRule(DO_STATEMENT);
 }
 void compileWhile() {
     /*
@@ -206,14 +223,14 @@ void compileWhile() {
     */
     startRule(WHILE_STATEMENT);
 
-    eatStr(kwStr(WHILE));
-    eatStr("(");
+    eat(kwStr(WHILE));
+    eat("(");
     compileExpr();
-    eatStr(")");
+    eat(")");
 
-    eatStr("{");
+    eat("{");
     compileStatements();
-    eatStr("}");
+    eat("}");
 
     endRule(WHILE_STATEMENT);
 }
@@ -224,31 +241,81 @@ void compileReturn() {
     */
     startRule(RETURN_STATEMENT);
 
-    eatStr(kwStr(RETURN));
+    eat(kwStr(RETURN));
     if (!maybeEat(";")) {
         compileExpr();
-        eatStr(";");
+        eat(";");
     }
 
     endRule(RETURN_STATEMENT);
 }
 void compileExpr() {
     /*
-
+    term (op term)*
     */
     startRule(EXPRESSION);
-    eatStr("1");
+    compileTerm();
+    while (strnlen(currentToken, 2) == 1 && strchr(binOps, *currentToken)) {
+        eatTT(SYMBOL);
+        compileTerm();
+    }
     endRule(EXPRESSION);
 }
 void compileTerm() {
     /*
+    integerConstant | stringConstant | keywordConstant | varName|
+    varName ' [' expression ']' | subroutineCall | ' (' expression ') ' | unaryOp term
 
+    subroutineCall:
+        subroutineName ' (' expressionList ') ' I ( className| varName) '. ' subroutineName
+    '('expressionList")"
     */
+    startRule(TERM);
+    if (maybeEatTT(INT_CONST) || maybeEatTT(STR_CONST)) {
+    } else if (maybeEatOneOf((char **)kwConstants, 4)) {
+    } else if (maybeEat("(")) {
+        compileExpr();
+        eat(")");
+    } else if (strnlen(currentToken, 2) == 1 && strchr(unaryOps, *currentToken)) {
+        compileTerm();
+    } else if (maybeEatTT(IDENTIFIER)) {
+        if (maybeEat("[")) {
+            compileExpr();
+            eat("]");
+        } else if (cmpTok(".") || cmpTok("(")) {
+            compileSubCall();
+        }
+    }
+    endRule(TERM);
 }
+
+void compileSubCall() {
+    /*
+     subroutineCall:
+        subroutineName ' (' expressionList ') ' I ( className| varName) '. ' subroutineName
+    '('expressionList")"
+    */
+    if (maybeEat("."))
+        eatTT(IDENTIFIER);
+
+    eat("(");
+    compileExprList();
+    eat(")");
+}
+
 void compileExprList() {
     /*
-
+    (expression ("', ' expression)* )?
     */
+    startRule(EXPRESSION_LIST);
+    if (cmpTok(")")) {
+        endRule(EXPRESSION_LIST);
+        return;
+    }
+    compileExpr();
+    while (maybeEat(","))
+        compileExpr();
+    endRule(EXPRESSION_LIST);
 }
 
 void advanceTokenizer() {
@@ -257,25 +324,35 @@ void advanceTokenizer() {
         currentToken = tokenVal();
         currentTokenType = tokenType();
     } else {
-        printf("WARNING: Tried to advance tokenizer with no more tokens left.");
+        printf("WARNING: Tried to advance tokenizer with no more tokens left.\n");
     }
 }
 
-void eat(char **possibilities, size_t len) {
+void eatOneOf(char **vals, size_t len) {
     for (int i = 0; i < len; i++) {
-        if (strncmp(currentToken, possibilities[i], MAX_TOKEN_SIZE) == 0) {
+        if (strncmp(currentToken, vals[i], MAX_TOKEN_SIZE) == 0) {
             writeToken();
             advanceTokenizer();
             return;
         }
     }
 
-    char *joined = join(possibilities, ", ", len);
+    char *joined = join(vals, ", ", len);
     char **ret = malloc(sizeof(char **));
     asprintf(ret, "Expected Token(s): %s", joined);
     error(*ret);
 }
 
+bool maybeEatOneOf(char **vals, size_t len) {
+    for (int i = 0; i < len; i++) {
+        if (strncmp(currentToken, vals[i], MAX_TOKEN_SIZE) == 0) {
+            writeToken();
+            advanceTokenizer();
+            return true;
+        }
+    }
+    return false;
+}
 void eatTT(TokenType tt) {
     if (currentTokenType == tt) {
         writeToken();
@@ -311,7 +388,15 @@ bool maybeEat(char *expected) {
     return false;
 }
 
-void eatStr(char *str) {
+bool maybeEatTT(TokenType tt) {
+    if (currentTokenType == tt) {
+        writeToken();
+        advanceTokenizer();
+        return true;
+    }
+    return false;
+}
+void eat(char *str) {
     if (!maybeEat(str)) {
         char **ret = malloc(sizeof(char **));
         asprintf(ret, "Expected '%s'", str);
@@ -330,10 +415,16 @@ void writeToken() {
     fprintf(out, "<%s> %s </%s>\n", tt, val, tt);
 }
 
-void startRule(GrammarRule rule) { fprintf(out, "<%s>\n", ruleStr(rule)); }
+void startRule(GrammarRule rule) {
+    fprintf(out, "<%s>\n", ruleStr(rule));
+}
 
-void endRule(GrammarRule rule) { fprintf(out, "</%s>\n", ruleStr(rule)); }
-bool cmpTok(char *s) { return !strncmp(currentToken, s, MAX_TOKEN_SIZE); }
+void endRule(GrammarRule rule) {
+    fprintf(out, "</%s>\n", ruleStr(rule));
+}
+bool cmpTok(char *s) {
+    return !strncmp(currentToken, s, MAX_TOKEN_SIZE);
+}
 void error(char *msg) {
     printf("ERROR: %s\n", msg);
     printf("Current Token: %s\n", currentToken);
