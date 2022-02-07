@@ -1,50 +1,24 @@
-#include "CompilationEngine.h"
+#include "CompilationEngine.hpp"
 #include "JackTokenizer.h"
+#include <boost/algorithm/string/join.hpp>
+#include <fstream>
+#include <iostream>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-
-void eatOneOf(char **, size_t);
-bool maybeEatOneOf(char **, size_t);
-void eatTT(TokenType);
-bool maybeEatTT(TokenType);
-void eat(char *);
-void eatReturnType(); // 'void' || eatType()
-bool maybeEat(char *);
-void eatType(); // int, char, boolean or className (identifier)
-bool cmpTok(char *);
-void advanceTokenizer();
-void writeToken();
-void startRule(GrammarRule);
-void endRule(GrammarRule);
-char *join(char **, char *, size_t);
-void error(char *msg);
-void compileSubCall();
-
-FILE *out;
-char *currentToken;
-TokenType currentTokenType;
-
-char *kwConstants[4] = {"true", "false", "null", "this"};
-char *binOps = "+-*/&|<>=";
-char *unaryOps = "-~";
-
-const int MAX_TOKEN_SIZE = 255;
-const int MAX_TOKEN_TYPE_SIZE = 16; // longest string retuned by ttStr()
-
-void initCompilationEngine(FILE *_outFile) {
-    out = _outFile;
+#include <vector>
+CompilationEngine::CompilationEngine(ofstream *_outFile) : out(_outFile) {
     advanceTokenizer();
 }
 
-void compileClass() {
+void CompilationEngine::compileClass() {
     /*
     'class' className '{' classVarDec* subroutineDec* '}'
     */
     startRule(CLASS_RULE);
 
     eat(kwStr(CLASS));
-    eatTT(IDENTIFIER);
+    eat(IDENTIFIER);
     eat("{");
     while (cmpTok(kwStr(STATIC)) || cmpTok(kwStr(FIELD)))
         compileClassVarDec();
@@ -57,76 +31,75 @@ void compileClass() {
     endRule(CLASS_RULE);
 }
 
-
-void compileClassVarDec() {
+void CompilationEngine::compileClassVarDec() {
     /*
     ('static'|'field' ) type varName (',' varName)* ';'
     */
     startRule(CLASS_VAR_DEC);
 
-    char *expect[2] = {kwStr(STATIC), kwStr(FIELD)};
-    eatOneOf((char **)expect, 2);
+    vector<string> expect = {kwStr(STATIC), kwStr(FIELD)};
+    eat(expect);
     eatType();
-    eatTT(IDENTIFIER);
+    eat(IDENTIFIER);
     while (maybeEat(",")) {
-        eatTT(IDENTIFIER);
+        eat(IDENTIFIER);
     }
     eat(";");
 
     endRule(CLASS_VAR_DEC);
 }
 
-void compileSubroutineDec() {
+void CompilationEngine::compileSubroutineDec() {
     /*
     ('constructor' | 'function' | 'method') ('void' | type) subroutineName
     '(' parameterList ')' subroutineBody
     */
     startRule(SUBROUTINE_DEC);
 
-    char *expect[3] = {kwStr(CONSTRUCTOR), kwStr(FUNCTION), kwStr(METHOD)};
-    eatOneOf((char **)expect, 3);
+    vector<string> expect = {kwStr(CONSTRUCTOR), kwStr(FUNCTION), kwStr(METHOD)};
+    eat(expect);
     eatReturnType();
-    eatTT(IDENTIFIER);
+    eat(IDENTIFIER);
     eat("(");
     compileParamList();
     eat(")");
     compileSubroutineBody();
     endRule(SUBROUTINE_DEC);
 }
-void compileParamList() {
+void CompilationEngine::compileParamList() {
     /*
     ((type varName) (',' type varName)*)?
     */
 
     startRule(PARAMETER_LIST);
 
-    if (!strncmp(currentToken, ")", 2)) {
+    if (currentToken == ")") {
         endRule(PARAMETER_LIST);
         return;
     }
 
     eatType();
-    eatTT(IDENTIFIER);
+    eat(IDENTIFIER);
     while (maybeEat(",")) {
         eatType();
-        eatTT(IDENTIFIER);
+        eat(IDENTIFIER);
     }
 
     endRule(PARAMETER_LIST);
 }
-void compileSubroutineBody() {
+void CompilationEngine::compileSubroutineBody() {
     /*
     '{' varDec* statements '}'
     */
     startRule(SUBROUTINE_BODY);
     eat("{");
-    while (!strncmp(currentToken, kwStr(VAR), 4))
+    while (currentToken == kwStr(VAR))
         compileVarDec();
     compileStatements();
     eat("}");
     endRule(SUBROUTINE_BODY);
 }
-void compileVarDec() {
+void CompilationEngine::compileVarDec() {
     /*
     'var' type varName (', ' varName)* ';'
     */
@@ -134,15 +107,15 @@ void compileVarDec() {
 
     eat(kwStr(VAR));
     eatType();
-    eatTT(IDENTIFIER);
+    eat(IDENTIFIER);
     while (maybeEat(","))
-        eatTT(IDENTIFIER);
+        eat(IDENTIFIER);
 
     eat(";");
 
     endRule(VAR_DEC);
 }
-void compileStatements() {
+void CompilationEngine::compileStatements() {
     /*
     Statement*
     Statement:
@@ -164,13 +137,13 @@ void compileStatements() {
     }
     endRule(STATEMENTS);
 }
-void compileLet() {
+void CompilationEngine::compileLet() {
     /*
     'let' varName ('[' expression ']')? '=' expression ';'
     */
     startRule(LET_STATEMENT);
     eat(kwStr(LET));
-    eatTT(IDENTIFIER);
+    eat(IDENTIFIER);
     if (maybeEat("[")) {
         compileExpr();
         eat("]");
@@ -180,7 +153,7 @@ void compileLet() {
     eat(";");
     endRule(LET_STATEMENT);
 }
-void compileIf() {
+void CompilationEngine::compileIf() {
     /*
 
     'if' '(' expression ')' '{' statements "}' ('else' '{' statements '}')?
@@ -201,22 +174,22 @@ void compileIf() {
     }
     endRule(IF_STATEMENT);
 }
-void compileDo() {
+void CompilationEngine::compileDo() {
     /*
     'do' subroutineCall';'
     */
     startRule(DO_STATEMENT);
     eat(kwStr(DO));
-    eatTT(IDENTIFIER);
+    eat(IDENTIFIER);
     if (maybeEat("."))
-        eatTT(IDENTIFIER);
+        eat(IDENTIFIER);
     eat("(");
     compileExprList();
     eat(")");
     eat(";");
     endRule(DO_STATEMENT);
 }
-void compileWhile() {
+void CompilationEngine::compileWhile() {
     /*
 
     'while' '(' expression ')' '{' statements '}'
@@ -234,7 +207,7 @@ void compileWhile() {
 
     endRule(WHILE_STATEMENT);
 }
-void compileReturn() {
+void CompilationEngine::compileReturn() {
     /*
 
     'return' expression? ':'
@@ -249,19 +222,19 @@ void compileReturn() {
 
     endRule(RETURN_STATEMENT);
 }
-void compileExpr() {
+void CompilationEngine::compileExpr() {
     /*
     term (op term)*
     */
     startRule(EXPRESSION);
     compileTerm();
-    while (strnlen(currentToken, 2) == 1 && strchr(binOps, *currentToken)) {
-        eatTT(SYMBOL);
+    while (find(begin(binOps), end(binOps), currentToken) != end(binOps)) {
+        eat(SYMBOL);
         compileTerm();
     }
     endRule(EXPRESSION);
 }
-void compileTerm() {
+void CompilationEngine::compileTerm() {
     /*
     integerConstant | stringConstant | keywordConstant | varName|
     varName ' [' expression ']' | subroutineCall | ' (' expression ') ' | unaryOp term
@@ -271,14 +244,14 @@ void compileTerm() {
     '('expressionList")"
     */
     startRule(TERM);
-    if (maybeEatTT(INT_CONST) || maybeEatTT(STR_CONST)) {
-    } else if (maybeEatOneOf((char **)kwConstants, 4)) {
+    if (maybeEat(INT_CONST) || maybeEat(STR_CONST)) {
+    } else if (maybeEat(kwConstants)) {
     } else if (maybeEat("(")) {
         compileExpr();
         eat(")");
-    } else if (strnlen(currentToken, 2) == 1 && strchr(unaryOps, *currentToken)) {
+    } else if (find(begin(unaryOps), end(unaryOps), currentToken) != end(unaryOps)) {
         compileTerm();
-    } else if (maybeEatTT(IDENTIFIER)) {
+    } else if (maybeEat(IDENTIFIER)) {
         if (maybeEat("[")) {
             compileExpr();
             eat("]");
@@ -289,21 +262,21 @@ void compileTerm() {
     endRule(TERM);
 }
 
-void compileSubCall() {
+void CompilationEngine::compileSubCall() {
     /*
      subroutineCall:
         subroutineName ' (' expressionList ') ' I ( className| varName) '. ' subroutineName
     '('expressionList")"
     */
     if (maybeEat("."))
-        eatTT(IDENTIFIER);
+        eat(IDENTIFIER);
 
     eat("(");
     compileExprList();
     eat(")");
 }
 
-void compileExprList() {
+void CompilationEngine::compileExprList() {
     /*
     (expression ("', ' expression)* )?
     */
@@ -318,34 +291,31 @@ void compileExprList() {
     endRule(EXPRESSION_LIST);
 }
 
-void advanceTokenizer() {
+void CompilationEngine::advanceTokenizer() {
     if (hasMoreTokens()) {
         advance();
-        currentToken = tokenVal();
+        currentToken = string(tokenVal());
         currentTokenType = tokenType();
     } else {
         printf("WARNING: Tried to advance tokenizer with no more tokens left.\n");
     }
 }
 
-void eatOneOf(char **vals, size_t len) {
-    for (int i = 0; i < len; i++) {
-        if (strncmp(currentToken, vals[i], MAX_TOKEN_SIZE) == 0) {
+void CompilationEngine::eat(vector<string> vals) {
+    for (int i = 0; i < vals.size(); i++) {
+        if (currentToken == vals[i]) {
             writeToken();
             advanceTokenizer();
             return;
         }
     }
-
-    char *joined = join(vals, ", ", len);
-    char **ret = malloc(sizeof(char **));
-    asprintf(ret, "Expected Token(s): %s", joined);
-    error(*ret);
+    string joined = join(vals, ", ");
+    error("Expected token(s): " + joined);
 }
 
-bool maybeEatOneOf(char **vals, size_t len) {
-    for (int i = 0; i < len; i++) {
-        if (strncmp(currentToken, vals[i], MAX_TOKEN_SIZE) == 0) {
+bool CompilationEngine::maybeEat(vector<string> vals) {
+    for (int i = 0; i < vals.size(); i++) {
+        if (currentToken == vals[i]) {
             writeToken();
             advanceTokenizer();
             return true;
@@ -353,23 +323,22 @@ bool maybeEatOneOf(char **vals, size_t len) {
     }
     return false;
 }
-void eatTT(TokenType tt) {
+void CompilationEngine::eat(TokenType tt) {
     if (currentTokenType == tt) {
         writeToken();
         advanceTokenizer();
         return;
     }
-    char **ret = malloc(sizeof(char **));
-    asprintf(ret, "Expected Token Type: %s", ttStr(currentTokenType));
-    error(*ret);
+
+    error("Expected Token Type: " + string(ttStr(currentTokenType)));
 }
 
 // int, char, boolean or className (identifier)
-void eatType() {
-    int i = strncmp(currentToken, kwStr(INT), 3);
-    int c = strncmp(currentToken, kwStr(CHAR), 4);
-    int b = strncmp(currentToken, kwStr(BOOLEAN), 7);
-    if (!i || !c || !b || currentTokenType == IDENTIFIER) {
+void CompilationEngine::eatType() {
+    bool i = currentToken == string(kwStr(INT));
+    bool c = currentToken == string(kwStr(CHAR));
+    bool b = currentToken == string(kwStr(BOOLEAN));
+    if (i || c || b || currentTokenType == IDENTIFIER) {
         writeToken();
         advanceTokenizer();
         return;
@@ -378,8 +347,8 @@ void eatType() {
     error("Expected Type (int, char, boolean or className (identifier))");
 }
 
-bool maybeEat(char *expected) {
-    if (!strncmp(currentToken, expected, strlen(expected))) {
+bool CompilationEngine::maybeEat(string expected) {
+    if (currentToken == expected) {
         writeToken();
         advanceTokenizer();
         return true;
@@ -388,7 +357,7 @@ bool maybeEat(char *expected) {
     return false;
 }
 
-bool maybeEatTT(TokenType tt) {
+bool CompilationEngine::maybeEat(TokenType tt) {
     if (currentTokenType == tt) {
         writeToken();
         advanceTokenizer();
@@ -396,52 +365,46 @@ bool maybeEatTT(TokenType tt) {
     }
     return false;
 }
-void eat(char *str) {
+void CompilationEngine::eat(string str) {
     if (!maybeEat(str)) {
-        char **ret = malloc(sizeof(char **));
-        asprintf(ret, "Expected '%s'", str);
-        error(*ret);
+        error("Expected: " + str);
     }
 }
 
-void eatReturnType() {
+void CompilationEngine::eatReturnType() {
     if (!maybeEat(kwStr(VOID)))
         eatType();
 }
-void writeToken() {
+void CompilationEngine::writeToken() {
     char *tt = ttStr(currentTokenType);
-    char *val = tokenVal();
-    val = toXml(currentToken);
-    fprintf(out, "<%s> %s </%s>\n", tt, val, tt);
+    *out << "<" << tt << ">"
+         << " " << toXml(currentToken) << " "
+         << "</" << tt << ">\n";
 }
 
-void startRule(GrammarRule rule) {
-    fprintf(out, "<%s>\n", ruleStr(rule));
+void CompilationEngine::startRule(GrammarRule rule) {
+    *out << "<" << ruleStr(rule) << ">\n";
 }
 
-void endRule(GrammarRule rule) {
-    fprintf(out, "</%s>\n", ruleStr(rule));
+void CompilationEngine::endRule(GrammarRule rule) {
+    *out << "</" << ruleStr(rule) << ">\n";
 }
-bool cmpTok(char *s) {
-    return !strncmp(currentToken, s, MAX_TOKEN_SIZE);
+bool CompilationEngine::cmpTok(string s) {
+    return currentToken == s;
 }
-void error(char *msg) {
-    printf("ERROR: %s\n", msg);
-    printf("Current Token: %s\n", currentToken);
-    printf("Current Line: %s\n", getLine());
+void CompilationEngine::error(string msg) {
+    cout << "ERROR: " << msg << endl;
+    cout << "Current Token: " << currentToken << endl;
+    cout << "Current Line: " << getLine() << endl;
     exit(1);
 }
 
-char *join(char **vals, char *sep, size_t len) {
-    size_t seplen = strlen(sep);
-    char *joined = calloc(1, strlen(vals[0]) + 1);
-    strcpy(joined, vals[0]);
-    for (int i = 1; i < len; i++) {
-        size_t joinedlen = strlen(joined);
-        size_t currValLen = strlen(vals[i]);
-        joined = realloc(joined, joinedlen + seplen + currValLen + 1);
-        strlcat(joined, sep, joinedlen + seplen + 1);
-        strlcat(joined, vals[i], joinedlen + seplen + currValLen + 1);
+string CompilationEngine::join(vector<string> vals, string sep) {
+    size_t seplen = sep.size();
+    string joined = vals.at(0);
+    for (int i = 1; i < vals.size(); i++) {
+        joined += sep;
+        joined += vals[i];
     }
 
     return joined;

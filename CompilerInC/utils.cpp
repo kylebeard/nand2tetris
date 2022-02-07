@@ -1,7 +1,9 @@
-#include "utils.h"
+#include "utils.hpp"
+#include <iostream>
 #include <string.h>
-char *toXml(char *tok) {
-    if (strnlen(tok, 100) > 1)
+using namespace std;
+string toXml(string tok) {
+    if (tok.size() > 1)
         return tok;
 
     switch (tok[0]) {

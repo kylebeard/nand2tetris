@@ -7,6 +7,7 @@
     "python.testing.pytestEnabled": true,
     "files.associations": {
         "*.tcc": "cpp",
+        "*.cpp": "cpp",
         "unistd.h": "c",
         "stdio.h": "c",
         "cstdio": "c",
@@ -54,6 +55,9 @@
         "new": "c",
         "ostream": "c",
         "stdexcept": "c",
-        "streambuf": "c"
+        "streambuf": "c",
+        "iomanip": "cpp",
+        "fstream": "cpp",
+        "iosfwd": "cpp"
     }
 }

@@ -1,7 +1,10 @@
-#include <stdlib.h>
 #ifndef UTILS_H
 #define UTILS_H 1
-char *toXml(char *);
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+
+string toXml(string);
 enum TokenType { KEYWORD, SYMBOL, IDENTIFIER, INT_CONST, STR_CONST, UNKNOWN };
 typedef enum TokenType TokenType;
 char *ttStr(TokenType tt);
