@@ -9,10 +9,10 @@ dirs=("ArrayTest" "ExpressionLessSquare" "Square")
 # dirs=("ExpressionLessSquare")
 for dir in "${dirs[@]}"; do
     echo "running $test_path/$dir"
-    # ./JackCompiler $test_path/"$dir"
-    for file in "$test_path"/"$dir"/*.xml; do
-        compareFile=$p10path/$dir/${file##*/}
-        echo "Comparing" "$dir"/"${file##*/}"
-        $textComparer "$file" "$compareFile"
-    done
+    ./JackCompiler $test_path/"$dir"
+    # for file in "$test_path"/"$dir"/*.xml; do
+    #     compareFile=$p10path/$dir/${file##*/}
+    #     echo "Comparing" "$dir"/"${file##*/}"
+    #     $textComparer "$file" "$compareFile"
+    # done
 done

@@ -1,7 +1,27 @@
 #include "utils.hpp"
+#include "Symbol.hpp"
 #include <iostream>
 #include <string.h>
 using namespace std;
+
+
+string toString(SymbolKind sk) {
+    switch (sk) {
+    case FIELD_SK:
+        return "field";
+    case STATIC_SK:
+        return "static";
+    case VAR_SK:
+        return "var";
+    case ARG_SK:
+        return "arg";
+    case CLASS_SK:
+        return "class";
+    case SUBROUTINE_SK:
+        return "subroutine";
+    }
+}
+
 string toXml(string tok) {
     if (tok.size() > 1)
         return tok;
@@ -39,7 +59,7 @@ char *ttStr(TokenType tt) {
 
 char *kwStr(Keyword kw) {
     switch (kw) {
-    case CLASS:
+    case CLASS_KW:
         return "class";
     case CONSTRUCTOR:
         return "constructor";
@@ -47,11 +67,11 @@ char *kwStr(Keyword kw) {
         return "function";
     case METHOD:
         return "method";
-    case FIELD:
+    case FIELD_KW:
         return "field";
-    case STATIC:
+    case STATIC_KW:
         return "static";
-    case VAR:
+    case VAR_KW:
         return "var";
     case INT:
         return "int";

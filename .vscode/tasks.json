@@ -4,6 +4,15 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "make c-compiler",
+            "type": "shell",
+            "command": "make",
+            "options": {
+                "cwd": "${workspaceFolder}/CompilerInC"
+            },
+            "group": "build"
+        },
+        {
             "label": "build c-compiler",
             "type": "shell",
             "command": "${workspaceFolder}/CompilerInC/build.sh",

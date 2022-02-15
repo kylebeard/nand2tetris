@@ -1,5 +1,7 @@
+
 #ifndef UTILS_H
 #define UTILS_H 1
+#include "Symbol.hpp"
 #include <iostream>
 #include <stdlib.h>
 using namespace std;
@@ -9,14 +11,15 @@ enum TokenType { KEYWORD, SYMBOL, IDENTIFIER, INT_CONST, STR_CONST, UNKNOWN };
 typedef enum TokenType TokenType;
 char *ttStr(TokenType tt);
 
+string toString(SymbolKind sk);
 enum Keyword {
-    CLASS,
+    CLASS_KW,
     CONSTRUCTOR,
     FUNCTION,
     METHOD,
-    FIELD,
-    STATIC,
-    VAR,
+    FIELD_KW,
+    STATIC_KW,
+    VAR_KW,
     INT,
     CHAR,
     BOOLEAN,

@@ -8,6 +8,7 @@
     "files.associations": {
         "*.tcc": "cpp",
         "*.cpp": "cpp",
+        "*.hpp": "cpp",
         "unistd.h": "c",
         "stdio.h": "c",
         "cstdio": "c",
@@ -58,6 +59,10 @@
         "streambuf": "c",
         "iomanip": "cpp",
         "fstream": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "compilationengine.hpp": "c",
+        "utils.hpp": "c",
+        "string": "cpp",
+        "filesystem": "cpp"
     }
 }

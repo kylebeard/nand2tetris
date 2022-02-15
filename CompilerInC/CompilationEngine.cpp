@@ -1,5 +1,6 @@
 #include "CompilationEngine.hpp"
-#include "JackTokenizer.h"
+#include "JackTokenizer.hpp"
+#include "SymbolTable.hpp"
 #include <boost/algorithm/string/join.hpp>
 #include <fstream>
 #include <iostream>
@@ -17,10 +18,11 @@ void CompilationEngine::compileClass() {
     */
     startRule(CLASS_RULE);
 
-    eat(kwStr(CLASS));
-    eat(IDENTIFIER);
+    eat(kwStr(CLASS_KW));
+
+    eat(IDENTIFIER, "className");
     eat("{");
-    while (cmpTok(kwStr(STATIC)) || cmpTok(kwStr(FIELD)))
+    while (cmpTok(kwStr(STATIC_KW)) || cmpTok(kwStr(FIELD_KW)))
         compileClassVarDec();
 
     while (cmpTok(kwStr(CONSTRUCTOR)) || cmpTok(kwStr(METHOD)) || cmpTok(kwStr(FUNCTION)))
@@ -37,12 +39,21 @@ void CompilationEngine::compileClassVarDec() {
     */
     startRule(CLASS_VAR_DEC);
 
-    vector<string> expect = {kwStr(STATIC), kwStr(FIELD)};
+    vector<string> expect = {kwStr(STATIC_KW), kwStr(FIELD_KW)};
+    string kind = currentToken;
     eat(expect);
+
+    string varType = currentToken;
     eatType();
-    eat(IDENTIFIER);
+
+    SymbolKind sk = kind == kwStr(FIELD_KW) ? FIELD_SK : STATIC_SK;
+    st.define(currentToken, varType, sk);
+
+    string tag = "define::" + kind + "::" + varType + "::";
+    eat(IDENTIFIER, tag + to_string(st.indexOf(currentToken)));
     while (maybeEat(",")) {
-        eat(IDENTIFIER);
+        st.define(currentToken, varType, sk);
+        eat(IDENTIFIER, tag + to_string(st.indexOf(currentToken)));
     }
     eat(";");
 
@@ -55,11 +66,14 @@ void CompilationEngine::compileSubroutineDec() {
     '(' parameterList ')' subroutineBody
     */
     startRule(SUBROUTINE_DEC);
+    st.startSubroutine();
 
     vector<string> expect = {kwStr(CONSTRUCTOR), kwStr(FUNCTION), kwStr(METHOD)};
+    string kind = currentToken;
     eat(expect);
     eatReturnType();
-    eat(IDENTIFIER);
+
+    eat(IDENTIFIER, "define::" + kind);
     eat("(");
     compileParamList();
     eat(")");
@@ -77,12 +91,17 @@ void CompilationEngine::compileParamList() {
         endRule(PARAMETER_LIST);
         return;
     }
-
+    string varType = currentToken;
     eatType();
-    eat(IDENTIFIER);
+    st.define(currentToken, varType, ARG_SK);
+    string tag = "define::arg::";
+    eat(IDENTIFIER, tag + to_string(st.indexOf(currentToken)));
     while (maybeEat(",")) {
+        varType = currentToken;
         eatType();
-        eat(IDENTIFIER);
+        st.define(currentToken, varType, ARG_SK);
+
+        eat(IDENTIFIER, tag + to_string(st.indexOf(currentToken)));
     }
 
     endRule(PARAMETER_LIST);
@@ -93,7 +112,7 @@ void CompilationEngine::compileSubroutineBody() {
     */
     startRule(SUBROUTINE_BODY);
     eat("{");
-    while (currentToken == kwStr(VAR))
+    while (currentToken == kwStr(VAR_KW))
         compileVarDec();
     compileStatements();
     eat("}");
@@ -105,11 +124,17 @@ void CompilationEngine::compileVarDec() {
     */
     startRule(VAR_DEC);
 
-    eat(kwStr(VAR));
+    eat(kwStr(VAR_KW));
+    string varType = currentToken;
     eatType();
-    eat(IDENTIFIER);
-    while (maybeEat(","))
-        eat(IDENTIFIER);
+
+    st.define(currentToken, varType, VAR_SK);
+    string tag = "define::var::";
+    eat(IDENTIFIER, tag + to_string(st.indexOf(currentToken)));
+    while (maybeEat(",")) {
+        st.define(currentToken, varType, VAR_SK);
+        eat(IDENTIFIER, tag + to_string(st.indexOf(currentToken)));
+    }
 
     eat(";");
 
@@ -143,7 +168,9 @@ void CompilationEngine::compileLet() {
     */
     startRule(LET_STATEMENT);
     eat(kwStr(LET));
-    eat(IDENTIFIER);
+    auto sym = st.get(currentToken);
+    string tag = "access::" + toString(sym.kind) + "::" + to_string(sym.index);
+    eat(IDENTIFIER, tag);
     if (maybeEat("[")) {
         compileExpr();
         eat("]");
@@ -250,8 +277,17 @@ void CompilationEngine::compileTerm() {
         compileExpr();
         eat(")");
     } else if (find(begin(unaryOps), end(unaryOps), currentToken) != end(unaryOps)) {
+        eat(SYMBOL);
         compileTerm();
-    } else if (maybeEat(IDENTIFIER)) {
+    } else if (currentTokenType == IDENTIFIER) {
+        if (st.exists(currentToken)) {
+            auto sym = st.get(currentToken);
+            string tag = "access::" + toString(sym.kind) + to_string(sym.index);
+            eat(IDENTIFIER, tag);
+        } else {
+            eat(IDENTIFIER);
+        }
+
         if (maybeEat("[")) {
             compileExpr();
             eat("]");
@@ -323,9 +359,9 @@ bool CompilationEngine::maybeEat(vector<string> vals) {
     }
     return false;
 }
-void CompilationEngine::eat(TokenType tt) {
+void CompilationEngine::eat(TokenType tt, string tag) {
     if (currentTokenType == tt) {
-        writeToken();
+        writeToken(tag);
         advanceTokenizer();
         return;
     }
@@ -347,9 +383,9 @@ void CompilationEngine::eatType() {
     error("Expected Type (int, char, boolean or className (identifier))");
 }
 
-bool CompilationEngine::maybeEat(string expected) {
+bool CompilationEngine::maybeEat(string expected, string tag) {
     if (currentToken == expected) {
-        writeToken();
+        writeToken(tag);
         advanceTokenizer();
         return true;
     }
@@ -365,8 +401,8 @@ bool CompilationEngine::maybeEat(TokenType tt) {
     }
     return false;
 }
-void CompilationEngine::eat(string str) {
-    if (!maybeEat(str)) {
+void CompilationEngine::eat(string str, string tag) {
+    if (!maybeEat(str, tag)) {
         error("Expected: " + str);
     }
 }
@@ -375,8 +411,8 @@ void CompilationEngine::eatReturnType() {
     if (!maybeEat(kwStr(VOID)))
         eatType();
 }
-void CompilationEngine::writeToken() {
-    char *tt = ttStr(currentTokenType);
+void CompilationEngine::writeToken(string tag) {
+    string tt = tag == "" ? ttStr(currentTokenType) : tag;
     *out << "<" << tt << ">"
          << " " << toXml(currentToken) << " "
          << "</" << tt << ">\n";

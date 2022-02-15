@@ -17,8 +17,10 @@
             "name": "(lldb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/CompilerInC/JackCompiler",
-            "args": ["./test/ParserTests/Square/SquareGame.jack"],
+            "program": "${workspaceFolder}/CompilerInC/tests",
+            "args": [
+                // "${workspaceFolder}/CompilerInC/test/ParserTests/Square/SquareGame.jack"
+            ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

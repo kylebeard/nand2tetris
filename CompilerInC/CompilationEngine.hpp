@@ -1,7 +1,8 @@
 
 #ifndef COMPENGINE_H
-#define COMPENGINE_H 1
-#include "JackTokenizer.h"
+#define COMPENGINE_H
+#include "JackTokenizer.hpp"
+#include "SymbolTable.hpp"
 #include "utils.hpp"
 #include <fstream>
 #include <stdio.h>
@@ -17,10 +18,10 @@ class CompilationEngine {
     string unaryOps[2] = {"-", "~"};
     const int MAX_TOKEN_SIZE = 255;
     const int MAX_TOKEN_TYPE_SIZE = 16; // longest string retuned by ttStr()
+    SymbolTable st;
 
   public:
     CompilationEngine(ofstream *);
-    ~CompilationEngine();
     void compileClass();
 
   private:
@@ -40,16 +41,16 @@ class CompilationEngine {
     void compileExprList();
     void compileSubCall();
     void eat(vector<string>);
-    void eat(TokenType);
-    void eat(string);
+    void eat(TokenType, string = "");
+    void eat(string, string = "");
     bool maybeEat(vector<string>);
     bool maybeEat(TokenType);
-    bool maybeEat(string);
+    bool maybeEat(string, string = "");
     void eatType();       // int, char, boolean or className (identifier)
     void eatReturnType(); // 'void' || eatType()
     bool cmpTok(string);
     void advanceTokenizer();
-    void writeToken();
+    void writeToken(string = "");
     void startRule(GrammarRule);
     void endRule(GrammarRule);
     string join(vector<string>, string);

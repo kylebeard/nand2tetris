@@ -1,17 +1,17 @@
 <class>
     <keyword> class </keyword>
-    <identifier> Main </identifier>
+    <className> Main </className>
     <symbol> { </symbol>
     <classVarDec>
         <keyword> static </keyword>
         <keyword> boolean </keyword>
-        <identifier> test </identifier>
+        <define::static::boolean::0> test </define::static::boolean::0>
         <symbol> ; </symbol>
     </classVarDec>
     <subroutineDec>
         <keyword> function </keyword>
         <keyword> void </keyword>
-        <identifier> main </identifier>
+        <define::function> main </define::function>
         <symbol> ( </symbol>
         <parameterList></parameterList>
         <symbol> ) </symbol>
@@ -20,13 +20,13 @@
             <varDec>
                 <keyword> var </keyword>
                 <identifier> SquareGame </identifier>
-                <identifier> game </identifier>
+                <define::var::0> game </define::var::0>
                 <symbol> ; </symbol>
             </varDec>
             <statements>
                 <letStatement>
                     <keyword> let </keyword>
-                    <identifier> game </identifier>
+                    <access::var::0> game </access::var::0>
                     <symbol> = </symbol>
                     <expression>
                         <term>
@@ -71,7 +71,7 @@
     <subroutineDec>
         <keyword> function </keyword>
         <keyword> void </keyword>
-        <identifier> test </identifier>
+        <define::function> test </define::function>
         <symbol> ( </symbol>
         <parameterList></parameterList>
         <symbol> ) </symbol>
@@ -80,21 +80,21 @@
             <varDec>
                 <keyword> var </keyword>
                 <keyword> int </keyword>
-                <identifier> i </identifier>
+                <define::var::1> i </define::var::1>
                 <symbol> , </symbol>
-                <identifier> j </identifier>
+                <define::var::2> j </define::var::2>
                 <symbol> ; </symbol>
             </varDec>
             <varDec>
                 <keyword> var </keyword>
                 <identifier> String </identifier>
-                <identifier> s </identifier>
+                <define::var::3> s </define::var::3>
                 <symbol> ; </symbol>
             </varDec>
             <varDec>
                 <keyword> var </keyword>
                 <identifier> Array </identifier>
-                <identifier> a </identifier>
+                <define::var::4> a </define::var::4>
                 <symbol> ; </symbol>
             </varDec>
             <statements>
@@ -111,7 +111,7 @@
                     <statements>
                         <letStatement>
                             <keyword> let </keyword>
-                            <identifier> s </identifier>
+                            <access::var::3> s </access::var::3>
                             <symbol> = </symbol>
                             <expression>
                                 <term>
@@ -122,7 +122,7 @@
                         </letStatement>
                         <letStatement>
                             <keyword> let </keyword>
-                            <identifier> s </identifier>
+                            <access::var::3> s </access::var::3>
                             <symbol> = </symbol>
                             <expression>
                                 <term>
@@ -133,7 +133,7 @@
                         </letStatement>
                         <letStatement>
                             <keyword> let </keyword>
-                            <identifier> a </identifier>
+                            <access::var::4> a </access::var::4>
                             <symbol> [ </symbol>
                             <expression>
                                 <term>
@@ -144,7 +144,7 @@
                             <symbol> = </symbol>
                             <expression>
                                 <term>
-                                    <identifier> a </identifier>
+                                    <access::var4> a </access::var4>
                                     <symbol> [ </symbol>
                                     <expression>
                                         <term>
@@ -163,11 +163,11 @@
                     <statements>
                         <letStatement>
                             <keyword> let </keyword>
-                            <identifier> i </identifier>
+                            <access::var::1> i </access::var::1>
                             <symbol> = </symbol>
                             <expression>
                                 <term>
-                                    <identifier> i </identifier>
+                                    <access::var1> i </access::var1>
                                 </term>
                                 <symbol> * </symbol>
                                 <term>
@@ -176,7 +176,7 @@
                                         <term>
                                             <symbol> - </symbol>
                                             <term>
-                                                <identifier> j </identifier>
+                                                <access::var2> j </access::var2>
                                             </term>
                                         </term>
                                     </expression>
@@ -187,11 +187,11 @@
                         </letStatement>
                         <letStatement>
                             <keyword> let </keyword>
-                            <identifier> j </identifier>
+                            <access::var::2> j </access::var::2>
                             <symbol> = </symbol>
                             <expression>
                                 <term>
-                                    <identifier> j </identifier>
+                                    <access::var2> j </access::var2>
                                 </term>
                                 <symbol> / </symbol>
                                 <term>
@@ -211,15 +211,15 @@
                         </letStatement>
                         <letStatement>
                             <keyword> let </keyword>
-                            <identifier> i </identifier>
+                            <access::var::1> i </access::var::1>
                             <symbol> = </symbol>
                             <expression>
                                 <term>
-                                    <identifier> i </identifier>
+                                    <access::var1> i </access::var1>
                                 </term>
                                 <symbol> | </symbol>
                                 <term>
-                                    <identifier> j </identifier>
+                                    <access::var2> j </access::var2>
                                 </term>
                             </expression>
                             <symbol> ; </symbol>

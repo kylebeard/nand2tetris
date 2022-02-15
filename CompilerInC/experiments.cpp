@@ -1,6 +1,7 @@
 #include <array>
 #include <fstream>
 #include <iostream>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 void test_fstream();
@@ -8,11 +9,21 @@ void test_string();
 void test_szof_arr(vector<string>);
 string join(vector<string>, string);
 void test_bool();
-
+void test_map();
 
 int main() {
-    test_bool();
+    test_map();
     return 0;
+}
+
+void test_map() {
+    unordered_map<string, string> m;
+    m["1"] = "one";
+    string s = m["1"];
+    cout << "m[\"1\"]: " << s << endl;
+    string s1 = m["2"];
+    cout << "m[\"2\"]: " << s1 << endl;
+    cout << "s1 == null: " << (s1 == "") << endl;
 }
 
 void test_bool() {

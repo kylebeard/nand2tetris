@@ -1,11 +1,11 @@
 <class>
     <keyword> class </keyword>
-    <identifier> Main </identifier>
+    <className> Main </className>
     <symbol> { </symbol>
     <subroutineDec>
         <keyword> function </keyword>
         <keyword> void </keyword>
-        <identifier> main </identifier>
+        <define::function> main </define::function>
         <symbol> ( </symbol>
         <parameterList></parameterList>
         <symbol> ) </symbol>
@@ -14,27 +14,27 @@
             <varDec>
                 <keyword> var </keyword>
                 <identifier> Array </identifier>
-                <identifier> a </identifier>
+                <define::var::0> a </define::var::0>
                 <symbol> ; </symbol>
             </varDec>
             <varDec>
                 <keyword> var </keyword>
                 <keyword> int </keyword>
-                <identifier> length </identifier>
+                <define::var::1> length </define::var::1>
                 <symbol> ; </symbol>
             </varDec>
             <varDec>
                 <keyword> var </keyword>
                 <keyword> int </keyword>
-                <identifier> i </identifier>
+                <define::var::2> i </define::var::2>
                 <symbol> , </symbol>
-                <identifier> sum </identifier>
+                <define::var::3> sum </define::var::3>
                 <symbol> ; </symbol>
             </varDec>
             <statements>
                 <letStatement>
                     <keyword> let </keyword>
-                    <identifier> length </identifier>
+                    <access::var::1> length </access::var::1>
                     <symbol> = </symbol>
                     <expression>
                         <term>
@@ -56,7 +56,7 @@
                 </letStatement>
                 <letStatement>
                     <keyword> let </keyword>
-                    <identifier> a </identifier>
+                    <access::var::0> a </access::var::0>
                     <symbol> = </symbol>
                     <expression>
                         <term>
@@ -67,7 +67,7 @@
                             <expressionList>
                                 <expression>
                                     <term>
-                                        <identifier> length </identifier>
+                                        <access::var1> length </access::var1>
                                     </term>
                                 </expression>
                             </expressionList>
@@ -78,7 +78,7 @@
                 </letStatement>
                 <letStatement>
                     <keyword> let </keyword>
-                    <identifier> i </identifier>
+                    <access::var::2> i </access::var::2>
                     <symbol> = </symbol>
                     <expression>
                         <term>
@@ -92,11 +92,11 @@
                     <symbol> ( </symbol>
                     <expression>
                         <term>
-                            <identifier> i </identifier>
+                            <access::var2> i </access::var2>
                         </term>
                         <symbol> &lt; </symbol>
                         <term>
-                            <identifier> length </identifier>
+                            <access::var1> length </access::var1>
                         </term>
                     </expression>
                     <symbol> ) </symbol>
@@ -104,11 +104,11 @@
                     <statements>
                         <letStatement>
                             <keyword> let </keyword>
-                            <identifier> a </identifier>
+                            <access::var::0> a </access::var::0>
                             <symbol> [ </symbol>
                             <expression>
                                 <term>
-                                    <identifier> i </identifier>
+                                    <access::var2> i </access::var2>
                                 </term>
                             </expression>
                             <symbol> ] </symbol>
@@ -133,11 +133,11 @@
                         </letStatement>
                         <letStatement>
                             <keyword> let </keyword>
-                            <identifier> i </identifier>
+                            <access::var::2> i </access::var::2>
                             <symbol> = </symbol>
                             <expression>
                                 <term>
-                                    <identifier> i </identifier>
+                                    <access::var2> i </access::var2>
                                 </term>
                                 <symbol> + </symbol>
                                 <term>
@@ -151,7 +151,7 @@
                 </whileStatement>
                 <letStatement>
                     <keyword> let </keyword>
-                    <identifier> i </identifier>
+                    <access::var::2> i </access::var::2>
                     <symbol> = </symbol>
                     <expression>
                         <term>
@@ -162,7 +162,7 @@
                 </letStatement>
                 <letStatement>
                     <keyword> let </keyword>
-                    <identifier> sum </identifier>
+                    <access::var::3> sum </access::var::3>
                     <symbol> = </symbol>
                     <expression>
                         <term>
@@ -176,11 +176,11 @@
                     <symbol> ( </symbol>
                     <expression>
                         <term>
-                            <identifier> i </identifier>
+                            <access::var2> i </access::var2>
                         </term>
                         <symbol> &lt; </symbol>
                         <term>
-                            <identifier> length </identifier>
+                            <access::var1> length </access::var1>
                         </term>
                     </expression>
                     <symbol> ) </symbol>
@@ -188,19 +188,19 @@
                     <statements>
                         <letStatement>
                             <keyword> let </keyword>
-                            <identifier> sum </identifier>
+                            <access::var::3> sum </access::var::3>
                             <symbol> = </symbol>
                             <expression>
                                 <term>
-                                    <identifier> sum </identifier>
+                                    <access::var3> sum </access::var3>
                                 </term>
                                 <symbol> + </symbol>
                                 <term>
-                                    <identifier> a </identifier>
+                                    <access::var0> a </access::var0>
                                     <symbol> [ </symbol>
                                     <expression>
                                         <term>
-                                            <identifier> i </identifier>
+                                            <access::var2> i </access::var2>
                                         </term>
                                     </expression>
                                     <symbol> ] </symbol>
@@ -210,11 +210,11 @@
                         </letStatement>
                         <letStatement>
                             <keyword> let </keyword>
-                            <identifier> i </identifier>
+                            <access::var::2> i </access::var::2>
                             <symbol> = </symbol>
                             <expression>
                                 <term>
-                                    <identifier> i </identifier>
+                                    <access::var2> i </access::var2>
                                 </term>
                                 <symbol> + </symbol>
                                 <term>
@@ -251,11 +251,11 @@
                     <expressionList>
                         <expression>
                             <term>
-                                <identifier> sum </identifier>
+                                <access::var3> sum </access::var3>
                             </term>
                             <symbol> / </symbol>
                             <term>
-                                <identifier> length </identifier>
+                                <access::var1> length </access::var1>
                             </term>
                         </expression>
                     </expressionList>
