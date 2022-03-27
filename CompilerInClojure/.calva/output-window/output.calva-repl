@@ -1,0 +1,172 @@
+; This is the Calva evaluation results output window.
+; TIPS: The keyboard shortcut `ctrl+alt+o o` shows and focuses this window
+;   when connected to a REPL session.
+; Please see https://calva.io/output/ for more info.
+; Happy coding! ♥️
+
+; Jacking in...
+; Starting Jack-in Terminal: lein update-in :dependencies conj '[nrepl,"0.9.0"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.27.4"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- repl :headless
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS: 
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉compiler-clojure.core꞉> 
+; Jack-in done.
+clj꞉compiler-clojure.core꞉> 
+nil
+clj꞉compiler-clojure.core꞉> 
+#'compiler-clojure.core/get-paths
+clj꞉compiler-clojure.core꞉> 
+#'compiler-clojure.core/to-xml
+clj꞉compiler-clojure.core꞉> 
+#'compiler-clojure.core/process-tokens
+clj꞉compiler-clojure.core꞉> 
+#'compiler-clojure.core/-main
+clj꞉compiler-clojure.core꞉> 
+jack files: ["Square.jack" "SquareGame.jack" "Main.jack"]
+all-paths: ["/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Square.jack" "/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/SquareGame.jack" "/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Main.jack"]
+tokenizing ./test/ExpressionLessSquare
+; Execution error (FileNotFoundException) at java.io.FileInputStream/open0 (FileInputStream.java:-2).
+; ./test/ExpressionLessSquare (Is a directory)
+clj꞉compiler-clojure.core꞉> 
+#'compiler-clojure.core/-main
+clj꞉compiler-clojure.core꞉> 
+jack files: ["Square.jack" "SquareGame.jack" "Main.jack"]
+all-paths: ["/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Square.jack" "/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/SquareGame.jack" "/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Main.jack"]
+tokenizing /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Square.jack
+out-path: /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/SquareT.xml
+tokenizing /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/SquareGame.jack
+out-path: /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/SquareGameT.xml
+tokenizing /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Main.jack
+out-path: /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/MainT.xml
+nil
+clj꞉compiler-clojure.core꞉> 
+#'compiler-clojure.core/process-tokens
+clj꞉compiler-clojure.core꞉> 
+#'compiler-clojure.core/process-tokens
+clj꞉compiler-clojure.core꞉> 
+out-path: /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/MainT.xml
+nil
+clj꞉compiler-clojure.core꞉> 
+#'compiler-clojure.tokenizer/has-more-tokens
+clj꞉compiler-clojure.tokenizer꞉> 
+#'compiler-clojure.core/process-tokens
+clj꞉compiler-clojure.core꞉> 
+jack files: ["Square.jack" "SquareGame.jack" "Main.jack"]
+all-paths: ["/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Square.jack" "/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/SquareGame.jack" "/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Main.jack"]
+tokenizing /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Square.jack
+out-path: /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/SquareT.xml
+QUIT
+clj꞉compiler-clojure.core꞉> 
+#'compiler-clojure.tokenizer/has-more-tokens
+clj꞉compiler-clojure.tokenizer꞉> 
+#'compiler-clojure.tokenizer/has-more-tokens
+clj꞉compiler-clojure.tokenizer꞉> 
+jack files: ["Square.jack" "SquareGame.jack" "Main.jack"]
+all-paths: ["/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Square.jack" "/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/SquareGame.jack" "/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Main.jack"]
+tokenizing /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Square.jack
+out-path: /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/SquareT.xml
+QUIT
+clj꞉compiler-clojure.core꞉> 
+; Syntax error (ClassNotFoundException) compiling at (experiments.clj:19:1).
+; clojure.java.io
+clj꞉user꞉> 
+; Syntax error (ClassNotFoundException) compiling at (experiments.clj:19:1).
+; clojure.java.io
+clj꞉user꞉> 
+; Syntax error (ClassNotFoundException) compiling at (experiments.clj:19:1).
+; clojure.java.io
+clj꞉user꞉> 
+; Evaluating file: experiments.clj
+I'll print immediately
+this prints once
+deref:  2
+@:  2
+hey
+got here
+nil
+clj꞉compiler-clojure.experiments꞉> 
+I'll print after 4 seconds
+nil
+clj꞉compiler-clojure.experiments꞉> 
+java.io.BufferedWriter
+nil
+clj꞉compiler-clojure.experiments꞉> 
+java.io.BufferedWriter
+nil
+clj꞉compiler-clojure.experiments꞉> 
+#'compiler-clojure.core/write-tok
+clj꞉compiler-clojure.core꞉> 
+#'compiler-clojure.core/process-tokens
+clj꞉compiler-clojure.core꞉> 
+out-path: /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/MainT.xml
+QUIT
+clj꞉compiler-clojure.core꞉> 
+#'compiler-clojure.tokenizer/has-more-tokens
+clj꞉compiler-clojure.tokenizer꞉> 
+out-path: /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/MainT.xml
+nil
+clj꞉compiler-clojure.core꞉> 
+jack files: ["Square.jack" "SquareGame.jack" "Main.jack"]
+all-paths: ["/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Square.jack" "/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/SquareGame.jack" "/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Main.jack"]
+tokenizing /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Square.jack
+out-path: /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/SquareT.xml
+tokenizing /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/SquareGame.jack
+out-path: /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/SquareGameT.xml
+tokenizing /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/Main.jack
+out-path: /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ExpressionLessSquare/MainT.xml
+nil
+clj꞉compiler-clojure.core꞉> 
+jack files: ["Square.jack" "SquareGame.jack" "Main.jack"]
+all-paths: ["/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/Square/Square.jack" "/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/Square/SquareGame.jack" "/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/Square/Main.jack"]
+tokenizing /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/Square/Square.jack
+out-path: /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/Square/SquareT.xml
+tokenizing /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/Square/SquareGame.jack
+out-path: /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/Square/SquareGameT.xml
+tokenizing /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/Square/Main.jack
+out-path: /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/Square/MainT.xml
+nil
+clj꞉compiler-clojure.core꞉> 
+jack files: ["Main.jack"]
+all-paths: ["/Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ArrayTest/Main.jack"]
+tokenizing /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ArrayTest/Main.jack
+out-path: /Users/kyle/Documents/Programming/nand2tetris/CompilerInClojure/test/ArrayTest/MainT.xml
+nil
+clj꞉compiler-clojure.core꞉> 
+; Syntax error compiling at (src/compiler_clojure/core.clj:62:1).
+; Unable to resolve symbol: show in this context
+clj꞉compiler-clojure.core꞉> 
+; Syntax error compiling var at (src/compiler_clojure/core.clj:63:1).
+; Expecting var, but File is mapped to class java.io.File
+clj꞉compiler-clojure.core꞉> 
+#'compiler-clojure.core/-main
+clj꞉compiler-clojure.core꞉> 
+#'compiler-clojure.core/hi
+clj꞉compiler-clojure.core꞉> 
+hi
+nil
+clj꞉compiler-clojure.core꞉> 
+(do
+ (clojure.core/defn
+  hi
+  ([&form &env]
+   (clojure.core/seq (clojure.core/concat (clojure.core/list 'clojure.core/println) (clojure.core/list "hi")))))
+ (. #'hi (setMacro))
+ #'hi)
+clj꞉compiler-clojure.core꞉> 
+nil
+clj꞉compiler-clojure.core꞉> 
+(do
+ (def
+  hi
+  (fn*
+   ([&form &env]
+    (clojure.core/seq (clojure.core/concat (clojure.core/list 'clojure.core/println) (clojure.core/list "hi"))))))
+ (. #'hi (setMacro))
+ #'hi)
+clj꞉compiler-clojure.core꞉> 
